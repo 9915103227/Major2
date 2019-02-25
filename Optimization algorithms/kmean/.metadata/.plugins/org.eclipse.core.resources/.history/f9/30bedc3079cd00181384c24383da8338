@@ -1,0 +1,13 @@
+
+
+object tmp extends App {
+  def func(x:Int):Int={
+    var y=0
+    y=x+1;
+    return y
+  }
+  var arr:Array[Int]=new Array[Int](10)
+  arr(0)=10
+  arr(0)=func(arr(0))
+  println(arr(0))
+}

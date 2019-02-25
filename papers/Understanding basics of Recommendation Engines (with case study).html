@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/ -->
+<html class="smartbanner-show wf-oswald-n4-active wf-raleway-n4-active wf-active js csstransforms3d"><head lang="en-US" prefix="og: http://ogp.me/ns#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="google-play-app" content="app-id=com.analyticsvidhya.android">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link href="https://www.google-analytics.com/" rel="dns-prefetch">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="pingback" href="https://www.analyticsvidhya.com/xmlrpc.php">
+<link rel="icon" id="favicon" type="image/png" href="https://www.analyticsvidhya.com/wp-content/uploads/2015/02/logo_square_v2.jpg"><link rel="apple-touch-icon" href="https://www.analyticsvidhya.com/wp-content/uploads/2015/02/logo_square_v2.jpg"><link rel="apple-touch-icon" sizes="76x76" href="https://www.analyticsvidhya.com/wp-content/uploads/2015/02/logo_square_v2.jpg"><link rel="apple-touch-icon" sizes="114x114" href="https://www.analyticsvidhya.com/wp-content/uploads/2015/02/logo_square_v2.jpg"><link rel="apple-touch-icon" sizes="144x144" href="https://www.analyticsvidhya.com/wp-content/uploads/2015/02/logo_square_v2.jpg">
+<link rel="stylesheet" href="./Understanding basics of Recommendation Engines (with case study)_files/custom_style.css" type="text/css" media="all">
+<link rel="stylesheet" href="./Understanding basics of Recommendation Engines (with case study)_files/smart-app-banner.css" type="text/css" media="screen">
+<link rel="stylesheet" href="./Understanding basics of Recommendation Engines (with case study)_files/font-awesome.min.css">
+<title>Understanding basics of Recommendation Engines (with case study)</title>
+<div class="fit-vids-style" id="fit-vids-style" style="display: none;">­<style>.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style></div><script src="./Understanding basics of Recommendation Engines (with case study)_files/f.txt"></script><script src="./Understanding basics of Recommendation Engines (with case study)_files/ca-pub-5229672700622157.js"></script><script type="text/javascript" async="" src="./Understanding basics of Recommendation Engines (with case study)_files/js"></script><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/gtm.js"></script><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/analytics.js"></script><script type="text/javascript" async="" src="./Understanding basics of Recommendation Engines (with case study)_files/a.js"></script><script src="./Understanding basics of Recommendation Engines (with case study)_files/136748720225584" async=""></script><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/fbevents.js"></script><script src="./Understanding basics of Recommendation Engines (with case study)_files/webfont.js" type="text/javascript" async=""></script><script>
+                            /* You can add more configuration options to webfontloader by previously defining the WebFontConfig with your options */
+                            if ( typeof WebFontConfig === "undefined" ) {
+                                WebFontConfig = new Object();
+                            }
+                            WebFontConfig['google'] = {families: ['Oswald:400', 'Raleway:400&amp;subset=latin']};
+
+                            (function() {
+                                var wf = document.createElement( 'script' );
+                                wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.5.3/webfont.js';
+                                wf.type = 'text/javascript';
+                                wf.async = 'true';
+                                var s = document.getElementsByTagName( 'script' )[0];
+                                s.parentNode.insertBefore( wf, s );
+                            })();
+                        </script>
+<style>
+.stb-container-css {margin: 10px 10px 10px 10px;}.stb-box {}.stb-caption-box {}.stb-body-box {}
+/* Class Dependent Parameters */
+.stb-border.stb-alert-container {border: 1px none #FF4F4A;}.stb-side.stb-alert-container {background: #FF4F4A;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FF4F4A', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #FF4F4A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FF4F4A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #FF4F4A 30%,#504848 90%);background: -o-linear-gradient(top,  #FF4F4A 30%,#504848 90%);background: -ms-linear-gradient(top,  #FF4F4A 30%,#504848 90%);background: linear-gradient(#FF4F4A 30%, #504848 90%);}.stb-side-none.stb-alert-container {background: #FFE7E6;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFE7E6', endColorstr='#fb7d78',GradientType=0 );background: -moz-linear-gradient(top,  #FFE7E6 30%, #fb7d78 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FFE7E6), color-stop(90%,#fb7d78));background: -webkit-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: -o-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: -ms-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: linear-gradient(#FFE7E6 30%, #fb7d78 90%);}.stb-alert_box {background: #FFE7E6;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFE7E6', endColorstr='#fb7d78',GradientType=0 );background: -moz-linear-gradient(top,  #FFE7E6 30%, #fb7d78 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FFE7E6), color-stop(90%,#fb7d78));background: -webkit-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: -o-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: -ms-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: linear-gradient(#FFE7E6 30%, #fb7d78 90%);color: #000000;}.stb-alert-caption_box {background: #FF4F4A;background: -moz-linear-gradient(top,  #FF4F4A 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FF4F4A), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #FF4F4A 30%,#504848 90%);background: -o-linear-gradient(top,  #FF4F4A 30%,#504848 90%);background: -ms-linear-gradient(top,  #FF4F4A 30%,#504848 90%);background: linear-gradient(#FF4F4A 30%, #504848 90%);color: #FFFFFF;}.stb-alert-body_box {background: #FFE7E6;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFE7E6', endColorstr='#fb7d78',GradientType=0 );background: -moz-linear-gradient(top,  #FFE7E6 30%, #fb7d78 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FFE7E6), color-stop(90%,#fb7d78));background: -webkit-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: -o-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: -ms-linear-gradient(top,  #FFE7E6 30%,#fb7d78 90%);background: linear-gradient(#FFE7E6 30%, #fb7d78 90%);color: #000000;}.stb-border.stb-black-container {border: 1px none #6E6E6E;}.stb-side.stb-black-container {background: #333333;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #333333 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#333333), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #333333 30%,#504848 90%);background: -o-linear-gradient(top,  #333333 30%,#504848 90%);background: -ms-linear-gradient(top,  #333333 30%,#504848 90%);background: linear-gradient(#333333 30%, #504848 90%);}.stb-side-none.stb-black-container {background: #000000;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=0 );background: -moz-linear-gradient(top,  #000000 30%, #000000 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#000000), color-stop(90%,#000000));background: -webkit-linear-gradient(top,  #000000 30%,#000000 90%);background: -o-linear-gradient(top,  #000000 30%,#000000 90%);background: -ms-linear-gradient(top,  #000000 30%,#000000 90%);background: linear-gradient(#000000 30%, #000000 90%);}.stb-black_box {background: #000000;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=0 );background: -moz-linear-gradient(top,  #000000 30%, #000000 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#000000), color-stop(90%,#000000));background: -webkit-linear-gradient(top,  #000000 30%,#000000 90%);background: -o-linear-gradient(top,  #000000 30%,#000000 90%);background: -ms-linear-gradient(top,  #000000 30%,#000000 90%);background: linear-gradient(#000000 30%, #000000 90%);color: #FFFFFF;}.stb-black-caption_box {background: #333333;background: -moz-linear-gradient(top,  #333333 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#333333), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #333333 30%,#504848 90%);background: -o-linear-gradient(top,  #333333 30%,#504848 90%);background: -ms-linear-gradient(top,  #333333 30%,#504848 90%);background: linear-gradient(#333333 30%, #504848 90%);color: #FFFFFF;}.stb-black-body_box {background: #000000;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=0 );background: -moz-linear-gradient(top,  #000000 30%, #000000 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#000000), color-stop(90%,#000000));background: -webkit-linear-gradient(top,  #000000 30%,#000000 90%);background: -o-linear-gradient(top,  #000000 30%,#000000 90%);background: -ms-linear-gradient(top,  #000000 30%,#000000 90%);background: linear-gradient(#000000 30%, #000000 90%);color: #FFFFFF;}.stb-border.stb-custom-container {border: 1px none #f844ee;}.stb-side.stb-custom-container {background: #f844ee;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f844ee', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #f844ee 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#f844ee), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #f844ee 30%,#504848 90%);background: -o-linear-gradient(top,  #f844ee 30%,#504848 90%);background: -ms-linear-gradient(top,  #f844ee 30%,#504848 90%);background: linear-gradient(#f844ee 30%, #504848 90%);}.stb-side-none.stb-custom-container {background: #f7cdf5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7cdf5', endColorstr='#f77df1',GradientType=0 );background: -moz-linear-gradient(top,  #f7cdf5 30%, #f77df1 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#f7cdf5), color-stop(90%,#f77df1));background: -webkit-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: -o-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: -ms-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: linear-gradient(#f7cdf5 30%, #f77df1 90%);}.stb-custom_box {background: #f7cdf5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7cdf5', endColorstr='#f77df1',GradientType=0 );background: -moz-linear-gradient(top,  #f7cdf5 30%, #f77df1 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#f7cdf5), color-stop(90%,#f77df1));background: -webkit-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: -o-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: -ms-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: linear-gradient(#f7cdf5 30%, #f77df1 90%);color: #000000;}.stb-custom-caption_box {background: #f844ee;background: -moz-linear-gradient(top,  #f844ee 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#f844ee), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #f844ee 30%,#504848 90%);background: -o-linear-gradient(top,  #f844ee 30%,#504848 90%);background: -ms-linear-gradient(top,  #f844ee 30%,#504848 90%);background: linear-gradient(#f844ee 30%, #504848 90%);color: #ffffff;}.stb-custom-body_box {background: #f7cdf5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7cdf5', endColorstr='#f77df1',GradientType=0 );background: -moz-linear-gradient(top,  #f7cdf5 30%, #f77df1 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#f7cdf5), color-stop(90%,#f77df1));background: -webkit-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: -o-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: -ms-linear-gradient(top,  #f7cdf5 30%,#f77df1 90%);background: linear-gradient(#f7cdf5 30%, #f77df1 90%);color: #000000;}.stb-border.stb-download-container {border: 1px none #65ADFE;}.stb-side.stb-download-container {background: #65ADFE;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#65ADFE', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #65ADFE 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#65ADFE), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #65ADFE 30%,#504848 90%);background: -o-linear-gradient(top,  #65ADFE 30%,#504848 90%);background: -ms-linear-gradient(top,  #65ADFE 30%,#504848 90%);background: linear-gradient(#65ADFE 30%, #504848 90%);}.stb-side-none.stb-download-container {background: #DFF0FF;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#DFF0FF', endColorstr='#2e7cb9',GradientType=0 );background: -moz-linear-gradient(top,  #DFF0FF 30%, #2e7cb9 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#DFF0FF), color-stop(90%,#2e7cb9));background: -webkit-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: -o-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: -ms-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: linear-gradient(#DFF0FF 30%, #2e7cb9 90%);}.stb-download_box {background: #DFF0FF;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#DFF0FF', endColorstr='#2e7cb9',GradientType=0 );background: -moz-linear-gradient(top,  #DFF0FF 30%, #2e7cb9 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#DFF0FF), color-stop(90%,#2e7cb9));background: -webkit-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: -o-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: -ms-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: linear-gradient(#DFF0FF 30%, #2e7cb9 90%);color: #000000;}.stb-download-caption_box {background: #65ADFE;background: -moz-linear-gradient(top,  #65ADFE 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#65ADFE), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #65ADFE 30%,#504848 90%);background: -o-linear-gradient(top,  #65ADFE 30%,#504848 90%);background: -ms-linear-gradient(top,  #65ADFE 30%,#504848 90%);background: linear-gradient(#65ADFE 30%, #504848 90%);color: #FFFFFF;}.stb-download-body_box {background: #DFF0FF;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#DFF0FF', endColorstr='#2e7cb9',GradientType=0 );background: -moz-linear-gradient(top,  #DFF0FF 30%, #2e7cb9 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#DFF0FF), color-stop(90%,#2e7cb9));background: -webkit-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: -o-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: -ms-linear-gradient(top,  #DFF0FF 30%,#2e7cb9 90%);background: linear-gradient(#DFF0FF 30%, #2e7cb9 90%);color: #000000;}.stb-border.stb-grey-container {border: 1px none #BBBBBB;}.stb-side.stb-grey-container {background: #BBBBBB;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#BBBBBB', endColorstr='#6e6e6e',GradientType=0 );background: -moz-linear-gradient(top,  #BBBBBB 30%, #6e6e6e 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#BBBBBB), color-stop(90%,#6e6e6e));background: -webkit-linear-gradient(top,  #BBBBBB 30%,#6e6e6e 90%);background: -o-linear-gradient(top,  #BBBBBB 30%,#6e6e6e 90%);background: -ms-linear-gradient(top,  #BBBBBB 30%,#6e6e6e 90%);background: linear-gradient(#BBBBBB 30%, #6e6e6e 90%);}.stb-side-none.stb-grey-container {background: #EEEEEE;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EEEEEE', endColorstr='#ababab',GradientType=0 );background: -moz-linear-gradient(top,  #EEEEEE 30%, #ababab 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#EEEEEE), color-stop(90%,#ababab));background: -webkit-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: -o-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: -ms-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: linear-gradient(#EEEEEE 30%, #ababab 90%);}.stb-grey_box {background: #EEEEEE;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EEEEEE', endColorstr='#ababab',GradientType=0 );background: -moz-linear-gradient(top,  #EEEEEE 30%, #ababab 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#EEEEEE), color-stop(90%,#ababab));background: -webkit-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: -o-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: -ms-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: linear-gradient(#EEEEEE 30%, #ababab 90%);color: #000000;}.stb-grey-caption_box {background: #BBBBBB;background: -moz-linear-gradient(top,  #BBBBBB 30%, #6e6e6e 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#BBBBBB), color-stop(90%,#6e6e6e));background: -webkit-linear-gradient(top,  #BBBBBB 30%,#6e6e6e 90%);background: -o-linear-gradient(top,  #BBBBBB 30%,#6e6e6e 90%);background: -ms-linear-gradient(top,  #BBBBBB 30%,#6e6e6e 90%);background: linear-gradient(#BBBBBB 30%, #6e6e6e 90%);color: #FFFFFF;}.stb-grey-body_box {background: #EEEEEE;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EEEEEE', endColorstr='#ababab',GradientType=0 );background: -moz-linear-gradient(top,  #EEEEEE 30%, #ababab 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#EEEEEE), color-stop(90%,#ababab));background: -webkit-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: -o-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: -ms-linear-gradient(top,  #EEEEEE 30%,#ababab 90%);background: linear-gradient(#EEEEEE 30%, #ababab 90%);color: #000000;}.stb-border.stb-info-container {border: 1px none #7AD975;}.stb-side.stb-info-container {background: #7AD975;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7AD975', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #7AD975 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#7AD975), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #7AD975 30%,#504848 90%);background: -o-linear-gradient(top,  #7AD975 30%,#504848 90%);background: -ms-linear-gradient(top,  #7AD975 30%,#504848 90%);background: linear-gradient(#7AD975 30%, #504848 90%);}.stb-side-none.stb-info-container {background: #E2F8DE;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E2F8DE', endColorstr='#79b06e',GradientType=0 );background: -moz-linear-gradient(top,  #E2F8DE 30%, #79b06e 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#E2F8DE), color-stop(90%,#79b06e));background: -webkit-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: -o-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: -ms-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: linear-gradient(#E2F8DE 30%, #79b06e 90%);}.stb-info_box {background: #E2F8DE;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E2F8DE', endColorstr='#79b06e',GradientType=0 );background: -moz-linear-gradient(top,  #E2F8DE 30%, #79b06e 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#E2F8DE), color-stop(90%,#79b06e));background: -webkit-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: -o-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: -ms-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: linear-gradient(#E2F8DE 30%, #79b06e 90%);color: #000000;}.stb-info-caption_box {background: #7AD975;background: -moz-linear-gradient(top,  #7AD975 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#7AD975), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #7AD975 30%,#504848 90%);background: -o-linear-gradient(top,  #7AD975 30%,#504848 90%);background: -ms-linear-gradient(top,  #7AD975 30%,#504848 90%);background: linear-gradient(#7AD975 30%, #504848 90%);color: #FFFFFF;}.stb-info-body_box {background: #E2F8DE;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E2F8DE', endColorstr='#79b06e',GradientType=0 );background: -moz-linear-gradient(top,  #E2F8DE 30%, #79b06e 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#E2F8DE), color-stop(90%,#79b06e));background: -webkit-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: -o-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: -ms-linear-gradient(top,  #E2F8DE 30%,#79b06e 90%);background: linear-gradient(#E2F8DE 30%, #79b06e 90%);color: #000000;}.stb-border.stb-section-container {border: 1px none #2982C5;}.stb-side.stb-section-container {background: #2982C5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2982C5', endColorstr='#2944f2',GradientType=0 );background: -moz-linear-gradient(top,  #2982C5 30%, #2944f2 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#2982C5), color-stop(90%,#2944f2));background: -webkit-linear-gradient(top,  #2982C5 30%,#2944f2 90%);background: -o-linear-gradient(top,  #2982C5 30%,#2944f2 90%);background: -ms-linear-gradient(top,  #2982C5 30%,#2944f2 90%);background: linear-gradient(#2982C5 30%, #2944f2 90%);}.stb-side-none.stb-section-container {background: #2982C5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2982C5', endColorstr='#294ee3',GradientType=0 );background: -moz-linear-gradient(top,  #2982C5 30%, #294ee3 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#2982C5), color-stop(90%,#294ee3));background: -webkit-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: -o-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: -ms-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: linear-gradient(#2982C5 30%, #294ee3 90%);}.stb-section_box {background: #2982C5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2982C5', endColorstr='#294ee3',GradientType=0 );background: -moz-linear-gradient(top,  #2982C5 30%, #294ee3 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#2982C5), color-stop(90%,#294ee3));background: -webkit-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: -o-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: -ms-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: linear-gradient(#2982C5 30%, #294ee3 90%);color: #000000;}.stb-section-caption_box {background: #2982C5;background: -moz-linear-gradient(top,  #2982C5 30%, #2944f2 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#2982C5), color-stop(90%,#2944f2));background: -webkit-linear-gradient(top,  #2982C5 30%,#2944f2 90%);background: -o-linear-gradient(top,  #2982C5 30%,#2944f2 90%);background: -ms-linear-gradient(top,  #2982C5 30%,#2944f2 90%);background: linear-gradient(#2982C5 30%, #2944f2 90%);color: #FFFFFF;}.stb-section-body_box {background: #2982C5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2982C5', endColorstr='#294ee3',GradientType=0 );background: -moz-linear-gradient(top,  #2982C5 30%, #294ee3 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#2982C5), color-stop(90%,#294ee3));background: -webkit-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: -o-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: -ms-linear-gradient(top,  #2982C5 30%,#294ee3 90%);background: linear-gradient(#2982C5 30%, #294ee3 90%);color: #000000;}.stb-border.stb-warning-container {border: 1px none #FE9A05;}.stb-side.stb-warning-container {background: #FE9A05;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FE9A05', endColorstr='#504848',GradientType=0 );background: -moz-linear-gradient(top,  #FE9A05 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FE9A05), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #FE9A05 30%,#504848 90%);background: -o-linear-gradient(top,  #FE9A05 30%,#504848 90%);background: -ms-linear-gradient(top,  #FE9A05 30%,#504848 90%);background: linear-gradient(#FE9A05 30%, #504848 90%);}.stb-side-none.stb-warning-container {background: #FEFFD5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FEFFD5', endColorstr='#f0d208',GradientType=0 );background: -moz-linear-gradient(top,  #FEFFD5 30%, #f0d208 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FEFFD5), color-stop(90%,#f0d208));background: -webkit-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: -o-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: -ms-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: linear-gradient(#FEFFD5 30%, #f0d208 90%);}.stb-warning_box {background: #FEFFD5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FEFFD5', endColorstr='#f0d208',GradientType=0 );background: -moz-linear-gradient(top,  #FEFFD5 30%, #f0d208 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FEFFD5), color-stop(90%,#f0d208));background: -webkit-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: -o-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: -ms-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: linear-gradient(#FEFFD5 30%, #f0d208 90%);color: #000000;}.stb-warning-caption_box {background: #FE9A05;background: -moz-linear-gradient(top,  #FE9A05 30%, #504848 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FE9A05), color-stop(90%,#504848));background: -webkit-linear-gradient(top,  #FE9A05 30%,#504848 90%);background: -o-linear-gradient(top,  #FE9A05 30%,#504848 90%);background: -ms-linear-gradient(top,  #FE9A05 30%,#504848 90%);background: linear-gradient(#FE9A05 30%, #504848 90%);color: #FFFFFF;}.stb-warning-body_box {background: #FEFFD5;filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FEFFD5', endColorstr='#f0d208',GradientType=0 );background: -moz-linear-gradient(top,  #FEFFD5 30%, #f0d208 90%);background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,#FEFFD5), color-stop(90%,#f0d208));background: -webkit-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: -o-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: -ms-linear-gradient(top,  #FEFFD5 30%,#f0d208 90%);background: linear-gradient(#FEFFD5 30%, #f0d208 90%);color: #000000;}</style>
+
+<meta name="description" content="This article explains the algorithm behind most common recommendation engine, collaborative filtering and content based recommender systems">
+<link rel="canonical" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understanding basics of Recommendation Engines (with case study)">
+<meta property="og:description" content="This article explains the algorithm behind most common recommendation engine, collaborative filtering and content based recommender systems">
+<meta property="og:url" content="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/">
+<meta property="og:site_name" content="Analytics Vidhya">
+<meta property="article:publisher" content="https://www.facebook.com/AnalyticsVidhya/">
+<meta property="article:tag" content="collaborative filtering">
+<meta property="article:tag" content="content bases recommender systems">
+<meta property="article:tag" content="recommender system">
+<meta property="article:section" content="Business Analytics">
+<meta property="article:published_time" content="2015-10-11T18:38:25+05:30">
+<meta property="article:modified_time" content="2015-12-11T08:15:25+05:30">
+<meta property="og:updated_time" content="2015-12-11T08:15:25+05:30">
+<meta property="og:image" content="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/few-things2.jpg">
+<meta property="og:image:secure_url" content="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/few-things2.jpg">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="350">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="This article explains the algorithm behind most common recommendation engine, collaborative filtering and content based recommender systems">
+<meta name="twitter:title" content="Understanding basics of Recommendation Engines (with case study)">
+<meta name="twitter:site" content="@analyticsvidhya">
+<meta name="twitter:image" content="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/few-things2.jpg">
+<meta name="twitter:creator" content="@analyticsvidhya">
+<script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Organization","url":"https:\/\/www.analyticsvidhya.com\/","sameAs":["https:\/\/www.facebook.com\/AnalyticsVidhya\/","https:\/\/www.linkedin.com\/company\/analytics-vidhya","https:\/\/twitter.com\/analyticsvidhya"],"@id":"https:\/\/www.analyticsvidhya.com\/#organization","name":"Analytics Vidhya","logo":"https:\/\/www.analyticsvidhya.com\/wp-content\/uploads\/2014\/12\/analytics-logo-300x70.jpg"}</script>
+
+<link rel="dns-prefetch" href="https://www.analyticsvidhya.com/">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Analytics Vidhya » Feed" href="https://www.analyticsvidhya.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Analytics Vidhya » Comments Feed" href="https://www.analyticsvidhya.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Analytics Vidhya » Understanding basics of Recommendation Engines (with case study) Comments Feed" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/feed/">
+<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.analyticsvidhya.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.7"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Understanding basics of Recommendation Engines (with case study)_files/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="contact-form-7-css" href="./Understanding basics of Recommendation Engines (with case study)_files/styles.css" type="text/css" media="all">
+<link rel="stylesheet" id="cookielawinfo-style-css" href="./Understanding basics of Recommendation Engines (with case study)_files/cli-style.css" type="text/css" media="all">
+<link rel="stylesheet" id="dgd-scrollbox-plugin-core-css" href="./Understanding basics of Recommendation Engines (with case study)_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="inline-tweet-sharer-style-css" href="./Understanding basics of Recommendation Engines (with case study)_files/inline-tweet-sharer.css" type="text/css" media="all">
+<link rel="stylesheet" id="dashicons-css" href="./Understanding basics of Recommendation Engines (with case study)_files/dashicons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="maha-bootstrap-css" href="./Understanding basics of Recommendation Engines (with case study)_files/bootstrap-responsive.css" type="text/css" media="all">
+<link rel="stylesheet" id="maha-tm-icons-css" href="./Understanding basics of Recommendation Engines (with case study)_files/font-tm.css" type="text/css" media="all">
+<link rel="stylesheet" id="maha-basix-css" href="./Understanding basics of Recommendation Engines (with case study)_files/basix.css" type="text/css" media="all">
+<link rel="stylesheet" id="maha-basix-r-css" href="./Understanding basics of Recommendation Engines (with case study)_files/basix-responsive.css" type="text/css" media="all">
+<link rel="stylesheet" id="maha-dynamic-css" href="./Understanding basics of Recommendation Engines (with case study)_files/dynamic-style.css" type="text/css" media="all">
+<link rel="stylesheet" id="stbCoreCSS-css" href="./Understanding basics of Recommendation Engines (with case study)_files/stb-core.css" type="text/css" media="all">
+<link rel="stylesheet" id="jetpack_css-css" href="./Understanding basics of Recommendation Engines (with case study)_files/jetpack.css" type="text/css" media="all">
+<link rel="stylesheet" id="wpss-style-css" href="./Understanding basics of Recommendation Engines (with case study)_files/wpss-pkg.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wpss-custom-db-style-css" href="./Understanding basics of Recommendation Engines (with case study)_files/custom-performance.css" type="text/css" media="all">
+<link rel="stylesheet" href="./Understanding basics of Recommendation Engines (with case study)_files/css"><script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/jquery.js"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/jquery-migrate.min.js" defer="defer"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var related_posts_js_options = {"post_heading":"h4"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/related-posts.min.js" defer="defer"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var Cli_Data = {"nn_cookie_ids":null};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/cookielawinfo.js" defer="defer"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var $DGD = {"ajaxurl":"\/wp-admin\/admin-ajax.php","nonce":"5876c72faa","debug":"","permalink":"https:\/\/www.analyticsvidhya.com\/blog\/2015\/10\/recommendation-engines\/","title":"Understanding basics of Recommendation Engines (with case study)","thumbnail":"https:\/\/www.analyticsvidhya.com\/wp-content\/uploads\/2015\/10\/few-things2.jpg","scripthost":"\/wp-content\/plugins\/dreamgrow-scroll-triggered-box\/","scrollboxes":[]};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/script.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/inline-tweet-sharer.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/wpss-pkg.min.js" defer="defer"></script>
+<link rel="https://api.w.org/" href="https://www.analyticsvidhya.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.analyticsvidhya.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.analyticsvidhya.com/wp-includes/wlwmanifest.xml">
+<meta name="generator" content="WordPress 4.9.7">
+<link rel="shortlink" href="https://www.analyticsvidhya.com/?p=20717">
+<link rel="alternate" type="application/json+oembed" href="https://www.analyticsvidhya.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.analyticsvidhya.com%2Fblog%2F2015%2F10%2Frecommendation-engines%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://www.analyticsvidhya.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.analyticsvidhya.com%2Fblog%2F2015%2F10%2Frecommendation-engines%2F&amp;format=xml">
+<script type="text/javascript"><!--
+function powerpress_pinw(pinw_url){window.open(pinw_url, 'PowerPressPlayer','toolbar=0,status=0,resizable=1,width=460,height=320');	return false;}
+//-->
+</script>
+<script type="text/javascript">/* <![CDATA[ */ jQuery.post("https://www.analyticsvidhya.com/wp-admin/admin-ajax.php", { action: "wmp_update", id: 20717, token: "4d2c07c19e" }); /* ]]> */</script> 
+<meta property="og:url" content="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/">
+<meta property="og:title" content="Understanding basics of Recommendation Engines (with case study)">
+<meta property="og:description" content="Introduction Ever wondered, “what algorithm google uses to maximize its target ads revenue?”. What about the e-commerce websites which advocates you through options such as &#39;people who bought this also bought this&#39;. Or “How does Facebook automatically suggest us to tag friends in pictures”? The answer is Recommendation Engines. With the growing amount of information on world wide web">
+<meta property="og:image" content="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/few-things2-200x200.jpg">
+
+<link rel="canonical" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/">
+<style type="text/css"></style><script>
+if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {     
+jQuery(document).ready(function(){
+jQuery( ".col-sm-12" ).removeClass( "myrun" );    
+});
+}
+</script>
+<script>
+//subscribe android app
+jQuery(document).ready(function(){
+   jQuery('#submit-subscribe-android-app').click(function(){
+       var email = jQuery('#email-subscribe-android-app').val();
+       if(email){
+           jQuery.ajax({
+               url: "/subscriptions/early-android-access.php",
+               type: "POST",
+               data: {
+                   "email": email
+               },
+               success: function(data){
+                   if(data.success){
+                       jQuery("#bg-sbox ul").hide(1);
+                       jQuery("#bg-sbox h5").text('yay!');
+                       jQuery("#bg-sbox p.msg1").text('Your email has been added to our beta list');
+                       jQuery("#bg-sbox p.msg2").text('You will hear from us soon');
+                   } else {
+                       jQuery("#bg-sbox h5").text('Something went wrong, try again!');
+                       console.log(data.error);
+                   }
+               },
+               error: function(e){
+                   console.log(e);
+                   jQuery("#bg-sbox h5").text('Something went wrong, try again!');
+               }
+           })
+       }
+   });
+});
+</script>
+<script>
+jQuery(document).ready(function(){
+	jQuery(".filter-button").click(function(){
+		var value = jQuery(this).attr('data-filter');
+       if(value == "all"){
+           $('.filter').show('1000');
+       }else{
+			jQuery(".filter").not('.'+value).hide('3000');
+			jQuery('.filter').filter('.'+value).show('3000');
+       }
+   });
+});
+</script>
+<script>//----------footer js start------</script>
+<script type="text/javascript">
+     jQuery(document).ready(function(){
+       jQuery('.footer-links-holder .links-show').click(function () {
+       jQuery(this).parent().toggleClass('active');
+     });
+   });
+</script>
+
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '136748720225584'); // Insert your pixel ID here.
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=136748720225584&ev=PageView&noscript=1"
+/></noscript>
+
+<script type="text/javascript">
+     var clevertap = {event:[], profile:[], account:[], onUserLogin:[], notifications:[]};
+ // replace with the CLEVERTAP_ACCOUNT_ID with the actual ACCOUNT ID value from your Dashboard -> Settings page
+ clevertap.account.push({"id": "R5K-4WR-7W5Z"});
+ (function () {
+		 var wzrk = document.createElement('script');
+		 wzrk.type = 'text/javascript';
+		 wzrk.async = true;
+		 wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/a.js';
+		 var s = document.getElementsByTagName('script')[0];
+		 s.parentNode.insertBefore(wzrk, s);
+  })();
+</script>
+
+<script async="async" src="./Understanding basics of Recommendation Engines (with case study)_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/40884943/blog-title', [728, 90], 'div-gpt-ad-1525327567902-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40101183-1', 'auto');
+  ga('require', 'GTM-PBZGQJ4');
+  //ga('send', 'pageview');
+  ga('send', 'pageview', {
+     'dimension1': 'Shivam Bansal',
+     'dimension2': 'Business Analytics'
+     });
+</script>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KJ969NR');</script>
+
+<meta property="fb:pages" content="452065408218678">
+
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '136748720225584'); // Insert your pixel ID here.
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=136748720225584&ev=PageView&noscript=1"
+/></noscript>
+
+<link rel="preload" href="./Understanding basics of Recommendation Engines (with case study)_files/f(1).txt" as="script"><script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/f(1).txt"></script><link rel="preload" href="./Understanding basics of Recommendation Engines (with case study)_files/f(2).txt" as="script"><script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/f(2).txt"></script><script src="./Understanding basics of Recommendation Engines (with case study)_files/pubads_impl_236.js" async=""></script><script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/a" rel="nofollow" async=""></script><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/hotjar-499326.js"></script><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/modules-0554a704a4e49d5aa65caf82949c9503.js"></script><style type="text/css">iframe#_hjRemoteVarsFrame {display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;}</style><script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/a(1)" rel="nofollow" async=""></script></head>
+<body class="post-template-default single single-post postid-20717 single-format-standard mh-body chrome">
+
+<div class="container-fluid">
+<script src="./Understanding basics of Recommendation Engines (with case study)_files/jquery.min.js"></script>
+<script src="./Understanding basics of Recommendation Engines (with case study)_files/smart-app-banner.js"></script>
+<script type="text/javascript">
+    if (!navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+      new SmartBanner({
+          daysHidden: 15,   // days to hide banner after close button is clicked (defaults to 15)
+          daysReminder: 1, // days to hide banner after "VIEW" button is clicked (defaults to 90)
+          appStoreLanguage: 'us', // language code for the App Store (defaults to user's browser language)
+          title: '',
+          author: '',
+          button: '',
+          store: {
+              android: ' ',
+          },
+          price: {
+              android: '',
+          }
+          , theme: 'android' // put platform type ('ios', 'android', etc.) here to force single theme on all device
+          // , icon: '' // full path to icon image if not using website icon image
+          , force: 'android' // Uncomment for platform emulation
+      });
+    }
+    </script>
+<script>
+    $(document).ready(function(){
+        $(".smartbanner-container").click(function(){
+            ga('send', {'hitType': 'event', 'eventCategory': 'smart-banner', 'eventAction': 'clicked'});
+            window.open("https://play.google.com/store/apps/details?id=com.analyticsvidhya.android", '_blank');
+        });
+    });
+    </script>
+</div><div class="smartbanner smartbanner-android"><div class="smartbanner-container"><a href="javascript:void(0);" class="smartbanner-close">×</a><span class="smartbanner-icon"></span><div class="smartbanner-info"><div class="smartbanner-title"></div><div></div><span> -  </span></div><a href="http://play.google.com/store/apps/details?id=com.analyticsvidhya.android" class="smartbanner-button"><span class="smartbanner-button-text"></span></a></div></div>
+
+<div id="body-maha" class="body-maha" data-tmloader="https://www.analyticsvidhya.com/wp-content/themes/Curated/images/ellipsis.gif" style="background-color:#1e73be;background-image:url();background-repeat:;background-position:;background-size:;background-attachment:;">
+<nav id="mobile-bar-sticky" role="navigation" class="mobile-bar bar-sticky">
+<div id="close-mobile-bar"><i class="tm-cancel"></i></div>
+<div id="search-mobile-bar"><form action="https://www.analyticsvidhya.com/" class="searchform" method="get">
+<button class="search-button"><i class="tm-search"></i></button>
+<input type="text" name="s" class="search-input" value="Search" onfocus="if(this.value==&#39;Search&#39;)this.value=&#39;&#39;;" onblur="if(this.value==&#39;&#39;)this.value=&#39;Search&#39;;" autocomplete="off">
+</form></div>
+<ul id="menu-main-menu" class="menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Learn</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children mh-navcat-0"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog-archive/">Blog Archive</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children mh-navcat-5"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog/category/business-analytics/">Business Analytics</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-11"><span></span><a href="https://www.analyticsvidhya.com/blog/category/sas/">SAS</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-72"><span></span><a href="https://www.analyticsvidhya.com/blog/category/r/">R</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-396"><span></span><a href="https://www.analyticsvidhya.com/blog/category/python-2/">Python</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children mh-navcat-8"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog/category/business-intelligence/">Business Intelligence</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-9"><span></span><a href="https://www.analyticsvidhya.com/blog/category/qlikview/">Qlikview</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-25"><span></span><a href="https://www.analyticsvidhya.com/blog/category/web-analytics-2/">Web Analytics</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-29"><span></span><a href="https://www.analyticsvidhya.com/blog/category/big-data/">Big data</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-3118"><span></span><a href="https://www.analyticsvidhya.com/blog/category/stories/">Stories</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-4219"><span></span><a href="https://www.analyticsvidhya.com/blog/category/avbytes/">AVBytes</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/blog/category/podcast/">DataHack Radio</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-2284"><span></span><a href="https://www.analyticsvidhya.com/blog/category/infographics/">Infographics</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://trainings.analyticsvidhya.com/?utm_source=home_blog_navbar">Trainings</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children mh-navcat-0"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/">Learning Paths</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/learning-path-business-analyst-sas/">SAS Business Analyst</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/learning-path-r-data-science/">LeaRn Data Science on R</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/learning-path-data-science-python/">Data Science in Python</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/weka-gui-learn-machine-learning/">DATA SCIENCE IN WEKA</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/tableau-learning-path/">Data Visualization with Tableau</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/qlikview-learning-path/">Data Visualization with QlikView</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/newbie-d3-js-expert-complete-path-create-interactive-visualization-d3-js/">Interactive Data Stories with D3.js</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/glossary-of-common-statistics-and-machine-learning-terms/">Glossary</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Engage</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://discuss.analyticsvidhya.com/">Discuss</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-1915"><span></span><a href="https://www.analyticsvidhya.com/blog/category/events/">Events</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/datahack-summit-2018/">Datahack Summit 2018</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/datahacksummit/">DataHack Summit 2017</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/student-datafest-2018/?utm_source=homepage_menu">Student Datafest</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="http://www.analyticsvidhya.com/about-me/write/">Write For Us</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Compete</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://datahack.analyticsvidhya.com/contest/all">Hackathons</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Get Hired</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-170"><span></span><a href="https://www.analyticsvidhya.com/jobs/">Jobs</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0"><span class="navmob-sub-menu"><i class="tm-dropdown"></i></span><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Trainings</a>
+<ul class="sub-menu">
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+DS101+2018T2/about?utm_source=home_blog_navbar">INTRODUCTION TO DATA SCIENCE</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+ITE001+2018_T1/about?utm_source=home_blog_navbar">MICROSOFT EXCEL</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://trainings.analyticsvidhya.com/courses?utm_source=home_blog_navbar">MORE COURSES</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/datahack-summit-2018/?ref=blog-internal"><span style="color:#ee3d24">Datahack Summit</span></a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/contact/">Contact</a></li>
+</ul> </nav>
+
+<div id="body-background">
+
+<div id="off-canvas-body" class="off-canvas-body animati-on" style="margin-top: 53.9904px;">
+
+<div id="top-bar-sticky" class="bar-sticky">
+<div class="top-bar">
+
+<div class="container">
+<div class="row">
+<div class="col-sm-12">
+<div id="top-right-nav">
+<div class="social-top">
+<ul><li><a target="_blank" href="https://www.facebook.com/AnalyticsVidhya"><i class="tm-facebook"></i></a></li><li><a target="_blank" href="https://twitter.com/analyticsvidhya"><i class="tm-twitter"></i></a></li><li><a target="_blank" href="https://plus.google.com/+Analyticsvidhya/posts"><i class="tm-googleplus"></i></a></li><li><a target="_blank" href="https://www.linkedin.com/groups/Analytics-Vidhya-Learn-everything-about-5057165"><i class="tm-linkedin"></i></a></li></ul>
+</div>
+</div>
+<nav id="top-nav-wrapper" class="ul-nav">
+<ul id="menu-top" class="menu"><li id="menu-item-42575" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-42575 mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/">Home</a></li>
+<li id="menu-item-12992" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12992 mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/blog-archive/">Blog Archive</a></li>
+<li id="menu-item-41279" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-41279 mh-navcat-0"><span></span><a href="https://trainings.analyticsvidhya.com/?utm_source=home_blog_navbar">Trainings</a></li>
+<li id="menu-item-12952" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12952 mh-navcat-0"><span></span><a href="https://discuss.analyticsvidhya.com/">Discuss</a></li>
+<li id="menu-item-45058" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-45058 mh-navcat-0"><span></span><a href="https://datahack.analyticsvidhya.com/">Datahack</a></li>
+<li id="menu-item-12658" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12658 mh-navcat-170"><span></span><a href="https://www.analyticsvidhya.com/jobs/">Jobs</a></li>
+<li id="menu-item-39605" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-39605 mh-navcat-0"><span></span><a href="https://www.analyticsvidhya.com/corporate/">Corporate</a></li>
+</ul> </nav>
+<nav id="top-mobile-wrapper" class="ul-nav">
+<ul><li><a><i class="tm-menu"></i></a></li></ul>
+</nav>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="main-logo-ads-wrap">
+<div class="main-logo-ads">
+
+<div class="container">
+<div class="row ">
+<div class="col-sm-12">
+
+<div id="thelogo" class="logo ">
+<a href="https://www.analyticsvidhya.com/blog/">
+<img alt="Analytics Vidhya - Learn everything about Analytics" src="./Understanding basics of Recommendation Engines (with case study)_files/av100.png" data-retina="https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2017/03/18122331/av100.png" data-first="https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2017/03/18122331/av100.png" scale="0">
+</a>
+</div>
+<h2 class="site-outline">Learn everything about Analytics</h2>
+
+<div id="main-ads" class="">
+<div class="vp-1170 vp-fluid"><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+CVDL101+CVDL101_T1/about?utm_source=AVTopBanner60off" target="_blank"><img src="./Understanding basics of Recommendation Engines (with case study)_files/top-computer-vision-_1.gif" scale="0"></a></div>
+<div class="vp-970 vp-750"><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+CVDL101+CVDL101_T1/about?utm_source=AVTopBanner60off" target="_blank"><img src="./Understanding basics of Recommendation Engines (with case study)_files/top-computer-vision-_1.gif" scale="0"></a></div>
+<div class="vp-320"><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+CVDL101+CVDL101_T1/about?utm_source=AVTopBanner60off" target="_blank"><img src="./Understanding basics of Recommendation Engines (with case study)_files/top-computer-vision-_1.gif" scale="0"></a></div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<div id="main-nav">
+<div id="main-nav-bar" class="main-nav-bar clearfix on-stuck" style="margin-top: 0px;">
+<div id="main-search" class=" clearfix">
+<div id="con-search" style="top: 53.9904px;">
+<div class="container">
+<div class="cols-sm12">
+<div id="main-search-form">
+<span class="close-search-form"><i class="tm-cancel"></i></span>
+<span class="loading-search-result"><img src="./Understanding basics of Recommendation Engines (with case study)_files/ellipsis.gif" alt="" scale="0"></span>
+<form action="https://www.analyticsvidhya.com/" class="searchform" method="get">
+<button class="search-button"><i class="tm-search"></i></button>
+<input type="text" name="s" class="search-input" value="Search" onfocus="if(this.value==&#39;Search&#39;)this.value=&#39;&#39;;" onblur="if(this.value==&#39;&#39;)this.value=&#39;Search&#39;;" autocomplete="off">
+</form> <div class="search-result">
+<div class="container search-result-content"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="maha-notification container"><div id="main-notif"></div></div>
+<div class="container clearfix">
+</div>
+
+<div class="container clearfix">
+<div class="row clearfix">
+<div class="col-sm-12 clearfix">
+
+
+<div id="search-nav" class="search-nav clearfix">
+<span class="open-search-form"><i class="tm-search"></i></span>
+</div>
+
+
+<nav id="main-nav-wrapper" class="main-ul-nav clearfix">
+<div id="thelogosmall" class="logo nav-main-affix" style="width: 205.998px;">
+<a href="https://www.analyticsvidhya.com/blog/">
+<img alt="Analytics Vidhya - Learn everything about Analytics" src="./Understanding basics of Recommendation Engines (with case study)_files/av44.png" data-retina="https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2017/03/18121731/av44.png" data-first="https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2017/03/18121731/av44.png" scale="0">
+</a>
+</div>
+<ul id="menu-main-menu-1" class="menu"><li id="menu-item-37781" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0 ord-nav-offset"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Learn<span class="sub-ord-nav"> <i class="tm-dropdown"></i> </span></a><div class="nav-sub-wrap ord-nav" style="display: none; opacity: 0;"><div class="nsw clearfix">
+<div class="nav-sub-menus"><ul>
+<li id="menu-item-12993" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children mh-navcat-0 ord-nav-offset"><a href="https://www.analyticsvidhya.com/blog-archive/">Blog Archive<span class="sub-ord-nav"> <i class="tm-right-open-mini"></i> </span></a><div class="nav-sub-wrap ord-nav" style="display: none; opacity: 0;"><div class="nsw clearfix">
+<div class="nav-sub-menus"><ul>
+<li id="menu-item-2475" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children mh-navcat-5"><a href="https://www.analyticsvidhya.com/blog/category/business-analytics/">Business Analytics<span class="sub-ord-nav"> <i class="tm-right-open-mini"></i> </span></a>
+<div class="nav-sub-wrap ord-nav"><div class="nsw clearfix"><div class="nav-sub-menus"><ul>
+<li id="menu-item-2478" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-11"><a href="https://www.analyticsvidhya.com/blog/category/sas/">SAS</a></li>
+<li id="menu-item-7476" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-72"><a href="https://www.analyticsvidhya.com/blog/category/r/">R</a></li>
+<li id="menu-item-7713" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-396"><a href="https://www.analyticsvidhya.com/blog/category/python-2/">Python</a></li>
+</ul></div></div></div>
+</li>
+<li id="menu-item-2476" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children mh-navcat-8"><a href="https://www.analyticsvidhya.com/blog/category/business-intelligence/">Business Intelligence<span class="sub-ord-nav"> <i class="tm-right-open-mini"></i> </span></a>
+<div class="nav-sub-wrap ord-nav"><div class="nsw clearfix"><div class="nav-sub-menus"><ul>
+<li id="menu-item-2477" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-9"><a href="https://www.analyticsvidhya.com/blog/category/qlikview/">Qlikview</a></li>
+<li id="menu-item-2479" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-25"><a href="https://www.analyticsvidhya.com/blog/category/web-analytics-2/">Web Analytics</a></li>
+</ul></div></div></div>
+</li>
+<li id="menu-item-2474" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-29"><a href="https://www.analyticsvidhya.com/blog/category/big-data/">Big data</a></li>
+<li id="menu-item-27174" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-3118"><a href="https://www.analyticsvidhya.com/blog/category/stories/">Stories</a></li>
+</ul></div>
+</div></div>
+</li>
+<li id="menu-item-45052" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-4219"><a href="https://www.analyticsvidhya.com/blog/category/avbytes/">AVBytes</a>
+</li>
+<li id="menu-item-45209" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-0"><a href="https://www.analyticsvidhya.com/blog/category/podcast/">DataHack Radio</a></li>
+<li id="menu-item-18233" class="menu-item menu-item-type-taxonomy menu-item-object-category mh-navcat-2284"><a href="https://www.analyticsvidhya.com/blog/category/infographics/">Infographics</a></li>
+<li id="menu-item-41036" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://trainings.analyticsvidhya.com/?utm_source=home_blog_navbar">Trainings</a>
+</li>
+<li id="menu-item-12170" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children mh-navcat-0 ord-nav-offset"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/">Learning Paths<span class="sub-ord-nav"> <i class="tm-right-open-mini"></i> </span></a><div class="nav-sub-wrap ord-nav"><div class="nsw clearfix">
+<div class="nav-sub-menus"><ul>
+<li id="menu-item-12503" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/learning-path-business-analyst-sas/">SAS Business Analyst</a>
+</li>
+<li id="menu-item-14416" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/learning-path-r-data-science/">LeaRn Data Science on R</a>
+</li>
+<li id="menu-item-12171" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/learning-path-data-science-python/">Data Science in Python</a>
+</li>
+<li id="menu-item-13207" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/weka-gui-learn-machine-learning/">DATA SCIENCE IN WEKA</a>
+</li>
+<li id="menu-item-23077" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/tableau-learning-path/">Data Visualization with Tableau</a>
+</li>
+<li id="menu-item-12320" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/qlikview-learning-path/">Data Visualization with QlikView</a>
+</li>
+<li id="menu-item-23078" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/learning-paths-data-science-business-analytics-business-intelligence-big-data/newbie-d3-js-expert-complete-path-create-interactive-visualization-d3-js/">Interactive Data Stories with D3.js</a>
+</li>
+</ul></div>
+</div></div>
+</li>
+<li id="menu-item-31580" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/glossary-of-common-statistics-and-machine-learning-terms/">Glossary</a>
+</li>
+</ul></div>
+</div></div>
+</li>
+<li id="menu-item-37782" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0 ord-nav-offset"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Engage<span class="sub-ord-nav"> <i class="tm-dropdown"></i> </span></a><div class="nav-sub-wrap ord-nav"><div class="nsw clearfix">
+<div class="nav-sub-menus"><ul>
+<li id="menu-item-11881" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://discuss.analyticsvidhya.com/">Discuss</a>
+</li>
+<li id="menu-item-24639" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-1915"><a href="https://www.analyticsvidhya.com/blog/category/events/">Events</a>
+</li>
+<li id="menu-item-45075" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://www.analyticsvidhya.com/datahack-summit-2018/">Datahack Summit 2018</a>
+</li>
+<li id="menu-item-39652" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://www.analyticsvidhya.com/datahacksummit/">DataHack Summit 2017</a>
+</li>
+<li id="menu-item-43948" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://www.analyticsvidhya.com/student-datafest-2018/?utm_source=homepage_menu">Student Datafest</a>
+</li>
+<li id="menu-item-22625" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="http://www.analyticsvidhya.com/about-me/write/">Write For Us</a>
+</li>
+</ul></div>
+</div></div>
+</li>
+<li id="menu-item-37783" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0 ord-nav-offset"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Compete<span class="sub-ord-nav"> <i class="tm-dropdown"></i> </span></a><div class="nav-sub-wrap ord-nav"><div class="nsw clearfix">
+<div class="nav-sub-menus"><ul>
+<li id="menu-item-24638" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://datahack.analyticsvidhya.com/contest/all">Hackathons</a>
+</li>
+</ul></div>
+</div></div>
+</li>
+<li id="menu-item-37784" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0 ord-nav-offset"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Get Hired<span class="sub-ord-nav"> <i class="tm-dropdown"></i> </span></a><div class="nav-sub-wrap ord-nav"><div class="nsw clearfix">
+<div class="nav-sub-menus"><ul>
+<li id="menu-item-31593" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-170"><a href="https://www.analyticsvidhya.com/jobs/">Jobs</a>
+</li>
+</ul></div>
+</div></div>
+</li>
+<li id="menu-item-44643" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children mh-navcat-0 ord-nav-offset"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#">Trainings<span class="sub-ord-nav"> <i class="tm-dropdown"></i> </span></a><div class="nav-sub-wrap ord-nav"><div class="nsw clearfix">
+<div class="nav-sub-menus"><ul>
+<li id="menu-item-44644" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+DS101+2018T2/about?utm_source=home_blog_navbar">INTRODUCTION TO DATA SCIENCE</a>
+</li>
+<li id="menu-item-44645" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+ITE001+2018_T1/about?utm_source=home_blog_navbar">MICROSOFT EXCEL</a>
+</li>
+<li id="menu-item-44646" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://trainings.analyticsvidhya.com/courses?utm_source=home_blog_navbar">MORE COURSES</a>
+</li>
+</ul></div>
+</div></div>
+</li>
+<li id="menu-item-45049" class="menu-item menu-item-type-custom menu-item-object-custom mh-navcat-0"><a href="https://www.analyticsvidhya.com/datahack-summit-2018/?ref=blog-internal"><span style="color:#ee3d24">Datahack Summit</span></a>
+</li>
+<li id="menu-item-24641" class="menu-item menu-item-type-post_type menu-item-object-page mh-navcat-0"><a href="https://www.analyticsvidhya.com/contact/">Contact</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="page-wrapper">
+
+<div class="mh-el page-sidebar single-regular" itemscope="" itemtype="https://schema.org/Article">
+
+<div class="container">
+<div class="row">
+
+<div class="col-sm-8">
+<div class="main-content">
+
+<div class="maha-crumbs" itemscope="" itemtype="https://schema.org/BreadcrumbList"><span><a href="https://www.analyticsvidhya.com/">Home</a></span> <i class="tm-crumb-right"></i> <span itemscope="" itemprop="itemListElement" itemtype="https://schema.org/ListItem"><a itemscope="" itemprop="item" itemtype="https://schema.org/Thing" href="https://www.analyticsvidhya.com/blog/category/business-analytics/"><span itemprop="name">Business Analytics</span></a><meta itemprop="position" content="1"></span> <i class="tm-crumb-right"></i> <span><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/">Understanding basics of Recommendation Engines (with case study)</a></span></div>
+<article id="post-20717" class="main-content single-post-box">
+<header>
+<meta itemprop="headline" content="Understanding basics of Recommendation Engines (with case study)">
+<meta itemprop="datecreated" content="2015-10-11T18:38:25+00:00">
+<meta itemprop="datePublished" content="2015-10-11T18:38:25+00:00">
+<meta itemprop="dateModified" content="2015-12-11T08:15:25+00:00">
+<meta itemscope="" itemprop="mainEntityOfPage" itemtype="https://schema.org/WebPage" itemid="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/">
+<span class="hidden" itemprop="image" itemscope="" itemtype="https://schema.org/ImageObject">
+<meta itemprop="url" content="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/few-things2.jpg">
+<meta itemprop="width" content="350">
+<meta itemprop="height" content="350">
+</span>
+<span class="hidden" itemprop="publisher" itemscope="" itemtype="https://schema.org/Organization">
+<span class="hidden" itemprop="logo" itemscope="" itemtype="https://schema.org/ImageObject">
+<meta itemprop="url" content="https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2017/03/18122331/av100.png">
+</span>
+<meta itemprop="name" content="Analytics Vidhya">
+</span>
+<div class="meta-count">
+<span class="i-category"><span class="mh-cat-item"><a class="mh-elcat-5" href="https://www.analyticsvidhya.com/blog/category/business-analytics/" title="Business Analytics" rel="category">Business Analytics</a></span></span>
+</div>
+<h1 itemprop="name" class="entry-title">Understanding basics of Recommendation Engines (with case study)</h1>
+<div class="meta-info">
+<span class="entry-author">
+<a href="https://www.analyticsvidhya.com/blog/author/shivam5992/"><span>Shivam Bansal</span></a>,
+</span>
+<time class="entry-date" content="2015-10-11" datetime="2015-10-11T18:38:25+00:00">
+October 11, 2015 </time>
+<div class="count-data right">
+</div>
+</div>
+</header>
+<div class="text-content">
+<div id="ban3_av"><a target="_blank" href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+DS101+2018T2/about?utm_source=Blogbannerbelowtitle"><img src="./Understanding basics of Recommendation Engines (with case study)_files/data-science-course-1.gif" scale="0"></a></div><h2>Introduction</h2>
+<p style="text-align: justify;">Ever wondered, “what algorithm&nbsp;google&nbsp;uses to maximize its target ads revenue?”. What about the e-commerce websites&nbsp;which advocates you through options such as ‘people who bought this also bought this’. Or&nbsp;“How does Facebook automatically suggest us to tag friends in pictures”?</p>
+<p style="text-align: justify;">The answer is Recommendation Engines. With the growing amount of information on world wide web and with significant rise number of users, it becomes&nbsp;increasingly important for companies&nbsp;to search, map and provide them with the relevant chunk of information according to their preferences and tastes.</p>
+<p style="text-align: justify;">Companies nowadays are building smart and intelligent recommendation engines by studying the past behavior of their users. Hence providing them recommendations and choices of their interest in terms of “Relevant Job postings”, “Movies of Interest”, “Suggested Videos”, “Facebook friends that you may know” and “People who bought this also bought this” etc.</p>
+<p style="text-align: justify;"><a rel="lightbox" href="./Understanding basics of Recommendation Engines (with case study)_files/few-things2.webp"><img class="size-full wp-image-20741 aligncenter" src="./Understanding basics of Recommendation Engines (with case study)_files/few-things2.webp" alt="few things2" width="600" height="350" srcset="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/few-things2.jpg 600w, https://www.analyticsvidhya.com/wp-content/uploads/2015/10/few-things2-300x175.jpg 300w" sizes="(max-width: 600px) 100vw, 600px"></a></p>
+<p>&nbsp;</p>
+<h2>What are Recommendation Engines ?</h2>
+<p style="text-align: justify;">Often&nbsp;termed as Recommender Systems, they are simple algorithms which&nbsp;aim to provide the most relevant and accurate items to the user by filtering useful stuff from of a huge pool of information base. Recommendation engines discovers data patterns in the data set by learning consumers choices and produces the outcomes that co-relates to their needs and interests.</p>
+<p>&nbsp;</p>
+<h2>Types of Recommendation Engine:</h2>
+<p style="text-align: justify;">In this article, we will explain two types of recommendation algorithms that are also used by most of the tech giants like Google and Facebook in their advanced recommender system modules.</p>
+<p style="text-align: justify;">As a typical business problem,</p>
+<p style="text-align: justify;">Consider a scenario of an e-commerce website which sells thousands&nbsp;of smartphones. With growing number of customers every day, the task in hand is to showcase the best choices of smartphones to the users according to their tastes and preferences.</p>
+<p>To understand how recommendation engine works, let’s slice the data into a sample set of five smartphones with two major features “Battery and Display”. The five smartphones have following properties:</p>
+<ul>
+<li>S1 has good battery life but poor display</li>
+<li>S2 has an amazing battery performance but very rough display</li>
+<li>S3’s battery is one of the best but display lacks quality</li>
+<li>S4 &amp; S5 are good in terms of display but poor in terms of battery performance.</li>
+</ul>
+<p>Using these characteristics, we can create an <strong><em>Item – Feature Matrix</em></strong>. Value in the cell represents the rating of the smartphone feature out of 1.</p>
+<p style="text-align: center;"><strong>&nbsp;Item – Feature Matrix</strong></p>
+<p><a rel="lightbox" href="./Understanding basics of Recommendation Engines (with case study)_files/F1.webp"><img class="size-full wp-image-20718 aligncenter" src="./Understanding basics of Recommendation Engines (with case study)_files/F1.webp" alt="F1" width="247" height="189" srcset="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/F1.png 247w, https://www.analyticsvidhya.com/wp-content/uploads/2015/10/F1-83x63.png 83w" sizes="(max-width: 247px) 100vw, 247px"></a><br>
+Our sample set also consist of four active users with their preferences.</p>
+<ul>
+<li><strong>Aman</strong>: He&nbsp;prefers battery over display as an ideal smartphone feature.</li>
+<li><strong>Bob</strong>: He&nbsp;likes a long lasting battery.</li>
+<li><strong>Chandan</strong>: For Chandan, display should be decent, battery should be normal.</li>
+<li><strong>David</strong>: For David, Display is extremely important but not the battery.</li>
+</ul>
+<p>Using their interests, we can create a <strong><em>User – Feature Matrix</em></strong> as follows:</p>
+<p><a rel="lightbox" href="./Understanding basics of Recommendation Engines (with case study)_files/F2.webp"><img class="size-full wp-image-20719 aligncenter" src="./Understanding basics of Recommendation Engines (with case study)_files/F2.webp" alt="F2" width="227" height="158" scale="0"></a></p>
+<p>&nbsp;</p>
+<p>We have two matrices: <em>Item – Feature </em>and <em>User – Feature. </em>We can create the recommendation of smartphones for our&nbsp;users using following algorithms:</p>
+<p>&nbsp;</p>
+<h2>Content Based Recommendations</h2>
+<p>Content based systems, recommends item based on a similarity comparison between the content of the items and a user’s profile. The feature of items are mapped with feature of users in order to obtain user – item similarity. The top matched pairs are given as recommendations, as demonstrated below: Representing every user by a feature vector:</p>
+<p><a rel="lightbox" href="./Understanding basics of Recommendation Engines (with case study)_files/F3.webp"><img class="size-full wp-image-20720 aligncenter" src="./Understanding basics of Recommendation Engines (with case study)_files/F3.webp" alt="F3" width="273" height="200" scale="0"></a></p>
+<p>Also, every item representation as a feature vector:</p>
+<p><a rel="lightbox" href="./Understanding basics of Recommendation Engines (with case study)_files/F4.webp"><img class="size-full wp-image-20721 aligncenter" src="./Understanding basics of Recommendation Engines (with case study)_files/F4.webp" alt="F4" width="290" height="118" scale="0"></a></p>
+<p>and so on…</p>
+<p>Content Based <strong><em>Item – User Mapping Recommendations</em></strong> are given by the equation:</p>
+<pre>MAX ( U<sub>(j)</sub><sup>T</sup><sub> . </sub>I<sub>(i)</sub> )</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i,j -&gt; n,m</pre>
+<p>&nbsp;</p>
+<p>For User U<sub>1</sub> (Aman), Smartphone recommendation is:</p>
+<pre>MAX( U<sub>1</sub><sup>T</sup>S<sub>1</sub>, U<sub>1</sub><sup>T</sup>S<sub>2</sub>,&nbsp;U<sub>1</sub><sup>T</sup>S<sub>3</sub>,&nbsp;U<sub>1</sub><sup>T</sup>S<sub>4</sub>,&nbsp;U<sub>1</sub><sup>T</sup>S<sub>5</sub>)</pre>
+<pre>MAX([0.9&nbsp;0.1]<sup>T </sup>[0.9&nbsp;&nbsp;0.1],&nbsp;[0.9&nbsp;&nbsp;0.1]<sup>T </sup>[1&nbsp;&nbsp;0], [0.9&nbsp; 0.1]<sup>T </sup>[0.99 0.01], [0.9&nbsp; 0.1]<sup>T </sup>[0.1  0.9],&nbsp;&nbsp;&nbsp; [0.9&nbsp; 0.1]<sup>T </sup>[0.01&nbsp; 0.99])</pre>
+<pre>MAX(0.82 , 0.9 , 0.89 , 0.18 , 0.10)</pre>
+<pre>= S<sub>2</sub>(0.9), S<sub>3</sub>(0.89) &amp; S<sub>1</sub>(0.82)</pre>
+<p>Smartphones S2, S3 and S1 has the highest recommendation scores, Hence S2, S3 and S1 are recommended to Aman.</p>
+<p>&nbsp;</p>
+<h2>Collaborative Filtering</h2>
+<p>Content-based recommendation lacks in detecting inter dependencies or complex behaviors. For example: People might like smartphones with Good Display, only if it has retina display and wouldn’t&nbsp;otherwise.</p>
+<p>Collaborative Filtering algorithm considers “User Behaviour” for recommending items. They exploit behaviour of other users and items in terms of transaction history, ratings, selection and purchase information. Other users behaviour and preferences over the items are used to recommend items to the new users. In this case, features of the items are not known.</p>
+<p>We have a similar <strong><em>User – Feature Matrix</em></strong> as content based:</p>
+<p><strong><em>User – Feature Matrix</em></strong></p>
+<p><a rel="lightbox" href="./Understanding basics of Recommendation Engines (with case study)_files/F8.webp"><img class="size-full wp-image-20722 aligncenter" src="./Understanding basics of Recommendation Engines (with case study)_files/F8.webp" alt="F8" width="366" height="198" srcset="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/F8.png 366w, https://www.analyticsvidhya.com/wp-content/uploads/2015/10/F8-300x162.png 300w, https://www.analyticsvidhya.com/wp-content/uploads/2015/10/F8-262x141.png 262w" sizes="(max-width: 366px) 100vw, 366px"></a></p>
+<p>This time we don’t know features of the items but we have user behaviour. i.e. How the Users brought/rated the existing items.</p>
+<p><strong><em>User- Behaviour Matrix</em></strong></p>
+<p><a rel="lightbox" href="./Understanding basics of Recommendation Engines (with case study)_files/F7.webp"><img class="size-full wp-image-20723 aligncenter" src="./Understanding basics of Recommendation Engines (with case study)_files/F7.webp" alt="F7" width="607" height="209" srcset="https://www.analyticsvidhya.com/wp-content/uploads/2015/10/F7.png 607w, https://www.analyticsvidhya.com/wp-content/uploads/2015/10/F7-300x103.png 300w" sizes="(max-width: 607px) 100vw, 607px"></a></p>
+<p>where values of the behaviour matrix can be described as:</p>
+<pre>B<sub>i,j </sub>= {r , if U<sub>j</sub> has given “r” rating to a S<sub>i
+</sub>        ?, if no rating is given</pre>
+<p>This user behavior matrix can be used to derive unknown features of the most liked items. Lets try to derive features of S1 using this behavior matrix.</p>
+<p>S1 is rated 5 by U1</p>
+<p>S1 is rated 4.5 by U2</p>
+<p>S1 rating by U3 &amp; U4 are not known</p>
+<p>Using this information Feature Vector of S1 can be assumed as:</p>
+<pre>S1 : [x<sub>1</sub> x<sub>2</sub>]</pre>
+<p>and the equations are:</p>
+<pre>U<sub>1</sub><sup>T</sup>S<sub>1 </sub>= 5</pre>
+<pre>U<sub>2</sub><sup>T</sup>S<sub>1 </sub>= 4.5</pre>
+<pre>[0.9&nbsp;&nbsp; 0.1]<sup>T </sup>[x<sub>1</sub>&nbsp; x<sub>2</sub>] = 5</pre>
+<pre>[0.8&nbsp;&nbsp; 0.2]<sup>T </sup>[x<sub>1 </sub>&nbsp;x<sub>2</sub>] = 4.5</pre>
+<pre>0.9 * x<sub>1</sub>&nbsp;+&nbsp;0.1 * x<sub>2</sub>&nbsp; =&nbsp;5</pre>
+<pre>0.8 * x<sub>1</sub>&nbsp;+&nbsp;0.1 * x<sub>2</sub>&nbsp; =&nbsp;4.5</pre>
+<p>solving these equations, gives x1 = 5.5 and x2 = 0.5</p>
+<pre>S1 = [5.5&nbsp; 0.5]</pre>
+<p>Similarly,</p>
+<pre>S2 = [5.5&nbsp;&nbsp;0]</pre>
+<pre>S3 = [5&nbsp;&nbsp;&nbsp;&nbsp;0]</pre>
+<pre>S4 = [0.5&nbsp;&nbsp;5.5]</pre>
+<pre>S5 = [2.7&nbsp;&nbsp;5.25]</pre>
+<p>Now all the feature vectors are known. Hence the recommendations will be mappings of User Feature Vectors and Item Feature Vectors. Thus&nbsp;for Aman, based on his preferences and behaviours, recommendation will be:</p>
+<pre>MAX(U<sub>1</sub><sup>T</sup>S<sub>1</sub>, U<sub>1</sub><sup>T</sup>S<sub>2</sub>, U<sub>1</sub><sup>T</sup>S<sub>3</sub>, U<sub>1</sub><sup>T</sup>S<sub>4</sub>,<sub>&nbsp;</sub>U<sub>1</sub><sup>T</sup>S<sub>5</sub>)</pre>
+<pre>MAX([0.9&nbsp; 0.1]<sup>T </sup>[5.5&nbsp;&nbsp;0.5]<sub> ,&nbsp;</sub>[0.9&nbsp; 0.1]<sup>T </sup>[5.5&nbsp;&nbsp;0], [0.9&nbsp; 0.1]<sup>T </sup>[5&nbsp;&nbsp; 0],&nbsp;[0.9&nbsp; 0.1]<sup>T 
+</sup>    [0.5  5.5],[0.9&nbsp;  0.1]<sup>T </sup>[2.7&nbsp;&nbsp; 5.25])</pre>
+<pre>MAX(5,&nbsp;4.99,&nbsp;4.95,&nbsp;1,&nbsp;2.9)</pre>
+<pre>&gt; S1, S2 and S3</pre>
+<p style="text-align: justify;">which comes out the be S1, S2 and S3 again. Since S1 and S2 are already rated by Aman, So we will recommend him a new smartphone S3.</p>
+<p style="text-align: justify;">In the above example where we assumed that there are two primary features of S1 as governed by the users who rated it. In real case, we end up with more number of features than this. For example, if we had data for all the N number of users who rated S1, then feature vector look like:</p>
+<pre>S1: [ x1 x2 x3 x4 x5 …&nbsp; ]</pre>
+<p>&nbsp;</p>
+<h2>End notes</h2>
+<p style="text-align: justify;">In this article, we learnt about&nbsp;two types of Recommendation Engines: Content based recommendations and Collaborative Recommendations. There exists more advanced techniques like ALS : Alternating Least Square Recommendations and Hybrid Recommendation Engines. The Recommendation Engines have become an important need with the growing information space. Did you find this article useful ? Have you also worked on recommender systems? Share your opinions / views in the comments section below.</p>
+<h3>If you like what you just read &amp; want to continue your analytics learning,&nbsp;<a href="http://feedburner.google.com/fb/a/mailverify?uri=analyticsvidhya" target="_blank" rel="nofollow">subscribe to our emails</a>,&nbsp;<a href="http://twitter.com/analyticsvidhya" target="_blank" rel="nofollow">follow us on twitter</a>&nbsp;or like our&nbsp;<a href="http://facebook.com/analyticsvidhya" target="_blank" rel="nofollow">facebook&nbsp;page</a>.</h3>
+You can also read this article on Analytics Vidhya's Android APP <a href="https://play.google.com/store/apps/details?id=com.analyticsvidhya.android&amp;utm_source=blog_article&amp;utm_campaign=blog&amp;pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" onclick="ga(&#39;send&#39;, {&#39;hitType&#39;: &#39;event&#39;, &#39;eventCategory&#39;: &#39;app-blog&#39;, &#39;eventAction&#39;: &#39;clicked&#39;});"><img alt="Get it on Google Play" src="./Understanding basics of Recommendation Engines (with case study)_files/en_badge_web_generic.png" style="height:65px" scale="0"></a><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/f(3).txt"></script>
+
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-5229672700622157" data-ad-slot="7938033629" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;"><iframe width="728" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;width:728px;height:90px;" src="./Understanding basics of Recommendation Engines (with case study)_files/saved_resource.html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<footer class="clearfix both">
+<div class="meta-tags clearfix">
+Tags : <a href="https://www.analyticsvidhya.com/blog/tag/collaborative-filtering/" rel="tag">collaborative filtering</a><span>,</span> <a href="https://www.analyticsvidhya.com/blog/tag/content-bases-recommender-systems/" rel="tag">content bases recommender systems</a><span>,</span> <a href="https://www.analyticsvidhya.com/blog/tag/recommender-system/" rel="tag">recommender system</a> </div>
+<div class="next-prev clearfix">
+<a class="next" href="https://www.analyticsvidhya.com/blog/2015/10/am-business-analytics-gurgaon-3-6-years-experience/" rel="next"><i class="tm-chevron-right"></i><div class="np-caption">Next Article</div><h3 class="np-title">AM- Business Analytics – Gurgaon (3-6 years of experience)</h3></a> <i class="tm-3dots"></i>
+<a class="prev" href="https://www.analyticsvidhya.com/blog/2015/10/productivity-hacks-data-scientists-business-analysts/" rel="prev"><i class="tm-chevron-left"></i><div class="np-caption">Previous Article</div><h3 class="np-title">8 Productivity hacks for Data Scientists &amp; Business Analysts</h3></a> </div>
+<div class="meta-author" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+<div class="author-thumb">
+<a href="https://www.analyticsvidhya.com/blog/author/shivam5992/">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/56b06520610a557465de1b3d587ac005.jpeg" srcset="https://secure.gravatar.com/avatar/56b06520610a557465de1b3d587ac005?s=400&amp;d=mm&amp;r=g 2x" class="avatar avatar-200 photo" height="200" width="200" originals="200" scale="1.2999999523162842"> </a>
+</div>
+<div class="author-info">
+<h3 class="author-name">
+<a itemprop="name" content="Shivam Bansal" href="https://www.analyticsvidhya.com/blog/author/shivam5992/">Shivam Bansal</a>
+</h3>
+<div class="author-desc">
+<span class="fn">Shivam Bansal is a data scientist with exhaustive experience in Natural Language Processing and Machine Learning in several domains. He is passionate about learning and always looks forward to solving challenging analytical problems.</span>
+</div>
+<ul class="author-links">
+<li><a target="_blank" href="https://twitter.com/shivamshaz"><i class="tm-twitter"></i></a></li><li><a target="_blank" href="https://www.linkedin.com/in/shivambansal1"><i class="tm-linkedin"></i></a></li><li><a target="_blank" href="https://github.com/shivam5992"><i class="tm-github"></i></a></li> </ul>
+</div>
+</div>
+<div class="related-article">
+
+<div class="row">
+<div class="col-sm-12">
+<div class="block-cap">
+<h3>Related Articles</h3>
+</div>
+</div>
+</div>
+<div class="row block-streams el-block-5" style="position: relative; height: 619.098px;">
+
+<div class="col-sm-4" style="position: absolute; left: 0px; top: 0px;">
+<article class="item-medium-simple post-box-normal">
+<div class="meta-info no-bottom">
+<span class="entry-author"><a href="https://www.analyticsvidhya.com/blog/author/kunalj/">Kunal Jain</a></span><span class="coma">,</span>
+<time class="entry-date" datetime="2013-07-24T21:38:16+00:00">
+July 24, 2013 </time>
+</div>
+<div class="thumb-wrap zoom-zoom">
+<a href="https://www.analyticsvidhya.com/blog/2013/07/big-data/" rel="bookmark" title="What is big data and how is big data architecture designed?">
+<img width="262" height="141" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/HDFS-illustrative_v21.webp" alt="What is big data and how is big data architecture designed?" title="What is big data and how is big data architecture designed?" scale="0">
+</a>
+</div>
+<h3 class="entry-title">
+<a href="https://www.analyticsvidhya.com/blog/2013/07/big-data/" rel="bookmark" title="What is big data and how is big data architecture designed?">
+What is big data and how is big data architecture designed? </a>
+</h3>
+<meta content="What is big data and how is big data architecture designed?">
+</article> </div>
+
+<div class="col-sm-4" style="position: absolute; left: 260px; top: 0px;">
+<article class="item-medium-simple post-box-normal">
+<div class="meta-info no-bottom">
+<span class="entry-author"><a href="https://www.analyticsvidhya.com/blog/author/tavish1/">Tavish Srivastava</a></span><span class="coma">,</span>
+<time class="entry-date" datetime="2016-05-16T03:59:38+00:00">
+May 16, 2016 </time>
+</div>
+<div class="thumb-wrap zoom-zoom">
+<a href="https://www.analyticsvidhya.com/blog/2016/05/ase-studies-10x-faster-using-dynamic-programming/" rel="bookmark" title="Solve Interview Case Studies 10x Faster Using Dynamic Programming">
+<img width="262" height="141" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/picture-262x141.jpg" alt="Solve Interview Case Studies 10x Faster Using Dynamic Programming" title="Solve Interview Case Studies 10x Faster Using Dynamic Programming" scale="0">
+</a>
+</div>
+<h3 class="entry-title">
+<a href="https://www.analyticsvidhya.com/blog/2016/05/ase-studies-10x-faster-using-dynamic-programming/" rel="bookmark" title="Solve Interview Case Studies 10x Faster Using Dynamic Programming">
+Solve Interview Case Studies 10x Faster Using Dynamic Programming </a>
+</h3>
+<meta content="Solve Interview Case Studies 10x Faster Using Dynamic Programming">
+</article> </div>
+
+<div class="col-sm-4" style="position: absolute; left: 520px; top: 0px;">
+<article class="item-medium-simple post-box-normal">
+<div class="meta-info no-bottom">
+<span class="entry-author"><a href="https://www.analyticsvidhya.com/blog/author/tavish1/">Tavish Srivastava</a></span><span class="coma">,</span>
+<time class="entry-date" datetime="2015-11-13T04:31:55+00:00">
+November 13, 2015 </time>
+</div>
+<div class="thumb-wrap zoom-zoom">
+<a href="https://www.analyticsvidhya.com/blog/2015/11/5-big-data-can-cannot/" rel="bookmark" title="Nobody Tells You – 5 things Big Data ‘CAN’ and ‘Cannot’ Do">
+<img width="262" height="141" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/final-262x141.jpg" alt="Nobody Tells You – 5 things Big Data ‘CAN’ and ‘Cannot’ Do" title="Nobody Tells You – 5 things Big Data ‘CAN’ and ‘Cannot’ Do" scale="0">
+</a>
+</div>
+<h3 class="entry-title">
+<a href="https://www.analyticsvidhya.com/blog/2015/11/5-big-data-can-cannot/" rel="bookmark" title="Nobody Tells You – 5 things Big Data ‘CAN’ and ‘Cannot’ Do">
+Nobody Tells You – 5 things Big Data ‘CAN’ and ‘Cannot’ Do </a>
+</h3>
+<meta content="Nobody Tells You – 5 things Big Data ‘CAN’ and ‘Cannot’ Do">
+</article> </div>
+
+<div class="col-sm-4" style="position: absolute; left: 0px; top: 312px;">
+<article class="item-medium-simple post-box-normal">
+<div class="meta-info no-bottom">
+<span class="entry-author"><a href="https://www.analyticsvidhya.com/blog/author/tavish1/">Tavish Srivastava</a></span><span class="coma">,</span>
+<time class="entry-date" datetime="2014-04-02T06:09:09+00:00">
+April 2, 2014 </time>
+</div>
+<div class="thumb-wrap zoom-zoom">
+<a href="https://www.analyticsvidhya.com/blog/2014/04/accuracy-vs-cost/" rel="bookmark" title="Solving Accuracy vs. Cost using probabilities (with case study)">
+<img width="262" height="141" class="entry-thumb" src="./Understanding basics of Recommendation Engines (with case study)_files/no-image-mh_medium_simple.webp" alt="Solving Accuracy vs. Cost using probabilities (with case study)" title="Solving Accuracy vs. Cost using probabilities (with case study)" scale="0">
+</a>
+</div>
+<h3 class="entry-title">
+<a href="https://www.analyticsvidhya.com/blog/2014/04/accuracy-vs-cost/" rel="bookmark" title="Solving Accuracy vs. Cost using probabilities (with case study)">
+Solving Accuracy vs. Cost using probabilities (with case study) </a>
+</h3>
+<meta content="Solving Accuracy vs. Cost using probabilities (with case study)">
+</article> </div>
+
+<div class="col-sm-4" style="position: absolute; left: 260px; top: 312px;">
+<article class="item-medium-simple post-box-normal">
+<div class="meta-info no-bottom">
+<span class="entry-author"><a href="https://www.analyticsvidhya.com/blog/author/radhika-nijhawan/">Radhika Nijhawan</a></span><span class="coma">,</span>
+<time class="entry-date" datetime="2017-09-18T18:19:57+00:00">
+September 18, 2017 </time>
+</div>
+<div class="thumb-wrap zoom-zoom">
+<a href="https://www.analyticsvidhya.com/blog/2017/09/6-probability-distributions-data-science/" rel="bookmark" title="6 Common Probability Distributions every data science professional should know">
+<img width="262" height="141" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/school-colorful-colourful-colors-262x141.jpg" alt="6 Common Probability Distributions every data science professional should know" title="6 Common Probability Distributions every data science professional should know" scale="0">
+</a>
+</div>
+<h3 class="entry-title">
+<a href="https://www.analyticsvidhya.com/blog/2017/09/6-probability-distributions-data-science/" rel="bookmark" title="6 Common Probability Distributions every data science professional should know">
+6 Common Probability Distributions every data science professional should know </a>
+</h3>
+<meta content="6 Common Probability Distributions every data science professional should know">
+</article> </div>
+
+<div class="col-sm-4" style="position: absolute; left: 520px; top: 312px;">
+<article class="item-medium-simple post-box-normal">
+<div class="meta-info no-bottom">
+<span class="entry-author"><a href="https://www.analyticsvidhya.com/blog/author/shivam5992/">Shivam Bansal</a></span><span class="coma">,</span>
+<time class="entry-date" datetime="2015-10-29T19:55:23+00:00">
+October 29, 2015 </time>
+</div>
+<div class="thumb-wrap zoom-zoom">
+<a href="https://www.analyticsvidhya.com/blog/2015/10/6-practices-enhance-performance-text-classification-model/" rel="bookmark" title="6 Practices to enhance the performance of a Text Classification Model">
+<img width="262" height="141" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/6-practices_1-262x141.jpg" alt="6 Practices to enhance the performance of a Text Classification Model" title="6 Practices to enhance the performance of a Text Classification Model" scale="0">
+</a>
+</div>
+<h3 class="entry-title">
+<a href="https://www.analyticsvidhya.com/blog/2015/10/6-practices-enhance-performance-text-classification-model/" rel="bookmark" title="6 Practices to enhance the performance of a Text Classification Model">
+6 Practices to enhance the performance of a Text Classification Model </a>
+</h3>
+<meta content="6 Practices to enhance the performance of a Text Classification Model">
+</article> </div>
+</div>
+</div>
+</footer>
+</article> 
+
+
+<div class="row">
+<div class="col-sm-12">
+<div class="message-article">This article is quite old and you might not get a prompt response from the author. We request you to post this comment on Analytics Vidhya's <a href="https://discuss.analyticsvidhya.com/"><b>Discussion portal</b></a> to get your queries resolved</div> </div>
+</div>
+<div class="comment-wrap">
+
+<div class="row">
+<div class="col-sm-12">
+<div class="block-cap" id="comments">
+<h3 id="comment">18 Comments</h3>
+</div>
+</div>
+</div>
+<div class="navigation">
+<div class="alignleft"></div>
+<div class="alignright"></div>
+</div>
+<ul class="comment-list" id="show-comments">
+<li class="comment even thread-even depth-1" id="comment-97155">
+<div id="div-comment-97155" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/8543424768c876ad4cb7d1eb3ac051ea.png" srcset="https://secure.gravatar.com/avatar/8543424768c876ad4cb7d1eb3ac051ea?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">viresh</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97155">
+October 12, 2015 at 6:17 am</a> </div>
+<p>EXCELLENT BLOG!!!</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97155" onclick="return addComment.moveForm( &quot;div-comment-97155&quot;, &quot;97155&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to viresh">Reply</a></div>
+</div>
+</li>
+<li class="comment odd alt thread-odd thread-alt depth-1 parent" id="comment-97163">
+<div id="div-comment-97163" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/91adb2ae87d787bfb8a91176838168d6.png" srcset="https://secure.gravatar.com/avatar/91adb2ae87d787bfb8a91176838168d6?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Sridhar</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97163">
+October 12, 2015 at 7:56 am</a> </div>
+<p>Hi Kunal,</p>
+<p>In the collaborative filtering method, I understood till [x1 , x2] for S1. I lost you after that. How did you calculate the feature vector for S2 – S5?? </p>
+<p>Regards,</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97163" onclick="return addComment.moveForm( &quot;div-comment-97163&quot;, &quot;97163&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Sridhar">Reply</a></div>
+</div>
+<ul class="children">
+<li class="comment even depth-2" id="comment-97259">
+<div id="div-comment-97259" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/51bf7a2a1f2a0dd3a1012fa4cf5a9e80.png" srcset="https://secure.gravatar.com/avatar/51bf7a2a1f2a0dd3a1012fa4cf5a9e80?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Tavish</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97259">
+October 13, 2015 at 8:33 pm</a> </div>
+<p>You can see that every row in this matrix has atleast two cells filled. Hence, you can always create two equations which can be solved simultaneously to find S2 – S5. I hope this makes it clear.<br>
+Tavish</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97259" onclick="return addComment.moveForm( &quot;div-comment-97259&quot;, &quot;97259&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Tavish">Reply</a></div>
+</div>
+</li>
+</ul>
+</li>
+<li class="comment byuser comment-author-hemant_rai_jain odd alt thread-even depth-1 parent" id="comment-97183">
+<div id="div-comment-97183" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/3f758ae151959cb827cdaa5d31786f59.png" srcset="https://secure.gravatar.com/avatar/3f758ae151959cb827cdaa5d31786f59?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn"><a href="https://www.facebook.com/app_scoped_user_id/10152979802961930/" rel="external nofollow" class="url">Hemant Rai Jain</a></cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97183">
+October 12, 2015 at 2:06 pm</a> </div>
+<p>How did you come up with the score in User – Feature Matrix and Item– Feature Matrix ?</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97183" onclick="return addComment.moveForm( &quot;div-comment-97183&quot;, &quot;97183&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Hemant Rai Jain">Reply</a></div>
+</div>
+<ul class="children">
+<li class="comment even depth-2" id="comment-97260">
+<div id="div-comment-97260" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/51bf7a2a1f2a0dd3a1012fa4cf5a9e80.png" srcset="https://secure.gravatar.com/avatar/51bf7a2a1f2a0dd3a1012fa4cf5a9e80?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Tavish</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97260">
+October 13, 2015 at 8:34 pm</a> </div>
+<p>Generally these matrix comes from User ratings which are collected over time.</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97260" onclick="return addComment.moveForm( &quot;div-comment-97260&quot;, &quot;97260&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Tavish">Reply</a></div>
+</div>
+</li>
+</ul>
+</li>
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-97203">
+<div id="div-comment-97203" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/5870ccfe4b24535a777cda072e904c18.png" srcset="https://secure.gravatar.com/avatar/5870ccfe4b24535a777cda072e904c18?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Amogh Huilgol</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97203">
+October 12, 2015 at 11:28 pm</a> </div>
+<p>Hi,</p>
+<p>Could you please clarify on the following points </p>
+<p>a) How to calculate the user-feature matrix . i.e how do we come up with numbers like 0.9 and 0.1 for Aman . I assume that these values have been chosen at random in this article . However i would like to know how do e-commerce websites calculate these values</p>
+<p>b) How do we calculate item-feature values in content based recommendations . Again , i assume the numbers like 0.9 are randomly chosen for the purpose of this article . Could you let me know how do e-commerce websites calculate these values . What are the different factors considered by e-commerce website in order to compute these values</p>
+<p>Thanks</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97203" onclick="return addComment.moveForm( &quot;div-comment-97203&quot;, &quot;97203&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Amogh Huilgol">Reply</a></div>
+</div>
+</li>
+<li class="comment even thread-even depth-1 parent" id="comment-97217">
+<div id="div-comment-97217" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/953394f85dac633cdfa155af0818b62c.png" srcset="https://secure.gravatar.com/avatar/953394f85dac633cdfa155af0818b62c?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Shubham</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97217">
+October 13, 2015 at 6:40 am</a> </div>
+<p>How do you propose this solution for following scenarios:-<br>
+1) If users and Items ranges in Millions.<br>
+2) For new users coming in whose past history is not available</p>
+<p>Thanks in advance <img draggable="false" class="emoji" alt="🙂" src="./Understanding basics of Recommendation Engines (with case study)_files/1f642.svg" scale="0"></p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97217" onclick="return addComment.moveForm( &quot;div-comment-97217&quot;, &quot;97217&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Shubham">Reply</a></div>
+</div>
+<ul class="children">
+<li class="comment odd alt depth-2 parent" id="comment-97261">
+<div id="div-comment-97261" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/51bf7a2a1f2a0dd3a1012fa4cf5a9e80.png" srcset="https://secure.gravatar.com/avatar/51bf7a2a1f2a0dd3a1012fa4cf5a9e80?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Tavish</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97261">
+October 13, 2015 at 8:38 pm</a> </div>
+<p>Both your questions are very insightful and thought through.. I will take a shot at them :<br>
+1. For millions of customers we generally move on to something called as cosine similarity between customers. In case you still want to implement the exact methodology on languages like SAS, you will need IML which has this capacity.<br>
+2. For new users where you have no history available, one method I can think of is to create a regression to estimate his preference through his demographic. If such relationship can be established, then you will know the preference of any new customer as well.<br>
+Hope this helps.<br>
+Tavish</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97261" onclick="return addComment.moveForm( &quot;div-comment-97261&quot;, &quot;97261&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Tavish">Reply</a></div>
+</div>
+<ul class="children">
+<li class="comment even depth-3" id="comment-116081">
+<div id="div-comment-116081" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/0f00ccc78ce1987c068991c4a599584c.png" srcset="https://secure.gravatar.com/avatar/0f00ccc78ce1987c068991c4a599584c?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Binit Bhagat</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116081">
+September 15, 2016 at 9:26 am</a> </div>
+<p>Hi Tavish,<br>
+In case of new users for whom we do not know the ratings, we can go for a content-based recommendation easily, right? That’s why they ask a lot of preferences while logging into netflix or imdb. Just a thought.<br>
+Regression from a person’s demographics looks like an innovative idea, can u throw some more light on that? Is it like estimating preference from the info: where he lives, what he eats etc.?</p>
+<p>Thanks,<br>
+Binit</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116081" onclick="return addComment.moveForm( &quot;div-comment-116081&quot;, &quot;116081&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Binit Bhagat">Reply</a></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-97308">
+<div id="div-comment-97308" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/c214aed127e6a806882056ad46addf55.png" srcset="https://secure.gravatar.com/avatar/c214aed127e6a806882056ad46addf55?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Rinaz Belhaj</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97308">
+October 14, 2015 at 7:11 am</a> </div>
+<p>There is one mistake in Collaborative Filtering Equation.<br>
+[0.9 0.1]T [x1 x2] = 5<br>
+[0.8 0.2]T [x1 x2] = 4.5<br>
+0.9 * x1 + 0.1 * x2 = 5<br>
+0.8 * x1 + 0.1 * x2 = 4.5 </p>
+<p>It should have been 0.8 * x1 + 0.2 * x2 = 4.5</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97308" onclick="return addComment.moveForm( &quot;div-comment-97308&quot;, &quot;97308&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Rinaz Belhaj">Reply</a></div>
+</div>
+</li>
+<li class="comment even thread-even depth-1 parent" id="comment-97662">
+<div id="div-comment-97662" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/8875364f92689386e8461fca434248e9.png" srcset="https://secure.gravatar.com/avatar/8875364f92689386e8461fca434248e9?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Krishna</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97662">
+October 19, 2015 at 2:45 am</a> </div>
+<p>Hi,</p>
+<p>Its a great article and very well explains the methods to identify recommendations. I am new to this. So, I have a very basic question. I would likI to know why we are using U(j)T . I(i) ? </p>
+<p>Here we are using U(j)T. As I understand that T refers to transpose. Why do we need to transpose it? Please suggest. Is it to get scalar number out of it?</p>
+<p>Thanks<br>
+Krishna</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-97662" onclick="return addComment.moveForm( &quot;div-comment-97662&quot;, &quot;97662&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Krishna">Reply</a></div>
+</div>
+<ul class="children">
+<li class="comment odd alt depth-2" id="comment-116157">
+<div id="div-comment-116157" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/a11d1b9bf8c44aac9e8a7f7ae2a49ae0.png" srcset="https://secure.gravatar.com/avatar/a11d1b9bf8c44aac9e8a7f7ae2a49ae0?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Reena Mary</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116157">
+September 17, 2016 at 10:16 am</a> </div>
+<p>Hello Krishna<br>
+A matrix of order 1 by 2 can only be multiplied by a matrix of order 2 by 1 in order to get a matrix of order 1 by 1. From several such products, maximum or top 3 values can be easily evaluated.</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116157" onclick="return addComment.moveForm( &quot;div-comment-116157&quot;, &quot;116157&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Reena Mary">Reply</a></div>
+</div>
+</li>
+</ul>
+</li>
+<li class="comment even thread-odd thread-alt depth-1 parent" id="comment-116082">
+<div id="div-comment-116082" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/0f00ccc78ce1987c068991c4a599584c.png" srcset="https://secure.gravatar.com/avatar/0f00ccc78ce1987c068991c4a599584c?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Binit Bhagat</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116082">
+September 15, 2016 at 9:46 am</a> </div>
+<p>Collaborative filtering, what I know so far, is about creating user-item rating-matrix and then calculating the cosine similarity (or Pearson) between users or b/w items. Next we can rate a item by the weighted average of all ratings and if the rating is more than the mean-rating of the user – we basically recommend it.<br>
+Here it is done in a different way. Why features are derived from the Rating Matrix? How can we say how many features would be important? Rating Matrices are normally very sparse. Here we decided on 2 features as every row has at least 2 values, but is that a great way to deal with?<br>
+I am new to recommendation systems, please let me know what am I missing. </p>
+<p>Thanks</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116082" onclick="return addComment.moveForm( &quot;div-comment-116082&quot;, &quot;116082&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Binit Bhagat">Reply</a></div>
+</div>
+<ul class="children">
+<li class="comment odd alt depth-2 parent" id="comment-116088">
+<div id="div-comment-116088" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/56b06520610a557465de1b3d587ac005(1).jpeg" srcset="https://secure.gravatar.com/avatar/56b06520610a557465de1b3d587ac005?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn"><a href="http://www.shivambansal.com/" rel="external nofollow" class="url">Shivam</a></cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116088">
+September 15, 2016 at 1:51 pm</a> </div>
+<p>Hi Binit, </p>
+<p>Deriving features from Rating Matrix is just another representation of User – Item Matrix. To decide an optimal value of K (number of features) is generally improved with the number of trials and it is based on problem statement itself. </p>
+<p>For example, Let say a particular mobile company gives importance to certain features such as Battery and Music (based on their user feedbacks and experience) in order to create user recommendations. There can be another company which gives preferences to let’s say three features (Battery, Music, Screen size) based on their experience.</p>
+<p>I hope it makes sense to your quesion.</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116088" onclick="return addComment.moveForm( &quot;div-comment-116088&quot;, &quot;116088&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Shivam">Reply</a></div>
+</div>
+<ul class="children">
+<li class="comment even depth-3" id="comment-116092">
+<div id="div-comment-116092" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/0f00ccc78ce1987c068991c4a599584c.png" srcset="https://secure.gravatar.com/avatar/0f00ccc78ce1987c068991c4a599584c?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Binit Bhagat</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116092">
+September 15, 2016 at 2:49 pm</a> </div>
+<p>Hi Shivam,<br>
+Thanks for replying. I got it. In fact, this is very interesting. Whereas, I have a few queries:<br>
+As u explained, some smartphone, say S1 may have 3 important features, and some, say S2 may have 4 imp features. So, we have to have at least N ratings by different users for a particular item in order to derive N features, right? which is definitely feasible in real world scenario, as features maybe in tens, whereas ratings in hundreds isn’t uncommon.<br>
+Am I getting it correct, or missing something? Actually I am working on a recommendation system and I found this method really interesting. </p>
+<p>Thanks again,<br>
+Binit.</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-116092" onclick="return addComment.moveForm( &quot;div-comment-116092&quot;, &quot;116092&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Binit Bhagat">Reply</a></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="comment odd alt thread-even depth-1" id="comment-119993">
+<div id="div-comment-119993" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/8ca4b7d900970aae556d5f54e62fda83.png" srcset="https://secure.gravatar.com/avatar/8ca4b7d900970aae556d5f54e62fda83?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Jayadeep sriram</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-119993">
+December 19, 2016 at 11:58 am</a> </div>
+<p>hi sir, </p>
+<p>I understand the idea of collaborative filtering, but I feel the execution is centralized as you used the transpose method. I have a question, for instance U1 rated for s1,s2,s3,s4 and U2 rated only for S2 and so on… (my point is that you took an assumption where every user rated only 2 smartphones and every smart phone has only 2 features which makes the transpose multiplication possible([1*2] * [ 2*1]) in other cases it will be [1*4]*[2*1] which is impossible.</p>
+<p>I believe there is other method to do this and I also didn’t understand the significance of using the transpose?</p>
+<p>Thankyou.</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-119993" onclick="return addComment.moveForm( &quot;div-comment-119993&quot;, &quot;119993&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Jayadeep sriram">Reply</a></div>
+</div>
+</li>
+<li class="comment even thread-odd thread-alt depth-1" id="comment-130921">
+<div id="div-comment-130921" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/025de39ef1c17970c30b4dd94b0f6e94.png" srcset="https://secure.gravatar.com/avatar/025de39ef1c17970c30b4dd94b0f6e94?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">Amit Kumar Yadav</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-130921">
+June 22, 2017 at 2:00 pm</a> </div>
+<p>Hi Binit,<br>
+In the collaborative filtering , It is already given that features of the item are not known right? That means we do’nt have user feature matrix .We are only having user behavior matrix .Now we want to calculate feature vectors corresponding to each item.consider for first smartphone (1st item) we need to calculate feature vector we will do the following<br>
+let S1 : [x1 x2]<br>
+only aman (U1)and bob(U2) have rated this item :<br>
+the U1 and U2 is equal to [0.9 0.1] and [0.8 0.2] from where do I get this?while we are not having User – Feature Matrix.<br>
+Thanks in advance.</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-130921" onclick="return addComment.moveForm( &quot;div-comment-130921&quot;, &quot;130921&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to Amit Kumar Yadav">Reply</a></div>
+</div>
+</li>
+<li class="comment odd alt thread-even depth-1" id="comment-139943">
+<div id="div-comment-139943" class="comment-body">
+<div class="comment-author vcard">
+<img alt="" src="./Understanding basics of Recommendation Engines (with case study)_files/142652ff41917ee6793bc83dafdc092e.png" srcset="https://secure.gravatar.com/avatar/142652ff41917ee6793bc83dafdc092e?s=200&amp;d=mm&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100" originals="100" scale="1.2999999523162842"> <cite class="fn">zhipeng zhao</cite> <span class="says">says:</span> </div>
+<div class="comment-meta commentmetadata"><a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-139943">
+October 18, 2017 at 3:11 am</a> </div>
+<p>Hi, </p>
+<p>I think to compute the similarity score, it is better to normalize the feature vector. </p>
+<p>For example, in the computation for content based recommendation, U1 feature vector is [0,9, 0.1], S1 feature is [0.9, 0.1] and S2 feature is [1, 0]. Intuitively, U1 and S1 has perfect feature/interest match so we should recommend S1 to U1. </p>
+<p>However, based on the computation formula in this post, U1 X S1 similarity score is 0.82 while U1 X S2 similarity score is 0.9, thus S2 is recommended. </p>
+<p>However, if we normalize each feature vector by its length, similarity between U1 and S1 is (0.9X 0.9+0.1X0.1)/(sqrt(0.9X 0.9+0.1X0.1) X sqrt(0.9X 0.9+0.1X0.1)) = 1 and similarity between U1 and S2 is (0.9X 1)/(sqrt(0.9X 0.9+0.1X 0.1))= 0.994, so S1 should be recommend.</p>
+<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#comment-139943" onclick="return addComment.moveForm( &quot;div-comment-139943&quot;, &quot;139943&quot;, &quot;respond&quot;, &quot;20717&quot; )" aria-label="Reply to zhipeng zhao">Reply</a></div>
+</div>
+</li>
+</ul>
+</div>
+<div id="write-comment"></div>
+<script>
+var hash = window.location.hash;
+if(hash!=""){
+jQuery.ajax ({
+	type: 'GET',
+    url: 'https://www.analyticsvidhya.com/comments-form/show-comments.php?rand='+Math.random()+'&id=20717',
+    success: function (data)
+	{
+		jQuery('#show-comments').html(data);
+	},
+	error: function (e) {
+		console.log(e);
+	}
+});
+}
+</script>
+</div>
+</div>
+<div class="col-sm-4 "><div class="sidebar q2w3-fixed-widget-container" style="height: 3939.68px;"><div id="topuserswidget-3" class="widget clearfix TopUsersWidget"><div class="widget-title"><div class="block-cap"><h3>Top Analytics Vidhya Users</h3></div></div><table class="top_users"><tbody><tr><th>Rank</th><th colspan="2">Name</th><th>Points</th></tr><tr><td>1</td><td class="top_users_td_image"><img class="top_users_img" src="./Understanding basics of Recommendation Engines (with case study)_files/1.jpg" scale="0"></td><td class="top_users_name_td"><a target="_blank" class="top_users_name" href="https://datahack.analyticsvidhya.com/user/profile/Rohan_Rao">vopani</a></td><td class="top_users_points">8856</td></tr><tr><td>2</td><td class="top_users_td_image"><img class="top_users_img" src="./Understanding basics of Recommendation Engines (with case study)_files/2.jpg" scale="0"></td><td class="top_users_name_td"><a target="_blank" class="top_users_name" href="https://datahack.analyticsvidhya.com/user/profile/SRK">SRK</a></td><td class="top_users_points">8817</td></tr><tr><td>3</td><td class="top_users_td_image"><img class="top_users_img" src="./Understanding basics of Recommendation Engines (with case study)_files/3.jpg" scale="0"></td><td class="top_users_name_td"><a target="_blank" class="top_users_name" href="https://datahack.analyticsvidhya.com/user/profile/aayushmnit">aayushmnit</a></td><td class="top_users_points">7739</td></tr><tr><td>4</td><td class="top_users_td_image"><img class="top_users_img" src="./Understanding basics of Recommendation Engines (with case study)_files/4.jpg" scale="0"></td><td class="top_users_name_td"><a target="_blank" class="top_users_name" href="https://datahack.analyticsvidhya.com/user/profile/mark12">mark12</a></td><td class="top_users_points">6798</td></tr><tr><td>5</td><td class="top_users_td_image"><img class="top_users_img" src="./Understanding basics of Recommendation Engines (with case study)_files/5.jpg" scale="0"></td><td class="top_users_name_td"><a target="_blank" class="top_users_name" href="https://datahack.analyticsvidhya.com/user/profile/sonny">sonny</a></td><td class="top_users_points">5947</td></tr></tbody></table><div><a class="top_users_more" target="_blank" href="http://datahack.analyticsvidhya.com/users">More Rankings</a></div></div><div id="text-15" class="widget clearfix widget_text"> <div class="textwidget"><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+AIBL101+AIBL_T1/about?utm_source=AVBannerbelowcommunity" target="_blank">
+<img src="./Understanding basics of Recommendation Engines (with case study)_files/ai-ml-business-leaders.gif" scale="0"></a></div>
+</div><div id="text-41" class="widget clearfix widget_text"> <div class="textwidget"><p><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+ITE001+2018_T1/about?utm_source=AVBlogbanner2" target="_blank" rel="noopener"><img src="./Understanding basics of Recommendation Engines (with case study)_files/Microsoft-Excel.gif" scale="0"></a></p>
+</div>
+</div><div id="text-16" class="widget clearfix widget_text"> <div class="textwidget"><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/f(3).txt"></script>
+
+<ins class="adsbygoogle" style="display: inline-block; width: 336px; height: 280px;" data-ad-client="ca-pub-5229672700622157" data-ad-slot="1620249624" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><iframe width="336" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;width:336px;height:280px;" src="./Understanding basics of Recommendation Engines (with case study)_files/saved_resource(1).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div><div id="text-24" class="widget clearfix widget_text"> <div class="textwidget"><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/f(3).txt"></script>
+
+<ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-5229672700622157" data-ad-slot="1620249624" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><ins id="aswift_2_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><iframe width="336" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;width:336px;height:280px;" src="./Understanding basics of Recommendation Engines (with case study)_files/saved_resource(2).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div><div id="wmp_widget-2" class="widget clearfix widget_wmp_widget"><div class="widget-title"><div class="block-cap"><h3>Popular posts</h3></div></div><ul class="wp-most-popular">
+<li class="post-28549posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-machine-learningcategory-python-2category-rtag-analytics-projectstag-boston-housing-datatag-classification-datatag-data-explorationtag-data-mining-projectstag-data-science-projecttag-feature-engineeringtag-image-recognitiontag-machine-learningtag-machine-learning-projectstag-mnist-datatag-multi-classificationtag-object-recognitiontag-regression-datatag-text-mining-datatag-titanic-datatag-yelp-data">
+<a href="https://www.analyticsvidhya.com/blog/2018/05/24-ultimate-data-science-projects-to-boost-your-knowledge-and-skills/" title="24 Ultimate Data Science Projects To Boost Your Knowledge and Skills (&amp; can be accessed freely)">
+24 Ultimate Data Science Projects To Boost Your Knowledge and Skills (&amp; can be accessed freely)
+</a>
+</li>
+<li class="post-22387posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-machine-learningcategory-pandascategory-python-2tag-applytag-box-plotstag-categorical-variabletag-data-cleaningtag-data-explorationtag-data-framestag-data-miningtag-data-mungingtag-data-structuretag-data-wranglingtag-dictionarytag-distribution-analysistag-installing-pythontag-ipythontag-liststag-logistic-regressiontag-matplotlibtag-meantag-mergetag-numpytag-pandastag-pythontag-python-tutorialtag-scikit-learntag-scipytag-setstag-splittag-stacked-charttag-starting-pythontag-statisticstag-stringstag-tupletag-tuplestag-tutorial">
+<a href="https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-learn-data-science-python-scratch-2/" title="A Complete Tutorial to Learn Data Science with Python from Scratch">
+A Complete Tutorial to Learn Data Science with Python from Scratch
+</a>
+</li>
+<li class="post-18770posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-business-analyticscategory-python-2category-rtag-c4-5tag-carttag-decision-treetag-gbmtag-k-meanstag-knntag-linear-regressiontag-logistic-regressiontag-machine-learningtag-naive-bayestag-neural-networktag-random-foresttag-reinforcementtag-supervised-learningtag-unsupervised">
+<a href="https://www.analyticsvidhya.com/blog/2017/09/common-machine-learning-algorithms/" title="Essentials of Machine Learning Algorithms (with Python and R Codes)">
+Essentials of Machine Learning Algorithms (with Python and R Codes)
+</a>
+</li>
+<li class="post-20569posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-machine-learningcategory-python-2category-rtag-e1071tag-kerneltag-machine-learningtag-scikit-learntag-svm">
+<a href="https://www.analyticsvidhya.com/blog/2017/09/understaing-support-vector-machine-example-code/" title="Understanding Support Vector Machine algorithm from examples (along with code)">
+Understanding Support Vector Machine algorithm from examples (along with code)
+</a>
+</li>
+<li class="post-45663posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-careercategory-data-sciencetag-career-advicetag-data-sciencetag-data-scientist-top-mistakes">
+<a href="https://www.analyticsvidhya.com/blog/2018/07/13-common-mistakes-aspiring-fresher-data-scientists-make-how-to-avoid-them/" title="13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them?">
+13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them?
+</a>
+</li>
+<li class="post-18835posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-business-analyticstag-elasticnet-regressiontag-lasso-regressiontag-linear-regressiontag-logistic-regressiontag-multinomial-logistic-rgressiontag-multiple-regressiontag-ordinal-logistic-regressiontag-polynomial-regressiontag-regressiontag-regularizationtag-ridge-regressiontag-stepwise-regression">
+<a href="https://www.analyticsvidhya.com/blog/2015/08/comprehensive-guide-regression/" title="7 Types of Regression Techniques you should know!">
+7 Types of Regression Techniques you should know!
+</a>
+</li>
+<li class="post-22185posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-machine-learningcategory-pandascategory-python-2tag-binningtag-data-explorationtag-data-manipulationtag-imputing-missing-valuestag-pandastag-pythontag-sorting">
+<a href="https://www.analyticsvidhya.com/blog/2016/01/12-pandas-techniques-python-data-manipulation/" title="12 Useful Pandas Techniques in Python for Data Manipulation">
+12 Useful Pandas Techniques in Python for Data Manipulation
+</a>
+</li>
+<li class="post-24521posttype-poststatus-publishformat-standardhas-post-thumbnailcategory-machine-learningcategory-python-2category-rtag-baggingtag-biastag-boostingtag-classification-treestag-decision-treetag-ensemble-modelingtag-gbmtag-gradient-boostingtag-linear-modelstag-linear-regressiontag-logistic-regressiontag-machine-learningtag-over-fittingtag-random-foresttag-regression-treestag-under-fittingtag-variancetag-xgboost">
+<a href="https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/" title="A Complete Tutorial on Tree Based Modeling from Scratch (in R &amp; Python)">
+A Complete Tutorial on Tree Based Modeling from Scratch (in R &amp; Python)
+</a>
+</li>
+</ul></div><div id="text-23" class="widget clearfix widget_text"> <div class="textwidget"><script async="" src="./Understanding basics of Recommendation Engines (with case study)_files/f(3).txt"></script>
+
+<ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-5229672700622157" data-ad-slot="1620249624" data-adsbygoogle-status="done"><ins id="aswift_3_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><ins id="aswift_3_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px;background-color:transparent;"><iframe width="336" height="280" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;width:336px;height:280px;" src="./Understanding basics of Recommendation Engines (with case study)_files/saved_resource(3).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div><div id="maha_recent_posts-3" class="widget clearfix widget_recents"><div class="widget-title"><div class="block-cap"><h3>Recent Posts</h3></div></div>
+<article class="post-box-small recent-item clearfix">
+<div class="thumb-wrap zoom-zoom three">
+<a href="https://www.analyticsvidhya.com/blog/2018/08/best-machine-learning-github-repositories-reddit-threads-july-2018/" rel="bookmark" title="The Best Machine Learning GitHub Repositories &amp; Reddit Threads from July 2018">
+<img width="83" height="63" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/github1-83x63.jpg" alt="The Best Machine Learning GitHub Repositories &amp; Reddit Threads from July 2018" title="The Best Machine Learning GitHub Repositories &amp; Reddit Threads from July 2018" scale="0">
+</a>
+</div>
+<div class="box-small-wrap">
+<h3 class="entry-title short-bottom">
+<a href="https://www.analyticsvidhya.com/blog/2018/08/best-machine-learning-github-repositories-reddit-threads-july-2018/" rel="bookmark" title="The Best Machine Learning GitHub Repositories &amp; Reddit Threads from July 2018">
+The Best Machine Learning GitHub Repositories &amp; Reddit Threads from July 2018 </a>
+</h3>
+<meta content="The Best Machine Learning GitHub Repositories &amp; Reddit Threads from July 2018">
+<div class="meta-info">
+<time class="entry-date" datetime="2018-08-01T22:36:07+00:00">
+August 1, 2018 </time>
+</div>
+</div>
+</article>
+<article class="post-box-small recent-item clearfix">
+<div class="thumb-wrap zoom-zoom three">
+<a href="https://www.analyticsvidhya.com/blog/2018/07/hands-on-sentiment-analysis-dataset-python/" rel="bookmark" title="Comprehensive Hands on Guide to Twitter Sentiment Analysis with dataset and code">
+<img width="83" height="63" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/1.8-83x63.jpg" alt="Comprehensive Hands on Guide to Twitter Sentiment Analysis with dataset and code" title="Comprehensive Hands on Guide to Twitter Sentiment Analysis with dataset and code" scale="0">
+</a>
+</div>
+<div class="box-small-wrap">
+<h3 class="entry-title short-bottom">
+<a href="https://www.analyticsvidhya.com/blog/2018/07/hands-on-sentiment-analysis-dataset-python/" rel="bookmark" title="Comprehensive Hands on Guide to Twitter Sentiment Analysis with dataset and code">
+Comprehensive Hands on Guide to Twitter Sentiment Analysis with dataset and code </a>
+</h3>
+<meta content="Comprehensive Hands on Guide to Twitter Sentiment Analysis with dataset and code">
+<div class="meta-info">
+<time class="entry-date" datetime="2018-07-30T09:08:20+00:00">
+July 30, 2018 </time>
+</div>
+ </div>
+</article>
+<article class="post-box-small recent-item clearfix">
+<div class="thumb-wrap zoom-zoom three">
+<a href="https://www.analyticsvidhya.com/blog/2018/07/top-10-pretrained-models-get-started-deep-learning-part-1-computer-vision/" rel="bookmark" title="Top 10 Pretrained Models to get you Started with Deep Learning (Part 1 – Computer Vision)">
+<img width="83" height="63" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/1WyTv5S6b8fmOG6aBrZyiHw-83x63.jpeg" alt="Top 10 Pretrained Models to get you Started with Deep Learning (Part 1 – Computer Vision)" title="Top 10 Pretrained Models to get you Started with Deep Learning (Part 1 – Computer Vision)" scale="0">
+</a>
+</div>
+<div class="box-small-wrap">
+<h3 class="entry-title short-bottom">
+<a href="https://www.analyticsvidhya.com/blog/2018/07/top-10-pretrained-models-get-started-deep-learning-part-1-computer-vision/" rel="bookmark" title="Top 10 Pretrained Models to get you Started with Deep Learning (Part 1 – Computer Vision)">
+Top 10 Pretrained Models to get you Started with Deep Learning (Part 1 – Computer Vision) </a>
+</h3>
+<meta content="Top 10 Pretrained Models to get you Started with Deep Learning (Part 1 – Computer Vision)">
+<div class="meta-info">
+<time class="entry-date" datetime="2018-07-27T09:23:16+00:00">
+July 27, 2018 </time>
+</div>
+</div>
+</article>
+<article class="post-box-small recent-item clearfix">
+<div class="thumb-wrap zoom-zoom three">
+<a href="https://www.analyticsvidhya.com/blog/2018/07/infographic-common-mistakes-amateur-data-scientists-make-how-avoid-them/" rel="bookmark" title="Infographic – 13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them">
+<img width="83" height="63" class="entry-thumb zoom-it three" src="./Understanding basics of Recommendation Engines (with case study)_files/13-common-mistake-83x63.jpg" alt="Infographic – 13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them" title="Infographic – 13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them" scale="0">
+</a>
+</div>
+<div class="box-small-wrap">
+<h3 class="entry-title short-bottom">
+<a href="https://www.analyticsvidhya.com/blog/2018/07/infographic-common-mistakes-amateur-data-scientists-make-how-avoid-them/" rel="bookmark" title="Infographic – 13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them">
+Infographic – 13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them </a>
+</h3>
+<meta content="Infographic – 13 Common Mistakes Amateur Data Scientists Make and How to Avoid Them">
+<div class="meta-info">
+<time class="entry-date" datetime="2018-07-27T09:20:58+00:00">
+July 27, 2018 </time>
+</div>
+</div>
+</article>
+
+</div><div id="text-19" class="widget clearfix widget_text"> <div class="textwidget"><a href="http://www.edvancer.in/certified-data-scientist-with-python-course?utm_source=AV&amp;utm_medium=AVads&amp;utm_campaign=AVadsnonfc&amp;utm_content=pythonavad" rel="nofollow" target="_blank"><img src="./Understanding basics of Recommendation Engines (with case study)_files/edvancer-oct-2016.gif" alt="" scale="0"></a></div>
+</div><div id="text-37_clone" class="widget clearfix widget_text q2w3-widget-clone-blog-sidebar" style="top: 100px; width: 305px; height: 256.995px; visibility: hidden;"> 
+</div><div id="text-37" class="widget clearfix widget_text" style="top: 100px; width: 305px; position: fixed;"> <div class="textwidget"><p><a href="https://datahack.analyticsvidhya.com/contest/innoplexus-online-hiring-hackathon-ai-challenge/?utm_source=AVStickyBanner1" target="_blank" rel="noopener"><img src="./Understanding basics of Recommendation Engines (with case study)_files/Innoplexus-4-2.png" scale="0"></a></p>
+</div>
+</div><div id="text-42_clone" class="widget clearfix widget_text q2w3-widget-clone-blog-sidebar" style="top: 388.995px; width: 305px; height: 256.995px; visibility: hidden;"> 
+</div><div id="text-42" class="widget clearfix widget_text" style="top: 388.995px; width: 305px; position: fixed;"> <div class="textwidget"><p><a href="https://trainings.analyticsvidhya.com/courses/course-v1:AnalyticsVidhya+DS101+2018T2/about?utm_source=Blogbannersticky2" target="_blank" rel="noopener"><img src="./Understanding basics of Recommendation Engines (with case study)_files/data-science-course-4-2.gif" scale="0"></a></p>
+</div>
+</div></div></div> </div>
+</div>
+</div>
+</div>
+
+</div>
+
+<footer>
+<div id="footer">
+<div class="footer-container">
+<div class="upper-footer">
+<div class="logo">
+<img src="./Understanding basics of Recommendation Engines (with case study)_files/AV-white.d14465ee4af2.png" class="footer-logo" scale="0">
+</div>
+<div class="navigation-content">
+<div class="footer-links-holder">
+<h5 class="links-hide">ANALYTICS VIDHYA</h5>
+<ul class="footer-links av-links">
+<li><a target="_blank" href="http://www.analyticsvidhya.com/about-me/">About Us</a></li>
+ <li><a target="_blank" href="https://www.analyticsvidhya.com/about-me/team/">Our Team</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/career-analytics-vidhya/">Career</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/contact/">Contact Us</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/about-me/write/">Write for us</a></li>
+</ul>
+</div>
+<div class="mobile-links-holder">
+<div class="links">
+<a target="_blank" href="http://www.analyticsvidhya.com/about-me/">About Us</a>
+</div>
+<div class="links">
+<a target="_blank" href="https://www.analyticsvidhya.com/about-me/team/">•</a>
+</div>
+<div class="links">
+<a target="_blank" href="https://www.analyticsvidhya.com/about-me/team/">Our Team</a>
+</div>
+<div class="links">
+<a target="_blank" href="https://www.analyticsvidhya.com/about-me/team/">•</a>
+</div>
+<div class="links">
+<a target="_blank" href="https://www.analyticsvidhya.com/career-analytics-vidhya/">Careers</a>
+</div>
+<div class="links">
+<a target="_blank" href="https://www.analyticsvidhya.com/about-me/team/">•</a>
+</div>
+<div class="links">
+<a target="_blank" href="https://www.analyticsvidhya.com/contact/">Contact Us</a>
+</div>
+</div>
+<div class="footer-links-holder">
+<h5 class="links-show">DATA SCIENTISTS</h5>
+<ul class="footer-links">
+<li><a target="_blank" href="https://www.analyticsvidhya.com/blog">Blog</a></li>
+<li><a target="_blank" href="https://datahack.analyticsvidhya.com/">Hackathon</a></li>
+<li><a target="_blank" href="https://discuss.analyticsvidhya.com/">Discussions</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/jobs/">Apply Jobs</a></li>
+<li><a target="_blank" href="https://datahack.analyticsvidhya.com/users/">Leaderboard</a></li>
+</ul>
+</div>
+<div class="footer-links-holder">
+<h5 class="links-show">COMPANIES</h5>
+<ul class="footer-links">
+<li><a target="_blank" href="https://www.analyticsvidhya.com/corporate/">Post Jobs</a></li>
+<li><a target="_blank" href="https://trainings.analyticsvidhya.com/">Trainings</a></li>
+<li><a target="_blank" href="https://datahack.analyticsvidhya.com/">Hiring Hackathons</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/contact/">Advertising</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/contact/">Reach Us</a></li>
+</ul>
+</div>
+</div>
+<div class="mobile-signup">
+<p>Don't have an account? <a target="_blank" href="https://datahack.analyticsvidhya.com/signup/" class="signup-link">Sign up</a> here.</p>
+</div>
+<div class="footer-social">
+<div class="join">
+<h5> JOIN OUR COMMUNITY :</h5>
+</div>
+<div class="social-stats">
+<div class="social" id="wrapper">
+<a href="https://www.facebook.com/AnalyticsVidhya/" target="_blank" class="item facebook"><i class="fa fa-facebook social-img"></i></a>
+<a href="https://www.facebook.com/AnalyticsVidhya/" target="_blank" class="item facebook"><span class="count_followers" id="followers-count">46336</span></a>
+<a href="https://www.facebook.com/AnalyticsVidhya/" target="_blank" class="item facebook"><span id="followers">Followers</span></a>
+</div>
+<div class="social" id="wrapper">
+<a href="https://twitter.com/analyticsvidhya" target="_blank" class="item twitter"><i class="fa fa-twitter social-img"></i></a>
+<a href="https://twitter.com/analyticsvidhya" target="_blank" class="item twitter"><span class="count_followers" id="followers-count">17351</span></a>
+<a href="https://twitter.com/analyticsvidhya" target="_blank" class="item twitter"><span id="followers">Followers</span></a>
+</div>
+<div class="social" id="wrapper">
+<a href="https://plus.google.com/+Analyticsvidhya" target="_blank" class="item google"><i class="fa fa-google-plus social-img"></i></a>
+<a href="https://plus.google.com/+Analyticsvidhya" target="_blank" class="item google"><span class="count_followers" id="followers-count">2954</span></a>
+<a href="https://plus.google.com/+Analyticsvidhya" target="_blank" class="item google"><span id="followers">Followers</span></a>
+</div>
+<div class="social" id="wrapper">
+<a href="https://www.linkedin.com/m/login/" target="_blank" class="item linkedin"><i class="fa fa-linkedin social-img"></i></a>
+<a href="https://www.linkedin.com/m/login/" target="_blank" class="item linkedin"><span class="count_followers" id="followers-count">7513</span></a>
+<a href="https://www.linkedin.com/m/login/" target="_blank" class="item linkedin"><span id="followers">Followers</span></a>
+</div>
+</div>
+<div class="subscribe">
+<form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="_blank">
+<input name="uri" value="analyticsvidhya" type="hidden">
+<input name="loc" value="en_US" type="hidden">
+<input class="subscriber" placeholder="  Subscribe to emailer" name="email" type="email" id="footer-email">
+<input class="subscriber-button" value="&gt;" type="submit">
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="lower">
+<div class="container2">
+<div class="lower-footer">
+<p>© Copyright 2013-2018 Analytics Vidhya.</p>
+<ul class="lower-footer-links">
+<li><a target="_blank" href="https://www.analyticsvidhya.com/privacy-policy/">Privacy Policy</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/terms/">Terms of Use</a></li>
+<li><a target="_blank" href="https://www.analyticsvidhya.com/refund-policy/">Refund Policy</a></li>
+</ul>
+</div>
+<div class="sign-up">
+<p>Don't have an account? <a target="_blank" href="https://id.analyticsvidhya.com/accounts/signup/" class="signup-link">Sign up</a> here</p>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</div>
+
+<div id="scrolltop" class="scroll-up">
+<a><i class="tm-go-top"></i></a>
+</div>
+
+
+<script type="text/javascript" id="">(function(a,c,e,f,d,b){a.hj=a.hj||function(){(a.hj.q=a.hj.q||[]).push(arguments)};a._hjSettings={hjid:499326,hjsv:5};d=c.getElementsByTagName("head")[0];b=c.createElement("script");b.async=1;b.src=e+a._hjSettings.hjid+f+a._hjSettings.hjsv;d.appendChild(b)})(window,document,"//static.hotjar.com/c/hotjar-",".js?sv\x3d");</script><script>
+ $(document).ready(function(){
+	     $.ajax({
+        url: "https://www.analyticsvidhya.com/back-channel/display-image.php",
+        data: {
+            image: '3'
+        },
+        type: "GET",
+				cache: false,
+        dataType: "html",
+        success: function (data) {
+            $('#ban3_av').html(data);
+        },
+        error: function (xhr, status) {
+					console.log("Image Failed!");
+        },
+    });
+});
+</script>
+
+
+<div id="cookie-law-info-bar" style="background-color: rgb(240, 243, 247); color: rgb(0, 0, 0); font-family: inherit; bottom: 0px; position: fixed;"><span>We use cookies on Analytics Vidhya websites to deliver our services, analyze web traffic, and improve your experience on the site. By using Analytics Vidhya, you agree to our <a href="https://www.analyticsvidhya.com/privacy-policy/">Privacy Policy</a> and <a href="https://www.analyticsvidhya.com/terms/">Terms of Use</a>.<a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#" class="cookie_action_close_header medium cli-plugin-button cli-plugin-main-button" style="color: rgb(255, 255, 255); background-color: rgb(0, 0, 0);">Accept</a></span></div><div id="cookie-law-info-again" style="background-color: rgb(240, 243, 247); color: rgb(0, 0, 0); position: fixed; font-family: inherit; bottom: 0px; right: 100px; display: none;"><span id="cookie_hdr_showagain">Privacy &amp; Cookies Policy</span></div>
+<script type="text/javascript">
+			//<![CDATA[
+			jQuery(document).ready(function() {
+				cli_show_cookiebar({
+					settings: '{"animate_speed_hide":"500","animate_speed_show":"500","background":"#f0f3f7","border":"#444","border_on":false,"button_1_button_colour":"#000","button_1_button_hover":"#000000","button_1_link_colour":"#fff","button_1_as_button":true,"button_2_button_colour":"#333","button_2_button_hover":"#292929","button_2_link_colour":"#444","button_2_as_button":false,"button_3_button_colour":"#000","button_3_button_hover":"#000000","button_3_link_colour":"#fff","button_3_as_button":true,"font_family":"inherit","header_fix":false,"notify_animate_hide":true,"notify_animate_show":false,"notify_div_id":"#cookie-law-info-bar","notify_position_horizontal":"right","notify_position_vertical":"bottom","scroll_close":false,"scroll_close_reload":false,"accept_close_reload":false,"showagain_tab":true,"showagain_background":"#fff","showagain_border":"#000","showagain_div_id":"#cookie-law-info-again","showagain_x_position":"100px","text":"#000","show_once_yn":false,"show_once":"10000"}'
+				});
+			});
+			//]]>
+		</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/www.analyticsvidhya.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}},"cached":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/scripts.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/devicepx-jetpack.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/main.js"></script><style type="text/css">.marquee{white-space:nowrap;overflow:hidden;visibility:hidden;}#marq_kill_marg_bord{border:none!important;margin:0!important;}</style>
+<script type="text/javascript">
+/* <![CDATA[ */
+var MahaAjax = {"ajaxurl":"https:\/\/www.analyticsvidhya.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/basix.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/add_to_cart.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/comment-reply.min.js" defer="defer"></script>
+<!--[if IE 9]>
+<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js?ver=1' defer='defer'></script>
+<![endif]-->
+<!--[if IE 9]>
+<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js?ver=1' defer='defer'></script>
+<![endif]-->
+<script type="text/javascript">
+/* <![CDATA[ */
+var q2w3_sidebar_options = [{"sidebar":"blog-sidebar","margin_top":100,"margin_bottom":800,"stop_id":"","screen_max_width":0,"screen_max_height":0,"width_inherit":false,"refresh_interval":1500,"window_load_hook":false,"disable_mo_api":false,"widgets":["text-37","text-42"]}];
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/q2w3-fixed-widget.min.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/effect.min.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/effect-blind.min.js" defer="defer"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var stbUserOptions = {"mode":"css","cssOptions":{"roundedCorners":true,"mbottom":10,"imgHide":"https:\/\/www.analyticsvidhya.com\/blog\/wp-content\/plugins\/wp-special-textboxes\/images\/minus.png","imgShow":"https:\/\/www.analyticsvidhya.com\/blog\/wp-content\/plugins\/wp-special-textboxes\/images\/plus.png","strHide":"Hide","strShow":"Show"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/wstb.min.js" defer="defer"></script>
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/wp-embed.min.js" defer="defer"></script>
+
+<div class="dgd_overlay"></div>
+
+<script type="text/javascript" src="./Understanding basics of Recommendation Engines (with case study)_files/e-201831.js" async="async" defer="defer"></script>
+<script type="text/javascript">
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.3.2',blog:'58948004',post:'20717',tz:'5.5',srv:'www.analyticsvidhya.com'} ]);
+	_stq.push([ 'clickTrackerInit', '58948004', '20717' ]);
+</script>
+
+
+<div id="cookie-law-info-bar"><span>We use cookies on Analytics Vidhya websites to deliver our services, analyze web traffic, and improve your experience on the site. By using Analytics Vidhya, you agree to our <a href="https://www.analyticsvidhya.com/privacy-policy/">Privacy Policy</a> and <a href="https://www.analyticsvidhya.com/terms/">Terms of Use</a>.<a href="https://www.analyticsvidhya.com/blog/2015/10/recommendation-engines/#" class="cookie_action_close_header medium cli-plugin-button cli-plugin-main-button" style="color: rgb(255, 255, 255); background-color: rgb(0, 0, 0);">Accept</a></span></div><div id="cookie-law-info-again"><span id="cookie_hdr_showagain">Privacy &amp; Cookies Policy</span></div>
+<script type="text/javascript">
+			//<![CDATA[
+			jQuery(document).ready(function() {
+				cli_show_cookiebar({
+					settings: '{"animate_speed_hide":"500","animate_speed_show":"500","background":"#f0f3f7","border":"#444","border_on":false,"button_1_button_colour":"#000","button_1_button_hover":"#000000","button_1_link_colour":"#fff","button_1_as_button":true,"button_2_button_colour":"#333","button_2_button_hover":"#292929","button_2_link_colour":"#444","button_2_as_button":false,"button_3_button_colour":"#000","button_3_button_hover":"#000000","button_3_link_colour":"#fff","button_3_as_button":true,"font_family":"inherit","header_fix":false,"notify_animate_hide":true,"notify_animate_show":false,"notify_div_id":"#cookie-law-info-bar","notify_position_horizontal":"right","notify_position_vertical":"bottom","scroll_close":false,"scroll_close_reload":false,"accept_close_reload":false,"showagain_tab":true,"showagain_background":"#fff","showagain_border":"#000","showagain_div_id":"#cookie-law-info-again","showagain_x_position":"100px","text":"#000","show_once_yn":false,"show_once":"10000"}'
+				});
+			});
+			//]]>
+		</script>
+
+<div class="dgd_overlay"></div>
+
+
+
+<img src="./Understanding basics of Recommendation Engines (with case study)_files/g.gif" alt=":)" width="6" height="5" id="wpstats" scale="0"><iframe id="google_osd_static_frame_6336422838708" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./Understanding basics of Recommendation Engines (with case study)_files/saved_resource(4).html"></iframe><iframe name="_hjRemoteVarsFrame" title="_hjRemoteVarsFrame" id="_hjRemoteVarsFrame" style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;" src="./Understanding basics of Recommendation Engines (with case study)_files/rcj-99d43ead6bdf30da8ed5ffcb4f17100c.html"></iframe><div id="ads"></div></body></html>

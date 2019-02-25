@@ -1,0 +1,54 @@
+!!BatClustering.java:!!
+d is the number of columns
+p is the number of data-points
+c is the number of centroids used
+
+min[] and max[] contain the min and max value for each feature
+
+kmean[][] array contain c*d elements:
+	for each centroid, distance of each feature
+
+data[][] contain the data from data-file
+
+pop variable means population of bats in search-space
+
+foreach bat(y) in population:
+	1. fill kmeans[][] with random values in search-space
+	2. add feature of bat like fitness, amplitude(a), position_vector(x), temp_position_vector(y), velocity vecotr(y) etc.
+	3. (loop 5 times): fill kmeans[][] with reference to the data points
+	4. choose key_bat in population wrt fitness: The minimum fitnes -> better bat
+
+foreach iteration:
+	1. foreach population:
+		1.1 apply eqn(2)
+		1.2 apply eqn(3)
+		1.3 apply eqn(4)
+	2. apply MapReduce
+	3. some calculation
+		3.1 best_value = minimum_intra_cluster_distance_in_bat_vector   
+		3.2 best_bat_t = bat for which best_value
+	4. Read sequence file center1 using reader variable
+	5. DOUBT IN LINE 266-274
+	6. Check if best_value is best till now?
+		6.1 yes: best=best_value, make best_bat
+
+CONGRATS: GOT THE BEST VALUE :)
+
+!!BatMapper.java:!!
+Method setup:
+	1. set keys as bats
+	2. make list called as 'centers' which will contain keys
+Method map:
+	make pair <a,b> where, a is the bat, and b is the data-point which will come  under a
+
+!!BatReducer.java:!!
+Method setup:
+	1. make keys as bats
+	2. make a list called as 'centers' which will contain keys
+Method reduce:
+	1. calculate new_fitness
+	2. if(new_fitness<=old_fitness)
+		2.1 Accept new solutions
+		2.2 apply eqn(6) 
+
+

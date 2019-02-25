@@ -1,0 +1,13 @@
+
+
+object kmeans extends App {
+  var x=2
+  var arr:Array[Int]=new Array[Int](3)
+  arr(0)=10
+ 
+   def func(z:Array[Int])={
+    z(10)=1;
+  }
+  func(arr)
+  println(arr(0))
+}

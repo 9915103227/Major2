@@ -1,0 +1,300 @@
+!SESSION 2018-10-11 17:44:16.647 -----------------------------------------------
+eclipse.buildId=4.7.0-vfinal-2017-09-29T14:34:02Z-Typesafe
+java.version=1.8.0_181
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_IN
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2018-10-11 17:46:59.568
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-10-11 17:46:59.568
+!MESSAGE A conflict occurred for CTRL+F4:
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.eclipse.ui.file.close,Close,
+		Close the active editor,
+		Category(org.eclipse.ui.category.file,File,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@b73670c,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.scala.tools.eclipse.search.commands.OpenTypeHierarchy,Open Type Hierarchy,
+		Open Type Hierarchy,
+		Category(org.scala.tools.eclipse.search.commands,Search - Scala,Search - Scala,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@1d0240f9,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.scala-ide.sdt.core 2 0 2018-10-11 17:49:35.827
+!MESSAGE Preference scala.compiler.sourceLevel was uninitialized for kmeans, setting default to 2.12.
+
+!ENTRY org.scala-ide.sdt.core 1 0 2018-10-11 17:49:35.829
+!MESSAGE Adding  -Xsource:2.11 -Ymacro-expand:none to compiler arguments of kmeans because of: requested Scala Installation change
+
+!ENTRY org.eclipse.core.resources 2 10035 2018-10-11 20:35:05.599
+!MESSAGE The workspace will exit with unsaved changes in this session.
+!SESSION 2018-10-11 22:22:38.170 -----------------------------------------------
+eclipse.buildId=4.7.0-vfinal-2017-09-29T14:34:02Z-Typesafe
+java.version=1.8.0_181
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_IN
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.core.resources 2 10035 2018-10-11 22:22:48.887
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.jface 2 0 2018-10-11 22:22:55.141
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-10-11 22:22:55.141
+!MESSAGE A conflict occurred for CTRL+F4:
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.eclipse.ui.file.close,Close,
+		Close the active editor,
+		Category(org.eclipse.ui.category.file,File,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@1b9b892f,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.scala.tools.eclipse.search.commands.OpenTypeHierarchy,Open Type Hierarchy,
+		Open Type Hierarchy,
+		Category(org.scala.tools.eclipse.search.commands,Search - Scala,Search - Scala,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@6749fd11,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.scala-ide.sdt.core 1 0 2018-10-11 22:26:49.605
+!MESSAGE Timeout in askOption
+!STACK 0
+java.lang.Throwable
+	at org.scalaide.core.compiler.IScalaPresentationCompiler$Implicits$RichResponse$.getOption$extension(IScalaPresentationCompiler.scala:342)
+	at org.scalaide.core.internal.compiler.Scaladoc.withFragments$1(ScalaDoc.scala:55)
+	at org.scalaide.core.internal.compiler.Scaladoc.$anonfun$parsedDocComment$7(ScalaDoc.scala:61)
+	at scala.Option.flatMap(Option.scala:171)
+	at org.scalaide.core.internal.compiler.Scaladoc.$anonfun$parsedDocComment$2(ScalaDoc.scala:60)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.$anonfun$withSourceFile$1(InteractiveCompilationUnit.scala:201)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.$anonfun$internal$5(PresentationCompilerProxy.scala:101)
+	at scala.Option.flatMap(Option.scala:171)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.internal(PresentationCompilerProxy.scala:100)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.apply(PresentationCompilerProxy.scala:58)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.withSourceFile(InteractiveCompilationUnit.scala:201)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.withSourceFile$(InteractiveCompilationUnit.scala:200)
+	at org.scalaide.core.internal.jdt.model.ScalaClassFile.withSourceFile(ScalaClassFile.scala:26)
+	at org.scalaide.core.internal.compiler.Scaladoc.$anonfun$parsedDocComment$1(ScalaDoc.scala:48)
+	at scala.Option.map(Option.scala:146)
+	at org.scalaide.core.internal.compiler.Scaladoc.parsedDocComment(ScalaDoc.scala:48)
+	at org.scalaide.core.internal.compiler.Scaladoc.parsedDocComment$(ScalaDoc.scala:45)
+	at org.scalaide.core.internal.compiler.ScalaPresentationCompiler.parsedDocComment(ScalaPresentationCompiler.scala:54)
+	at org.scalaide.ui.internal.editor.hover.ScalaHoverImpl.$anonfun$getHoverInfo2$25(ScalaHoverImpl.scala:227)
+	at scala.Option$WithFilter.flatMap(Option.scala:171)
+	at org.scalaide.ui.internal.editor.hover.ScalaHoverImpl.docComment$lzycompute$1(ScalaHoverImpl.scala:226)
+	at org.scalaide.ui.internal.editor.hover.ScalaHoverImpl.docComment$1(ScalaHoverImpl.scala:205)
+	at org.scalaide.ui.internal.editor.hover.ScalaHoverImpl.$anonfun$getHoverInfo2$2(ScalaHoverImpl.scala:238)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.$anonfun$withSourceFile$1(InteractiveCompilationUnit.scala:201)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.$anonfun$internal$5(PresentationCompilerProxy.scala:101)
+	at scala.Option.flatMap(Option.scala:171)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.internal(PresentationCompilerProxy.scala:100)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.apply(PresentationCompilerProxy.scala:58)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.withSourceFile(InteractiveCompilationUnit.scala:201)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.withSourceFile$(InteractiveCompilationUnit.scala:200)
+	at org.scalaide.core.internal.jdt.model.ScalaSourceFile.withSourceFile(ScalaSourceFile.scala:71)
+	at org.scalaide.ui.internal.editor.hover.ScalaHoverImpl.$anonfun$getHoverInfo2$1(ScalaHoverImpl.scala:103)
+	at scala.Option.map(Option.scala:146)
+	at org.scalaide.ui.internal.editor.hover.ScalaHoverImpl.getHoverInfo2(ScalaHoverImpl.scala:101)
+	at org.scalaide.debug.internal.editor.TextHoverFactory$$anon$1.super$getHoverInfo2(TextHoverFactory.scala:53)
+	at org.scalaide.debug.internal.editor.TextHoverFactory$$anon$1.$anonfun$getHoverInfo2$6(TextHoverFactory.scala:53)
+	at scala.Option.getOrElse(Option.scala:121)
+	at org.scalaide.debug.internal.editor.TextHoverFactory$$anon$1.$anonfun$getHoverInfo2$1(TextHoverFactory.scala:51)
+	at scala.Option.map(Option.scala:146)
+	at org.scalaide.debug.internal.editor.TextHoverFactory$$anon$1.getHoverInfo2(TextHoverFactory.scala:37)
+	at org.eclipse.jface.text.TextViewerHoverManager$4.run(TextViewerHoverManager.java:166)
+
+!ENTRY org.scala-ide.sdt.core 1 0 2018-10-12 00:34:56.858
+!MESSAGE Removing -Xsource:2.11 -Ymacro-expand:none from compiler arguments of kmeans because of: requested Scala Installation change
+
+!ENTRY org.eclipse.core.resources 2 10035 2018-10-12 00:35:44.741
+!MESSAGE The workspace will exit with unsaved changes in this session.
+!SESSION 2018-10-12 08:15:16.338 -----------------------------------------------
+eclipse.buildId=4.7.0-vfinal-2017-09-29T14:34:02Z-Typesafe
+java.version=1.8.0_181
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_IN
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.core.resources 2 10035 2018-10-12 08:15:36.058
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.jface 2 0 2018-10-12 08:15:45.660
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-10-12 08:15:45.660
+!MESSAGE A conflict occurred for CTRL+F4:
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.eclipse.ui.file.close,Close,
+		Close the active editor,
+		Category(org.eclipse.ui.category.file,File,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@5c6041,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.scala.tools.eclipse.search.commands.OpenTypeHierarchy,Open Type Hierarchy,
+		Open Type Hierarchy,
+		Category(org.scala.tools.eclipse.search.commands,Search - Scala,Search - Scala,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@3b60ebdc,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.scala-ide.sdt.core 1 0 2018-10-12 08:26:06.075
+!MESSAGE Adding  -Xsource:2.11 -Ymacro-expand:none to compiler arguments of kmeans because of: requested Scala Installation change
+
+!ENTRY org.scala-ide.sdt.core 4 0 2018-10-12 08:26:06.809
+!MESSAGE Error thrown while initializing the presentation compiler.
+!STACK 0
+java.lang.NullPointerException
+	at java.util.Arrays.sort(Arrays.java:1438)
+	at scala.tools.nsc.classpath.JFileDirectoryLookup.listChildren(DirectoryClassPath.scala:113)
+	at scala.tools.nsc.classpath.JFileDirectoryLookup.listChildren$(DirectoryClassPath.scala:97)
+	at scala.tools.nsc.classpath.DirectoryClassPath.listChildren(DirectoryClassPath.scala:202)
+	at scala.tools.nsc.classpath.DirectoryClassPath.listChildren(DirectoryClassPath.scala:202)
+	at scala.tools.nsc.classpath.DirectoryLookup.list(DirectoryClassPath.scala:73)
+	at scala.tools.nsc.classpath.DirectoryLookup.list$(DirectoryClassPath.scala:69)
+	at scala.tools.nsc.classpath.DirectoryClassPath.list(DirectoryClassPath.scala:202)
+	at scala.tools.nsc.classpath.AggregateClassPath.$anonfun$list$1(AggregateClassPath.scala:76)
+	at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:234)
+	at scala.collection.Iterator.foreach(Iterator.scala:929)
+	at scala.collection.Iterator.foreach$(Iterator.scala:929)
+	at scala.collection.AbstractIterator.foreach(Iterator.scala:1417)
+	at scala.collection.IterableLike.foreach(IterableLike.scala:71)
+	at scala.collection.IterableLike.foreach$(IterableLike.scala:70)
+	at scala.collection.AbstractIterable.foreach(Iterable.scala:54)
+	at scala.collection.TraversableLike.map(TraversableLike.scala:234)
+	at scala.collection.TraversableLike.map$(TraversableLike.scala:227)
+	at scala.collection.AbstractTraversable.map(Traversable.scala:104)
+	at scala.tools.nsc.classpath.AggregateClassPath.list(AggregateClassPath.scala:74)
+	at scala.tools.nsc.symtab.SymbolLoaders$PackageLoader.doComplete(SymbolLoaders.scala:269)
+	at scala.tools.nsc.symtab.SymbolLoaders$SymbolLoader.complete(SymbolLoaders.scala:218)
+	at scala.reflect.internal.Symbols$Symbol.info(Symbols.scala:1531)
+	at scala.reflect.internal.Mirrors$RootsBase.init(Mirrors.scala:225)
+	at scala.tools.nsc.Global.rootMirror$lzycompute(Global.scala:65)
+	at scala.tools.nsc.Global.rootMirror(Global.scala:63)
+	at scala.tools.nsc.Global.rootMirror(Global.scala:36)
+	at scala.reflect.internal.Definitions$DefinitionsClass.ObjectClass$lzycompute(Definitions.scala:267)
+	at scala.reflect.internal.Definitions$DefinitionsClass.ObjectClass(Definitions.scala:267)
+	at scala.reflect.internal.Definitions$DefinitionsClass.init(Definitions.scala:1448)
+	at scala.tools.nsc.Global$Run.<init>(Global.scala:1154)
+	at scala.tools.nsc.interactive.Global$TyperRun.<init>(Global.scala:1309)
+	at scala.tools.nsc.interactive.Global.newTyperRun(Global.scala:1332)
+	at scala.tools.nsc.interactive.Global.<init>(Global.scala:286)
+	at org.scalaide.core.internal.compiler.ScalaPresentationCompiler.<init>(ScalaPresentationCompiler.scala:55)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.liftedTree1$1(PresentationCompilerProxy.scala:154)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.create(PresentationCompilerProxy.scala:153)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.initialize(PresentationCompilerProxy.scala:118)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.restart(PresentationCompilerProxy.scala:126)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.obtainPc$1(PresentationCompilerProxy.scala:85)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.internal(PresentationCompilerProxy.scala:100)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.apply(PresentationCompilerProxy.scala:58)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.forceReconcile(InteractiveCompilationUnit.scala:150)
+	at org.scalaide.core.compiler.InteractiveCompilationUnit.forceReconcile$(InteractiveCompilationUnit.scala:149)
+	at org.scalaide.core.internal.jdt.model.ScalaSourceFile.forceReconcile(ScalaSourceFile.scala:71)
+	at org.scalaide.ui.internal.reconciliation.ScalaReconcilingStrategy.handleReconciliation(ScalaReconcilingStrategy.scala:54)
+	at org.scalaide.ui.internal.reconciliation.ScalaReconcilingStrategy.reconcile(ScalaReconcilingStrategy.scala:39)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:77)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:69)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:207)
+
+!ENTRY org.scala-ide.sdt.core 1 0 2018-10-12 08:36:02.708
+!MESSAGE Adding  -Xsource:2.11 -Ymacro-expand:none to compiler arguments of kmeans because of: requested Source Level change
+
+!ENTRY org.scala-ide.sdt.core 1 0 2018-10-12 08:48:27.561
+!MESSAGE Timeout while resolving hyperlink in /home/pranav/Desktop/Optimization algorithms/kmean/kmeans/src/tmp.scala at: offset: 802, length: 0
+!SESSION 2018-10-12 11:36:30.846 -----------------------------------------------
+eclipse.buildId=4.7.0-vfinal-2017-09-29T14:34:02Z-Typesafe
+java.version=1.8.0_181
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_IN
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2018-10-12 11:36:47.941
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2018-10-12 11:36:47.941
+!MESSAGE A conflict occurred for CTRL+F4:
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.eclipse.ui.file.close,Close,
+		Close the active editor,
+		Category(org.eclipse.ui.category.file,File,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@6bb82959,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+F4,
+	ParameterizedCommand(Command(org.scala.tools.eclipse.search.commands.OpenTypeHierarchy,Open Type Hierarchy,
+		Open Type Hierarchy,
+		Category(org.scala.tools.eclipse.search.commands,Search - Scala,Search - Scala,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@38f4ac18,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.jdt.core 4 4 2018-10-12 12:38:18.623
+!MESSAGE File not found: '/kmeans/src/main.scala'
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Resource '/kmeans/src/main.scala' does not exist.
+	at org.eclipse.core.internal.resources.Resource.checkExists(Resource.java:335)
+	at org.eclipse.core.internal.resources.Resource.checkAccessible(Resource.java:209)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:275)
+	at org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsCharArray(Util.java:1190)
+	at org.eclipse.jdt.internal.core.CompilationUnit.getContents(CompilationUnit.java:652)
+	at org.scalaide.core.internal.jdt.model.ScalaSourceFile.super$getContents(ScalaSourceFile.scala:155)
+	at org.scalaide.core.internal.jdt.model.ScalaSourceFile.$anonfun$getContents$2(ScalaSourceFile.scala:155)
+	at scala.util.control.Exception$Catch.apply(Exception.scala:224)
+	at org.scalaide.core.internal.jdt.model.ScalaSourceFile.getContents(ScalaSourceFile.scala:155)
+	at org.scalaide.core.internal.jdt.model.ScalaCompilationUnit.lastSourceMap(ScalaCompilationUnit.scala:79)
+	at org.scalaide.core.internal.jdt.model.ScalaCompilationUnit.lastSourceMap$(ScalaCompilationUnit.scala:78)
+	at org.scalaide.core.internal.jdt.model.ScalaSourceFile.lastSourceMap(ScalaSourceFile.scala:71)
+	at org.scalaide.core.internal.compiler.ScalaPresentationCompiler.$anonfun$filesDeleted$3(ScalaPresentationCompiler.scala:289)
+	at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:234)
+	at scala.collection.immutable.List.foreach(List.scala:389)
+	at scala.collection.TraversableLike.map(TraversableLike.scala:234)
+	at scala.collection.TraversableLike.map$(TraversableLike.scala:227)
+	at scala.collection.immutable.List.map(List.scala:295)
+	at org.scalaide.core.internal.compiler.ScalaPresentationCompiler.filesDeleted(ScalaPresentationCompiler.scala:289)
+	at org.scalaide.core.internal.ScalaPlugin.$anonfun$elementChanged$19(ScalaPlugin.scala:332)
+	at org.scalaide.core.internal.ScalaPlugin.$anonfun$elementChanged$19$adapted(ScalaPlugin.scala:332)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.$anonfun$internal$5(PresentationCompilerProxy.scala:101)
+	at scala.Option.flatMap(Option.scala:171)
+	at org.scalaide.core.internal.compiler.PresentationCompilerProxy.internal(PresentationCompilerProxy.scala:100)
+	at org.scalaide.core.internal.ScalaPlugin.$anonfun$elementChanged$18(ScalaPlugin.scala:332)
+	at scala.Option.foreach(Option.scala:257)
+	at org.scalaide.core.internal.ScalaPlugin.$anonfun$elementChanged$17(ScalaPlugin.scala:330)
+	at org.scalaide.core.internal.ScalaPlugin.$anonfun$elementChanged$17$adapted(ScalaPlugin.scala:328)
+	at scala.collection.immutable.Map$Map1.foreach(Map.scala:120)
+	at org.scalaide.core.internal.ScalaPlugin.elementChanged(ScalaPlugin.scala:328)
+	at org.eclipse.jdt.internal.core.DeltaProcessor$3.run(DeltaProcessor.java:1703)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.jdt.internal.core.DeltaProcessor.notifyListeners(DeltaProcessor.java:1693)
+	at org.eclipse.jdt.internal.core.DeltaProcessor.firePostChangeDelta(DeltaProcessor.java:1527)
+	at org.eclipse.jdt.internal.core.DeltaProcessor.fire(DeltaProcessor.java:1503)
+	at org.eclipse.jdt.internal.core.DeltaProcessor.notifyAndFire(DeltaProcessor.java:2219)
+	at org.eclipse.jdt.internal.core.DeltaProcessor.resourceChanged(DeltaProcessor.java:2109)
+	at org.eclipse.jdt.internal.core.DeltaProcessingState.resourceChanged(DeltaProcessingState.java:473)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:289)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:152)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:374)
+	at org.eclipse.core.internal.resources.Workspace.checkpoint(Workspace.java:529)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:262)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2267)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:305)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:96)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:216)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2267)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:86)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:119)
+!SUBENTRY 1 org.eclipse.core.resources 4 368 2018-10-12 12:38:18.624
+!MESSAGE Resource '/kmeans/src/main.scala' does not exist.

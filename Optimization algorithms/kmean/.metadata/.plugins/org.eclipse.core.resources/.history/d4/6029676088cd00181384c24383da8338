@@ -1,0 +1,236 @@
+
+
+object kmeans extends App {
+  //X[node][dim], centroid[node][dim]
+  //distance_array[node][cluster]
+  //dist[node][cluster]
+  //new_cluster_centroif[cluster][dimension]
+  var MAX_CLUSTERS:Int=0 // need to redefine at runtime
+  def square(x:Double):Double={
+    x*x
+  }
+  def calc_distance(dim:Int,p1:Array[Double],p2:Array[Double]):Double={
+    var distance_sq_sum=0.0
+    var i =0
+    for(i<-0 until dim){
+      distance_sq_sum = distance_sq_sum +square(p1(i)-p2(i))
+    }
+      return distance_sq_sum
+  }
+  
+  def calc_all_distances(dim:Int, n:Int, k:Int, X:Array[Array[Double]], centroid:Array[Array[Double]], distance_output:Array[Array[Double]])={
+    //for each n points
+    for(i<-0 until n){
+      //for each k clusters
+      for(j<-0 until k){
+        distance_output(i)(j)=calc_distance(dim, X(i), centroid(j))
+      }
+    }
+  }
+  
+  def calc_total_distance(dim:Int, n:Int, k:Int, X:Array[Array[Double]],centroids:Array[Array[Double]],cluster_assignment_index:Array[Int]):Double={
+    var tot_D:Double = 0.00;
+    
+   // for every point
+    for ( ii <-0 until n)
+      {
+       // which cluster is it in?
+        val active_cluster:Int = cluster_assignment_index(ii)
+        
+       // sum distance
+        if (active_cluster != -1)
+          tot_D = tot_D+ calc_distance(dim, X(ii), centroids(active_cluster))
+      }      
+    return tot_D;
+  }
+  
+  def choose_all_clusters_from_distances(dim:Int, n:Int, k:Int, distance_array:Array[Array[Double]], cluster_assignment_index:Array[Int])={
+    // for each point
+    for (ii<- 0 until n)
+      {
+        var best_index:Int = -1;
+        var closest_distance:Double =Double.MaxValue;
+        
+       // for each cluster
+        for (jj <-0 until k)
+          {
+           // distance between point and cluster centroid
+           
+            val cur_distance:Double  = distance_array(ii)(jj);
+            if (cur_distance < closest_distance)
+              {
+                best_index = jj;
+                closest_distance = cur_distance;
+              }
+          }
+
+       // record in array
+        cluster_assignment_index(ii) = best_index;
+      }
+  }
+  
+  def calc_cluster_centroids( dim:Int,  n:Int, k:Int, X:Array[Array[Double]], cluster_assignment_index:Array[Int], new_cluster_centroid:Array[Array[Double]])={
+    var cluster_member_count=new Array[Int](MAX_CLUSTERS);
+  
+   // initialize cluster centroid coordinate sums to zero
+    for ( ii <- 0 until k) 
+      {
+        cluster_member_count(ii) = 0;
+        
+        for ( jj <- 0 until dim)
+          new_cluster_centroid(ii)(jj) = 0;
+     }
+
+   // sum all points
+   // for every point
+    for (ii <- 0 until n)
+      {
+       // which cluster is it in?
+        val active_cluster = cluster_assignment_index(ii);
+
+       // update count of members in that cluster
+        cluster_member_count(active_cluster)=cluster_member_count(active_cluster)+1;
+        
+       // sum point coordinates for finding centroid
+        for ( jj <- 0 until dim){
+          new_cluster_centroid(active_cluster)(jj)=new_cluster_centroid(active_cluster)(jj) + X(ii)(jj);
+        }
+      }
+      
+      
+   // now divide each coordinate sum by number of members to find mean/centroid
+   // for each cluster
+    for ( ii <- 0 until k) 
+      {
+        if (cluster_member_count(ii) != 0){          
+         // for each dimension
+          for (jj <- 0 until dim){
+            new_cluster_centroid(ii)(jj)=new_cluster_centroid(ii)(jj) / cluster_member_count(ii); 
+          }
+        }
+      }
+  }
+  
+  def get_cluster_member_count(n:Int, k:Int, cluster_assignment_index:Array[Int],cluster_member_count:Array[Int])={
+   // initialize cluster member counts
+    for ( ii <- 0 until k) 
+      cluster_member_count(ii) = 0;
+  
+   // count members of each cluster    
+    for (ii <- 0 until  n)
+      cluster_member_count(cluster_assignment_index(ii))=cluster_member_count(cluster_assignment_index(ii))+1;
+  }
+  
+  def update_delta_score_table(dim:Int, n:Int, k:Int, X:Array[Array[Double]], cluster_assignment_cur:Array[Int], cluster_centroid:Array[Array[Double]], cluster_member_count:Array[Int], point_move_score_table:Array[Array[Double]],cc:Int)={
+   // for every point (both in and not in the cluster)
+    for (ii <- 0 until n)
+      {
+        var dist_sum = 0.00;
+        for ( kk <- 0 until dim)
+          {
+            val axis_dist = X(ii)(kk) - cluster_centroid(cc)(kk); 
+            dist_sum = dist_sum + square(axis_dist);
+          }
+          var alpha = -1
+          if(cluster_assignment_cur(ii)!=cc){
+            alpha=1
+          }
+        val mult = (cluster_member_count(cc).toDouble / (cluster_member_count(cc) + alpha));
+
+        point_move_score_table(ii)(cc) = dist_sum * mult;
+      }
+  }
+  
+  def  perform_move(dim:Int,n:Int, k:Int, X:Array[Array[Double]], cluster_assignment:Array[Int],cluster_centroid:Array[Array[Double]], cluster_member_count:Array[Int],move_point:Int, move_target_cluster:Int)={
+    val cluster_old = cluster_assignment(move_point);
+    val cluster_new = move_target_cluster;
+  
+   // update cluster assignment array
+    cluster_assignment(move_point) = cluster_new;
+    
+   // update cluster count array
+    cluster_member_count(cluster_old)=cluster_member_count(cluster_old)-1;
+    cluster_member_count(cluster_new)=cluster_member_count(cluster_old)+1;
+    
+    if (cluster_member_count(cluster_old) > 1){
+      printf("WARNING: Can't handle single-member clusters! \n");
+    
+     // update centroid array
+      for (ii <- 0 until dim)
+        {
+          cluster_centroid(cluster_old)(ii) =cluster_centroid(cluster_old)(ii)- (X(move_point)(ii) - cluster_centroid(cluster_old)(ii)) / cluster_member_count(cluster_old);
+          cluster_centroid(cluster_new)(ii) =cluster_centroid(cluster_new)(ii)+ (X(move_point)(ii) - cluster_centroid(cluster_new)(ii)) / cluster_member_count(cluster_new);
+        }
+    }
+   }
+  
+  def copy_assignment_array( n:Int, src:Array[Int], tgt:Array[Int])={
+    for (ii <- 0 until n)
+      tgt(ii) = src(ii);
+  }
+  
+  def assignment_change_count(n:Int,a:Array[Int], b:Array[Int]):Int={
+    var change_count = 0;
+
+    for ( ii <- 0 until n)
+      if (a(ii) != b(ii))
+        change_count=change_count+1;
+        
+    return change_count;
+  }
+  
+  def kmeans(dim:Int,X:Array[Array[Double]],n:Int,k:Int,cluster_centroid:Array[Array[Double]],iteration:Int,cluster:Int)={
+    val MAX_ITERATIONS=iteration
+    MAX_CLUSTERS=cluster
+    var dist=Array.ofDim[Double](n,k)
+    var cluster_assignment_cur=new Array[Int](n)
+    var cluster_assignment_prev = new Array[Int](n);
+    var point_move_score=Array.ofDim[Double](n,k)
+    
+    calc_all_distances(dim, n, k, X, cluster_centroid, dist);
+    choose_all_clusters_from_distances(dim, n, k, dist, cluster_assignment_cur);
+    copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_prev);
+    
+    var prev_totD = Double.MaxValue;
+    var batch_iteration = 0;
+    
+    loop.breakable {
+      
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

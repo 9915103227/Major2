@@ -1,0 +1,10 @@
+
+
+object kmeans extends App {
+  var x=2
+   def func()={
+    x=3;
+  }
+  func()
+  println(x)
+}

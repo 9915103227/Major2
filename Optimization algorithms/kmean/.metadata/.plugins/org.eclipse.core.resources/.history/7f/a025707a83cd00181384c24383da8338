@@ -1,0 +1,24 @@
+
+
+object kmeans extends App {
+  def square(x:Double):Double={
+    x*x
+  }
+  def calc_distance(dim:Int,p1:Array[Double],p2:Array[Double]):Double={
+    var distance_sq_sum=0.0
+    var i =0
+    for(i<-0 until dim){
+      distance_sq_sum = distance_sq_sum +square(p1(i)-p2(i))
+    }
+      return distance_sq_sum
+  }
+  def calc_all_distances(dim:Int, n:Int, k:Int, X:Array[Array[Double]], centroid:Array[Array[Double]], distance_output:Array[Double])={
+    //for each n points
+    for(i<-0 until n){
+      //for each k clusters
+      for(j<-0 until k){
+        distance_output(i*k+j)=calc_distance(dim, X(i), centroid(j))
+      }
+    }
+  }
+}

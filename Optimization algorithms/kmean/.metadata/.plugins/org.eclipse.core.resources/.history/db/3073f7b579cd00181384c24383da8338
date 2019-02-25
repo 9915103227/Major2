@@ -1,0 +1,12 @@
+
+
+object tmp extends App {
+  
+  val matrix = Array.ofDim[Int](2,2)
+  matrix(0)(0)=10;
+  def func(matrix:Array[Array[Int]])={
+    matrix(0)(0)=22
+  }
+  //func(matrix)
+  println(matrix(0)(0))
+}
