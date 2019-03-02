@@ -86,7 +86,7 @@ for iteration in range(iterations):
             
             #Full Convolution1
             F1=sigmaF1
-            for nodeF1 in range(1024):
+            '''for nodeF1 in range(1024):
                 sum=0.00
                 for nodeI1 in range(features):
                     sum=sum+WFC1[whale][nodeI1][nodeF1]
@@ -95,6 +95,13 @@ for iteration in range(iterations):
                     F1[nodeF1]=sum
                 else:
                     F1[nodeF1]=0.05*sum
+            '''
+            sigmaF1=np.dot(WFC1[whale].transpose(),I1)
+            for nodeF1 in range(1024):
+                if sigmaF1[nodeF1]>=0:
+                    F1[nodeF1]=sigmaF1[nodeF1]
+                else:
+                    F1[nodeF1]=0.05*sigmaF1[nodeF1]
             #Full Convolution1 done
             
             #Convolution 1
@@ -161,8 +168,9 @@ for iteration in range(iterations):
             #Pool2 ended
             
             #Full convolution2 started:
-            P2=P2.reshape((400,1))
+            P2=P2.reshape((400))
             F2=sigmaF2
+            '''
             for nodeF2 in range(84):
                 sum=0.00
                 for nodeP2 in range(400):
@@ -172,10 +180,18 @@ for iteration in range(iterations):
                     F2[nodeF2]=sum
                 else:
                     F2[nodeF2]=0.05*sum
+            '''
+            sigmaF2=np.dot(WFC2[whale].transpose(),P2)
+            for nodeF2 in range(84):
+                if sigmaF2[nodeF2]>=0:
+                    F2[nodeF2]=sigmaF2[nodeF2]
+                else:
+                    F2[nodeF2]=sigmaF2[nodeF2]*0.05
             #Full Convolution2 done
             
             #Full Convolution3 started
             F3=sigmaF3
+            '''
             for nodeF3 in range(10):
                 sum=0.00
                 for nodeF2 in range(84):
@@ -185,6 +201,13 @@ for iteration in range(iterations):
                     F3[nodeF3]=sum
                 else:
                     F3[nodeF3]=0.05*sum
+            '''
+            sigmaF3=np.dot(WFC3[whale].transpose(),F2)
+            for nodeF3 in range(10):
+                if sigmaF3[nodeF3]>=0:
+                    F3[nodeF3]=sigmaF3[nodeF3]
+                else:
+                    F3[nodeF3]=sigmaF3[nodeF3]*0.05
             #Full Convolution1 done
             
             
@@ -192,7 +215,12 @@ for iteration in range(iterations):
             sum=0.00
             for nodeF3 in range(10):
                 sum=sum+F3[nodeF3]*WOP[whale][nodeF3]
-            sum=1/(1+math.exp(-1*sum))
+            if sum>=40:
+                sum=1.00
+            elif sum<=-40:
+                sum=0.00
+            else:
+                sum=1/(1+math.exp(-1*sum))
             
             #Forward propogation done
             print("forward pass done")
@@ -208,6 +236,7 @@ for iteration in range(iterations):
             delWOP=np.zeros((10))
             delF3=np.zeros((10))
             delSigmaF3=np.zeros((10))
+            '''
             for nodeF3 in range(10):
                 delWOP[nodeF3]=delSigmaSum*F3[nodeF3]
                 delF3[nodeF3]=delSigmaSum*WOP[whale][nodeF3]
@@ -215,13 +244,18 @@ for iteration in range(iterations):
                     delSigmaF3[nodeF3]=delF3[nodeF3]
                 else:
                     delSigmaF3[nodeF3]=delF3[nodeF3]*0.05
-            
+            '''
+            delWOP=np.dot(delSigmaSum,F3)
+            delF3=np.dot(delSigmaSum,WOP[whale])
+            for nodeF3 in range(10):
+                delSigmaF3[nodeF3]=max(delF3[nodeF3],delF3[nodeF3]*0.05)
             #backpropogation for F3 done
             
             #backpropogation for F2 started:
             delWFC3=np.zeros((84,10))
             delF2=np.zeros((84))
             delSigmaF2=np.zeros((84))
+            '''
             for nodeF2 in range(84):
                 for nodeF3 in range(10):
                     delWFC3[nodeF2][nodeF3]=delSigmaF3[nodeF3]*F2[nodeF2]
@@ -230,13 +264,18 @@ for iteration in range(iterations):
                     delSigmaF2[nodeF2]=delF2[nodeF2]
                 else:
                     delSigmaF2[nodeF2]=delF2[nodeF2]*0.05
-            
+            '''
+            delWFC3=np.outer(F2,F3.transpose())
+            delF2=np.dot(WFC3[whale],F3)
+            for nodeF2 in range(84):
+                delSigmaF2[nodeF2]=max(delF2[nodeF2],delF2[nodeF2]*0.05)
             #backpropogation of F2 done
             
             #backpropogation at P2
             delWFC2=np.zeros((400,84))
             delP2=np.zeros((400))
             delSigmaP2=np.zeros((400))
+            '''
             for nodeP2 in range(400):
                 for nodeF2 in range(84):
                     delWFC2[nodeP2][nodeF2]=delSigmaF2[nodeF2]*P2[nodeP2]
@@ -245,7 +284,9 @@ for iteration in range(iterations):
                     delSigmaP2[nodeP2]=delP2[nodeP2]
                 else:
                     delSigmaP2[nodeP2]=delP2[nodeP2]
-            
+            '''
+            delWFC2=np.outer(P2,F2)
+            delP2=np.dot(WFC2[whale],F2)
             delP2=delP2.reshape((16,5,5))
             delSigmaP2=delP2
             #backpropogation at P2 done
@@ -331,10 +372,13 @@ for iteration in range(iterations):
             
             #propogation at I1 started:
             delWFC1=np.zeros((features,1024))
+            '''
             for nodeI1 in range(features):
                 for nodeF1 in range(1024):
                     delWFC1[nodeI1][nodeF1]=delSigmaF1[nodeF1]*I1[nodeI1]
             
+            '''
+            delWFC1=np.outer(I1,F1)
             #backpropogation at I1 done
             
             #gradient descent:
