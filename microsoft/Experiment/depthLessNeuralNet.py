@@ -1,6 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
+Created on Wed Mar  6 21:11:35 2019
+
+@author: pranav
+"""
+
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
 Created on Wed Feb 27 18:14:18 2019
 
 @author: pranav
@@ -55,17 +63,17 @@ newNewX=newX
 newX=newX[:100,:]
 newX=preprocessing.normalize(newX)        
 numberOfwhale=1
-iterations=180
+iterations=10
 dataPoints = newX.shape[0]
 features=newX.shape[1];
-learningRate=0.1
+learningRate=0.001
 
 #initialize features
 WFC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,features,1024))
-WC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,6,5,5))
-WC2=np.random.uniform(low=0,high=1,size=(numberOfwhale,16,6,5,5))
-WFC2=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,400,84))
-WFC3=np.random.uniform(low=0,high=0.00001,size=(numberOfwhale,84,10))
+WC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,1,5,5))
+WC2=np.random.uniform(low=0,high=1,size=(numberOfwhale,1,1,5,5))
+WFC2=np.random.uniform(low=0,high=1,size=(numberOfwhale,25,84))
+WFC3=np.random.uniform(low=0,high=0.0001,size=(numberOfwhale,84,10))
 WOP=np.random.uniform(low=0,high=1,size=(numberOfwhale,10))
 bestWhale=0
 bestMSE=float("inf")
@@ -78,10 +86,10 @@ for iteration in range(iterations):
             startTime=time.time()
             I1=np.zeros((features))
             sigmaF1=np.zeros((1024))
-            sigmaC1=np.zeros((6,28,28))
-            P1=np.zeros((6,14,14))
-            sigmaC2=np.zeros((16,10,10))
-            P2=np.zeros((16,5,5))
+            sigmaC1=np.zeros((1,28,28))
+            P1=np.zeros((1,14,14))
+            sigmaC2=np.zeros((1,10,10))
+            P2=np.zeros((1,5,5))
             sigmaF2=np.zeros((84))
             sigmaF3=np.zeros((10))
             
@@ -118,7 +126,7 @@ for iteration in range(iterations):
             #Convolution 1
             F1=F1.reshape((32,32))
             C1=sigmaC1
-            for depth in range(6):
+            for depth in range(1):
                 for height in range(28):
                     for width in range(28):
                         sum=0.00
@@ -143,7 +151,7 @@ for iteration in range(iterations):
             #Pool1 started
             #stride=2
             
-            for depthP1 in range(6):
+            for depthP1 in range(1):
                 for rowP1 in range(14):
                     for colP1 in range(14):
                         sum=0.00
@@ -157,11 +165,11 @@ for iteration in range(iterations):
             
             #Convolution2 started:
             C2=sigmaC2
-            for depthC2 in range(16):
+            for depthC2 in range(1):
                 for rowC2 in range(10):
                     for colC2 in range(10):
                         sum=0.00
-                        for depthWC2 in range(6):
+                        for depthWC2 in range(1):
                             for rowWC2 in range(5):
                                 for colWC2 in range(5):
                                     sum=sum+WC2[whale][depthC2][depthWC2][rowWC2][colWC2]*C1[depthWC2][rowC2+rowWC2][colC2+colWC2]
@@ -181,7 +189,7 @@ for iteration in range(iterations):
             #Convolution 2 ended
             
             #Pool2 started
-            for depthP2 in range(16):
+            for depthP2 in range(1):
                 for rowP2 in range(5):
                     for colP2 in range(5):
                         sum=0.00
@@ -193,7 +201,7 @@ for iteration in range(iterations):
             #Pool2 ended
             
             #Full convolution2 started:
-            P2=P2.reshape((400))
+            P2=P2.reshape((25))
             F2=sigmaF2
             '''
             for nodeF2 in range(84):
@@ -317,11 +325,11 @@ for iteration in range(iterations):
             #backpropogation of F2 done
             
             #backpropogation at P2
-            delWFC2=np.zeros((400,84))
-            delP2=np.zeros((400))
-            delSigmaP2=np.zeros((400))
+            delWFC2=np.zeros((25,84))
+            delP2=np.zeros((25))
+            delSigmaP2=np.zeros((25))
             
-            for nodeP2 in range(400):
+            for nodeP2 in range(25):
                 for nodeF2 in range(84):
                     delWFC2[nodeP2][nodeF2]=delSigmaF2[nodeF2]*P2[nodeP2]
                     delP2[nodeP2]=delP2[nodeP2]+delSigmaF2[nodeF2]*WFC2[whale][nodeP2][nodeF2]
@@ -332,21 +340,21 @@ for iteration in range(iterations):
             
             '''delWFC2=np.outer(P2,F2)
             delP2=np.dot(WFC2[whale],F2)'''
-            delP2=delP2.reshape((16,5,5))
+            delP2=delP2.reshape((1,5,5))
             delSigmaP2=delP2
             #backpropogation at P2 done
             
             #backpropogation at C2 started:
-            delC2=np.zeros((16,10,10))
+            delC2=np.zeros((1,10,10))
             delSigmaC2=delC2
-            for depthP2 in range(16):
+            for depthP2 in range(1):
                 for rowP2 in range(5):
                     for colP2 in range(5):
                         for kernelRow in range(2):
                             for kernelCol in range(2):
                                 delC2[depthP2][2*rowP2+kernelRow][2*colP2+kernelCol]+=float(delSigmaP2[depthP2][rowP2][colP2])/4
             
-            for depthC2 in range(16):
+            for depthC2 in range(1):
                 for rowC2 in range(10):
                     for colC2 in range(10):
                         if C2[depthC2][rowC2][colC2]>=0:
@@ -358,12 +366,12 @@ for iteration in range(iterations):
             #backpropogation at C2 done
             
             #backpropogation at P1 started:
-            delP1=np.zeros((6,14,14))
-            delWC2=np.zeros((16,6,5,5))
-            for depthC2 in range(16):
+            delP1=np.zeros((1,14,14))
+            delWC2=np.zeros((1,1,5,5))
+            for depthC2 in range(1):
                 for rowC2 in range(10):
                     for colC2 in range(10):
-                        for kernelDepth in range(6):
+                        for kernelDepth in range(1):
                             for kernelRow in range(5):
                                 for kernelCol in range(5):
                                     delWC2[depthC2][kernelDepth][kernelRow][kernelCol]+=delSigmaC2[depthC2][rowC2][colC2]*P1[kernelDepth][rowC2+kernelRow][colC2+kernelCol]
@@ -373,16 +381,16 @@ for iteration in range(iterations):
             #backpropogation at P1 done
 
             #backpropogation at C1 started:
-            delC1=np.zeros((6,28,28))
+            delC1=np.zeros((1,28,28))
             delSigmaC1=delC1
-            for depthP1 in range(6):
+            for depthP1 in range(1):
                 for rowP1 in range(14):
                     for colP1 in range(14):
                         for kernelRow in range(2):
                             for kernelCol in range(2):
                                 delC1[depthP1][kernelRow+2*rowP1][kernelCol+2*colP1]+=float(delP1[depthP1][rowP1][colP1])/4
             
-            for depthC1 in range(6):
+            for depthC1 in range(1):
                 for rowC1 in range(28):
                     for colC1 in range(28):
                         if C1[depthC1][rowC1][colC1]>=0:
@@ -394,11 +402,11 @@ for iteration in range(iterations):
             #backpropogation at C1 done
             
             #backpropogation at F1 started:
-            delWC1=np.zeros((6,5,5))
+            delWC1=np.zeros((1,5,5))
             delF1=np.zeros((32,32))
             delSigmaF1=delF1
             
-            for depthC1 in range(6):
+            for depthC1 in range(1):
                 for rowC1 in range(28):
                     for colC1 in range(28):
                         for kernelRow in range(5):
@@ -438,27 +446,27 @@ for iteration in range(iterations):
                     WFC1[whale][nodeI1][nodeF1]-=learningRate*delWFC1[nodeI1][nodeF1]
             
             #For WC1:
-            for depthC1 in range(6):
+            for depthC1 in range(1):
                 for kernelRow in range(5):
                     for kernelCol in range(5):
                         WC1[whale][depthC1][kernelRow][kernelCol]-=learningRate*delWC1[depthC1][kernelRow][kernelCol]
             
             #For WC2
-            for depthC2 in range(16):
-                for kernelDepth in range(6):
+            for depthC2 in range(1):
+                for kernelDepth in range(1):
                     for kernelRow in range(5):
                         for kernelCol in range(5):
                             WC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]-=learningRate*delWC2[depthC2][kernelDepth][kernelRow][kernelCol]
             
             #For WFC2
-            for nodeP2 in range(400):
+            for nodeP2 in range(25):
                 for nodeF2 in range(84):
                     WFC2[whale][nodeP2][nodeF2]-=learningRate*delWFC2[nodeP2][nodeF2]
             
             #for WFC3:
             for nodeF2 in range(84):
                 for nodeF3 in range(10):
-                    WFC3[whale][nodeF2][nodeF3]-=0.000001*delWFC3[nodeF2][nodeF3]
+                    WFC3[whale][nodeF2][nodeF3]-=learningRate*delWFC3[nodeF2][nodeF3]
             
             #for WOP:
             for node in range(10):
@@ -470,17 +478,17 @@ whale=1
 yPred=np.zeros(dataPoints)
 for iteration in range(1):
     print("iteration "+str(iteration))
-    for whale in range(1):
+    for whale in range(numberOfwhale):
         error=0.00
         for dataPoint in range(dataPoints):
             #initializations
             startTime=time.time()
             I1=np.zeros((features))
             sigmaF1=np.zeros((1024))
-            sigmaC1=np.zeros((6,28,28))
-            P1=np.zeros((6,14,14))
-            sigmaC2=np.zeros((16,10,10))
-            P2=np.zeros((16,5,5))
+            sigmaC1=np.zeros((1,28,28))
+            P1=np.zeros((1,14,14))
+            sigmaC2=np.zeros((1,10,10))
+            P2=np.zeros((1,5,5))
             sigmaF2=np.zeros((84))
             sigmaF3=np.zeros((10))
             
@@ -517,7 +525,7 @@ for iteration in range(1):
             #Convolution 1
             F1=F1.reshape((32,32))
             C1=sigmaC1
-            for depth in range(6):
+            for depth in range(1):
                 for height in range(28):
                     for width in range(28):
                         sum=0.00
@@ -542,7 +550,7 @@ for iteration in range(1):
             #Pool1 started
             #stride=2
             
-            for depthP1 in range(6):
+            for depthP1 in range(1):
                 for rowP1 in range(14):
                     for colP1 in range(14):
                         sum=0.00
@@ -556,11 +564,11 @@ for iteration in range(1):
             
             #Convolution2 started:
             C2=sigmaC2
-            for depthC2 in range(16):
+            for depthC2 in range(1):
                 for rowC2 in range(10):
                     for colC2 in range(10):
                         sum=0.00
-                        for depthWC2 in range(6):
+                        for depthWC2 in range(1):
                             for rowWC2 in range(5):
                                 for colWC2 in range(5):
                                     sum=sum+WC2[whale][depthC2][depthWC2][rowWC2][colWC2]*C1[depthWC2][rowC2+rowWC2][colC2+colWC2]
@@ -580,7 +588,7 @@ for iteration in range(1):
             #Convolution 2 ended
             
             #Pool2 started
-            for depthP2 in range(16):
+            for depthP2 in range(1):
                 for rowP2 in range(5):
                     for colP2 in range(5):
                         sum=0.00
@@ -592,7 +600,7 @@ for iteration in range(1):
             #Pool2 ended
             
             #Full convolution2 started:
-            P2=P2.reshape((400))
+            P2=P2.reshape((25))
             F2=sigmaF2
             '''
             for nodeF2 in range(84):
@@ -658,7 +666,7 @@ for iteration in range(1):
                 sum=sum+F3[nodeF3]*WOP[whale][nodeF3]
             if sum>=40:
                 sum=1.00
-            elif sum<=-40:
+            elif sum<=-700:
                 sum=0.00
             else:
                 sum=1/(1+math.exp(-1*sum))

@@ -1,6 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
+Created on Wed Mar  6 15:57:39 2019
+
+@author: pranav
+"""
+
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
 Created on Wed Feb 27 18:14:18 2019
 
 @author: pranav
@@ -55,10 +63,10 @@ newNewX=newX
 newX=newX[:100,:]
 newX=preprocessing.normalize(newX)        
 numberOfwhale=1
-iterations=180
+iterations=10
 dataPoints = newX.shape[0]
 features=newX.shape[1];
-learningRate=0.1
+learningRate=0.000001
 
 #initialize features
 WFC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,features,1024))
@@ -67,6 +75,27 @@ WC2=np.random.uniform(low=0,high=1,size=(numberOfwhale,16,6,5,5))
 WFC2=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,400,84))
 WFC3=np.random.uniform(low=0,high=0.00001,size=(numberOfwhale,84,10))
 WOP=np.random.uniform(low=0,high=1,size=(numberOfwhale,10))
+
+VWFC1=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,features,1024))
+VWC1=np.random.uniform(low=0.000,high=0.00,size=(numberOfwhale,6,5,5))
+VWC2=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,16,6,5,5))
+VWFC2=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,400,84))
+VWFC3=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,84,10))
+VWOP=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,10))
+
+SWFC1=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,features,1024))
+SWC1=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,6,5,5))
+SWC2=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,16,6,5,5))
+SWFC2=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,400,84))
+SWFC3=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,84,10))
+SWOP=np.random.uniform(low=0.00,high=0.00,size=(numberOfwhale,10))
+
+beta1=0.9
+beta2=0.999
+epsilon=0.00000001
+
+batchIteration=0
+
 bestWhale=0
 bestMSE=float("inf")
 for iteration in range(iterations):
@@ -259,7 +288,7 @@ for iteration in range(iterations):
                 sum=sum+F3[nodeF3]*WOP[whale][nodeF3]
             if sum>=40:
                 sum=1.00
-            elif sum<=-40:
+            elif sum<=-700:
                 sum=0.00
             else:
                 sum=1/(1+math.exp(-1*sum))
@@ -431,38 +460,69 @@ for iteration in range(iterations):
             '''delWFC1=np.outer(I1,F1)'''
             #backpropogation at I1 done
             
-            #gradient descent:
+            #gradient descent with adam optimization:
+            batchIteration+=1
             #for WFC1
             for nodeI1 in range(features):
                 for nodeF1 in range(1024):
-                    WFC1[whale][nodeI1][nodeF1]-=learningRate*delWFC1[nodeI1][nodeF1]
+                    #WFC1[whale][nodeI1][nodeF1]-=learningRate*delWFC1[nodeI1][nodeF1]
+                    VWFC1[whale][nodeI1][nodeF1]=(1-beta1)*delWFC1[nodeI1][nodeF1]+beta1*VWFC1[whale][nodeI1][nodeF1]
+                    SWFC1[whale][nodeI1][nodeF1]=beta2*SWFC1[whale][nodeI1][nodeF1]+(1-beta2)*delWFC1[nodeI1][nodeF1]*delWFC1[nodeI1][nodeF1]
+                    vCorrected=VWFC1[whale][nodeI1][nodeF1]/(1-math.pow(beta1,batchIteration))
+                    sCorrected=SWFC1[whale][nodeI1][nodeF1]/(1-math.pow(beta2,batchIteration))
+                    WFC1[whale][nodeI1][nodeF1]-=learningRate*(vCorrected/(math.sqrt(sCorrected)+epsilon))
             
             #For WC1:
             for depthC1 in range(6):
                 for kernelRow in range(5):
                     for kernelCol in range(5):
-                        WC1[whale][depthC1][kernelRow][kernelCol]-=learningRate*delWC1[depthC1][kernelRow][kernelCol]
+                        #WC1[whale][depthC1][kernelRow][kernelCol]-=learningRate*delWC1[depthC1][kernelRow][kernelCol]
+                        VWC1[whale][depthC1][kernelRow][kernelCol]=(1-beta1)*delWC1[depthC1][kernelRow][kernelCol]+beta1*VWC1[whale][depthC1][kernelRow][kernelCol]
+                        SWC1[whale][depthC1][kernelRow][kernelCol]=beta2*SWC1[whale][depthC1][kernelRow][kernelCol]+(1-beta2)*delWC1[depthC1][kernelRow][kernelCol]*delWC1[depthC1][kernelRow][kernelCol]
+                        vCorrected=VWC1[whale][depthC1][kernelRow][kernelCol]/(1-math.pow(beta1,batchIteration))
+                        sCorrected=SWC1[whale][depthC1][kernelRow][kernelCol]/(1-math.pow(beta2,batchIteration))
+                        WC1[whale][depthC1][kernelRow][kernelCol]-=learningRate*(vCorrected/(math.sqrt(sCorrected)+epsilon))
             
             #For WC2
             for depthC2 in range(16):
                 for kernelDepth in range(6):
                     for kernelRow in range(5):
                         for kernelCol in range(5):
-                            WC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]-=learningRate*delWC2[depthC2][kernelDepth][kernelRow][kernelCol]
+                            #WC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]-=learningRate*delWC2[depthC2][kernelDepth][kernelRow][kernelCol]
+                            VWC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]=(1-beta1)*delWC2[depthC2][kernelDepth][kernelRow][kernelCol]+beta1*VWC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]
+                            SWC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]=beta2*SWC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]+(1-beta2)*delWC2[depthC2][kernelDepth][kernelRow][kernelCol]*delWC2[depthC2][kernelDepth][kernelRow][kernelCol]
+                            vCorrected=VWC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]/(1-math.pow(beta1,batchIteration))
+                            sCorrected=SWC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]/(1-math.pow(beta2,batchIteration))
+                            WC2[whale][depthC2][kernelDepth][kernelRow][kernelCol]-=learningRate*(vCorrected/(math.sqrt(sCorrected)+epsilon))
             
             #For WFC2
             for nodeP2 in range(400):
                 for nodeF2 in range(84):
-                    WFC2[whale][nodeP2][nodeF2]-=learningRate*delWFC2[nodeP2][nodeF2]
+                    #WFC2[whale][nodeP2][nodeF2]-=learningRate*delWFC2[nodeP2][nodeF2]
+                    VWFC2[whale][nodeP2][nodeF2]=(1-beta1)*delWFC2[nodeP2][nodeF2]+beta1*VWFC2[whale][nodeP2][nodeF2]
+                    SWFC2[whale][nodeP2][nodeF2]=beta2*SWFC2[whale][nodeP2][nodeF2]+(1-beta2)*delWFC2[nodeP2][nodeF2]*delWFC2[nodeP2][nodeF2]
+                    vCorrected=VWFC2[whale][nodeP2][nodeF2]/(1-math.pow(beta1,batchIteration))
+                    sCorrected=SWFC2[whale][nodeP2][nodeF2]/(1-math.pow(beta2,batchIteration))
+                    WFC2[whale][nodeP2][nodeF2]-=learningRate*(vCorrected/(math.sqrt(sCorrected)+epsilon))
             
             #for WFC3:
             for nodeF2 in range(84):
                 for nodeF3 in range(10):
-                    WFC3[whale][nodeF2][nodeF3]-=0.000001*delWFC3[nodeF2][nodeF3]
+                    #WFC3[whale][nodeF2][nodeF3]-=0.000001*delWFC3[nodeF2][nodeF3]
+                    VWFC3[whale][nodeF2][nodeF3]=(1-beta1)*delWFC3[nodeF2][nodeF3]+beta1*VWFC3[whale][nodeF2][nodeF3]
+                    SWFC3[whale][nodeF2][nodeF3]=beta2*SWFC3[whale][nodeF2][nodeF3]+(1-beta2)*delWFC3[nodeF2][nodeF3]*delWFC3[nodeF2][nodeF3]
+                    vCorrected=VWFC3[whale][nodeF2][nodeF3]/(1-math.pow(beta1,batchIteration))
+                    sCorrected=SWFC2[whale][nodeF2][nodeF3]/(1-math.pow(beta2,batchIteration))
+                    WFC3[whale][nodeF2][nodeF3]-=0.00000001*(vCorrected/(math.sqrt(sCorrected)+epsilon))
             
             #for WOP:
             for node in range(10):
-                WOP[whale][node]-=learningRate*delWOP[node]
+                #WOP[whale][node]-=learningRate*delWOP[node]
+                VWOP[whale][node]=beta1*VWOP[whale][node]+(1-beta1)*delWOP[node]
+                SWOP[whale][node]=beta2*SWOP[whale][node]+(1-beta2)*math.pow(delWOP[node],2)
+                vCorrected=VWOP[whale][node]/(1-math.pow(beta1,batchIteration))
+                sCorrected=SWOP[whale][node]/(1-math.pow(beta2,batchIteration))
+                WOP[whale][node]-=learningRate*(vCorrected/(math.sqrt(sCorrected)+epsilon))
             print(time.time()-startTime)
 
 whale=1
@@ -658,7 +718,7 @@ for iteration in range(1):
                 sum=sum+F3[nodeF3]*WOP[whale][nodeF3]
             if sum>=40:
                 sum=1.00
-            elif sum<=-40:
+            elif sum<=-700:
                 sum=0.00
             else:
                 sum=1/(1+math.exp(-1*sum))

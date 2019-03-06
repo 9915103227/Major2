@@ -8,9 +8,11 @@ from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
 import random
 import time
-colWithCategories=[0,1,2,3,4,18,19,20,23,24,25,28,31,34,35,41,43,47,51,52,54,55,56,59,60,61,64,66,67,70]
+from sklearn import svm
+from sklearn.ensemble import RandomForestClassifier
+colWithCategories=[0, 1, 2, 3, 17, 18, 19, 22, 23, 24, 27, 30, 33, 34, 40, 42, 46, 50, 51, 53, 54, 55, 58, 59, 60, 63, 65, 66, 69]
 dataset=pd.read_csv('train1.csv')
-X=dataset.iloc[:,:-1].values;
+X=dataset.iloc[:,1:-1].values;
 y=dataset.iloc[:,82].values;
 X_check=pd.DataFrame(X)
 dataPoints=X.shape[0]
@@ -28,9 +30,9 @@ for feature in colWithCategories:
 
 missingValueImputer=SimpleImputer(missing_values=np.nan,strategy="constant", fill_value=0)
 X=missingValueImputer.fit_transform(X)
-
-numberOfwhale=100
-iterations=300
+X_check=pd.DataFrame(X)
+numberOfwhale=20
+iterations=100
 #initialization of whales:
 centresOfwhale=np.zeros((numberOfwhale,features))
 for whale in range(numberOfwhale):
@@ -38,7 +40,7 @@ for whale in range(numberOfwhale):
 
 startTime=0
 bestWhale=0
-neigh = LogisticRegression()
+neigh = RandomForestClassifier(n_estimators=100)
 for iteration in range(iterations):
     print("iteration "+str(iteration))
     fitness=np.zeros((numberOfwhale))
@@ -47,7 +49,7 @@ for iteration in range(iterations):
     startTime=time.time();
     for whale in range(numberOfwhale):
         
-        #print("whale: "+str(whale))
+        print("whale: "+str(whale))
         numberOfFeature=0
         for feature in range(features):
             if centresOfwhale[whale][feature]==1:
