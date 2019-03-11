@@ -30,7 +30,7 @@ WFC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,features,100))
 WC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,5,3,3))
 WC2=np.random.uniform(low=0,high=1,size=(numberOfwhale,5,3,3))
 WFC2=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,36,84))
-WFC3=np.random.uniform(low=0,high=0.001,size=(numberOfwhale,84,10))
+WFC3=np.random.uniform(low=0,high=0.0001,size=(numberOfwhale,84,10))
 WOP=np.random.uniform(low=0,high=1,size=(numberOfwhale,10))
 
 #Application of WOA
@@ -195,13 +195,13 @@ for iteration in range(iterations):
                     rand_leader_index = int(math.floor((numberOfwhale-1)*random.random()+1));
                     X_rand = centresOfwhale[rand_leader_index]
                     D_X_rand=abs(C*X_rand[cluster]-centresOfwhale[whale,cluster]); # Eq. (2.7)
-                    centresOfwhale[whale,cluster]=X_rand[cluster]-A*D_X_rand;      # Eq. (2.8)
+                    centresOfwhale[whale,cluster]=X_rand[cluster]-A*D_X_rand*0.001;      # Eq. (2.8)
                 elif abs(A)<1 :
                     D_Leader=abs(C*centresOfwhale[bestWhale,cluster]-centresOfwhale[whale,cluster]); # Eq. (2.1)
-                    centresOfwhale[whale,cluster]=centresOfwhale[bestWhale,cluster]-A*D_Leader;      # Eq. (2.2)
+                    centresOfwhale[whale,cluster]=centresOfwhale[bestWhale,cluster]-A*D_Leader*0.001;      # Eq. (2.2)
             elif p>=0.5 :
                 distance2Leader=abs(centresOfwhale[bestWhale,cluster]-centresOfwhale[whale,cluster]);      # Eq. (2.5)
-                centresOfwhale[whale,cluster]=distance2Leader*math.exp(b*l)*math.cos(l*2*3.14)+centresOfwhale[bestWhale,cluster];
+                centresOfwhale[whale,cluster]=distance2Leader*math.exp(b*l)*math.cos(l*2*3.14)*0.001+centresOfwhale[whale,cluster];
         
     print("WOA applied")
     print(time.time()-startTime)
