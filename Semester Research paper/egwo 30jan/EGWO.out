@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Data\040Clustering\040Approach}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Grey\040wolf\040optimizer\040}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Proposed\040Method}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Enhanced\040Grey\040Wolf\040Optimizer\040\(EGWO\)\040}{section.3}% 6
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Inflated\040Attack\040to\040pray\040using\040Binomial\040Crossover}{subsection.3.1}% 7
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Magnified search for pray using on lévy flight}{subsection.3.1}% 8
+\BOOKMARK [2][-]{subsection.3.2}{EGWO\040based\040clustering}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.3}{Parallelization\040of\040the\040EGWO\040using\040MapReduce\040Architecture}{section.3}% 10
+\BOOKMARK [1][-]{section.4}{Experimental\040results\040}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{Performance\040analysis\040of\040EGWO\040based\040clustering}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.2}{Performance\040analysis\040of\040MapReduce\040Based\040EGWO\040\(MR-EGWO\)}{section.4}% 13
+\BOOKMARK [1][-]{section.5}{Conclusion}{}% 14
