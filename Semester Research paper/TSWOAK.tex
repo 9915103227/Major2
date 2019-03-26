@@ -29,26 +29,7 @@ Whale Optimization Algorithm Optimized K-Means and MapReduce}
 \author{Siddharth Gupta}
 \author{Pranav Saxena}
 \begin{abstract}
- In the era of Web 2.0, the data is growing on an immense scale. The E-commerce business require
-information retrieval tools like Recommender Systems, for assisting their costumers to select better choice
-for their shopping bucket. One of the prominent recommendation system approach is Collaborative
-filtering, that outputs best suggestion by finding similar items based on user’s shopping history. K-Means
-prominent method is used to find clusters of similar items in Collaborative filtering. K-Means is a greedy
-approach and thus suffers from local minima problem. To mitigate this problem, nature-inspired algorithm
-named Tournament-Selection Empowered Whale Optimization Algorithm Optimized K-Means
-(TSWOAK) is introduced. The introduced algorithm TSWOAK, uses the hunting behaviour of Humpback
-Whales and Tournament-Selection concept to achieve global optima. The introduced algorithm is tested on
-seven benchmark UCI datasets, and the results are compared with the ones achieved by state-of-art
-algorithms namely, Bat algorithm, Particle Swarm Optimization, Grey-Wolf Optimization, K-Means on the
-basis of inter-cluster distance. The results showed that the K-Means has been optimized by the proposed
-method. The algorithm was then checked for its application in Recommender System. For checking its
-applicability, it was tested on MovieLens dataset. The results in term of Mean Absolute Error(MAE) were
-compared to the results of already present algorithms namely, K-Means, PCA-K-Means, ABC-KM,
-GAKM, PCA-GAKM, SOM, PCA-SOM, UPCC. The comparison shows that the TSWOAK has lesser
-MAE than other algorithms, which shows that Recommender System is a good application of TSWOAK.
-The problem which TSWOAK still face is that it will fail on large datasets, as the time complexity of nature-
-inspired algorithms is high. To solve this problem, the TSWOAK is adapted in the MapReduce model of
-Apache-Hadoop framework and is named MR-TSWOAK
+ In the era of Web 2.0, the data is growing on an immense scale. The E-commerce business require information retrieval tools like Recommender Systems, or assisting their costumers to select better choice for their shopping bucket. One of the prominent recommendation system approach is Collaborative filtering, that outputs best suggestion by finding similar items based on user’s shopping history. K-Means prominent method is used to find clusters  of similar items in Collaborative filtering. K-Means is a greedy approach and thus suffers from local minima problem. To mitigate this problem,  nature-inspired algorithm named Tournament-Selection Empowered Whale Optimization Algorithm Optimized K-Means (TSWOAK) is introduced. The introduced  algorithm TSWOAK, uses the hunting behaviour of Humpback Whales and Tournament-Selection concept to achieve global optima. The introduced algorithm is  tested on seven benchmark UCI datasets, and the results are compared with the ones achieved by state-of-art algorithms namely, Bat algorithm, Particle  Swarm Optimization, Grey-Wolf Optimization, K-Means on the  basis of inter-cluster distance. The results showed that the K-Means has been optimized by the proposed method. The algorithm was then checked for its application in Recommender System. For checking its applicability, it was tested on  MovieLens dataset. The results in term of Mean Absolute Error(MAE) were compared to the results of already present algorithms namely, K-Means,  PCA-K-Means, ABC-KM, GAKM, PCA-GAKM, SOM, PCA-SOM, UPCC. The comparison shows that the TSWOAK has lesser MAE than other algorithms, which shows that  Recommender System is a good application of TSWOAK. The problem which TSWOAK still face is that it will fail on large datasets, as the time complexity of nature-inspired algorithms is high. To solve this problem, the TSWOAK is adapted in the MapReduce model of Apache-Hadoop framework and is named MR-TSWOAK.
 \end{abstract}
 
 \begin{keyword}
@@ -61,64 +42,7 @@ Clustering method  \sep MapReduce \sep Recommendation System \sep Tournament-Sel
 
 \section{Introduction} \label{sec:intro}
 
- Recommendation Systems are one of the most important information retrieval tools used by online
-businesses to make the environment for customers more personal. Most promiment technique for
-Recommendation System is the Collaborative Filtering \cite{a1}. K-Means algorithm is one of the most used
-algorithms in Collaborative Filtering \cite{a4}. K-Means being a greedy approach suffers from trapping in local-
-optima \cite{a5}.
-To prevent K-Means from getting trapped into local-optima, many nature-inspired algorithms have been
-developed and are hybridized with the clustering algorithm. Maulik et al. \cite{a7} were first to propose
-methodology of using nature-inspired algorithm to optimise the positioning of centroids, in a way that the
-intra-cluster distance is optimized. Hatamlou et al. \cite{a6} have optimized K-Means algorithm using
-Gravitational Search Algorithm (GSA). The GSA was used to optimize the repositioning of cluster-
-centroids. Sharma et al. \cite{a8} have proposed to use bat-algorithm to optimize the positioning of cluster’s
-centroids and have further extend their method on MapReduce. Pandey et al. \cite{a9} have proposed an algorithmthat uses Hybrid Cuckoo Search Algorithm to optimize clustering of twitter data being used in sentiment
-analysis of tweets. Cura et al. \cite{a10} have proposed a method to optimize the clustering of sensor’s data using
-Particle Swarm Optimization. Though the above-mentioned methods perform good on small datasets, but
-fail on large datasets, as the nature-inspired algorithm-based clustering algorithms have high time
-complexity \cite{a5}. Most of the Recommendation Systems suffer from reduced scalability \cite{a2}. To solve these
-problems, Apache-Hadoop needs to be braught into application, as it is an efficient tool for parallel-
-computing. The tool uses MapReduce programming model \cite{a11} which helps to parallelize the tasks on
-DataNodes \cite{a12}
-Apache-Hadoop is a state-of-art open-source tool for handling large datasets, and support parallel-
-computing. Hadoop uses its own file-system called as Hadoop Distributed File System (HDFS) \cite{a12}. The
-HDFS is a master-slave architecture, in which there exist one master node called as NameNode, which
-keeps the meta-data of all the slave nodes called as DataNodes. MapReduce programming model \cite{a11} is
-used by Hadoop for parallel-processing. The MapReduce model has a Map function and Reduce function.
-The Map function takes <key, value> pair as an input and outputs intermediate <key, value> pairs. The
-Reduce function takes all the intermediate <key, value> pairs and combine all values related to each unique
-key. As Hadoop simplifies parallel-computing, many meta-heuristic algorithms have been developed over
-Hadoop. MapReduce-based Artificial Bee Colony algorithm \cite{a13} optimised the clustering of large datasets.
-Dynamic Frequency based K-Bat algorithm (DFBPKBA) \cite{a14} showed that the dynamic change to
-frequency of bats optimised the clustering process and the MapReduce version of the proposed method was
-able to handle large datasets. Tripathi et al. \cite{a5} have proposed an algorithm that uses a hybrid of Grey-wolf
-Optimizer with Levy Flights and Crossover on MapReduce programming model.
-Whale Optimization Algorithm \cite{a15} is a meta-heuristic nature inspired algorithm inspired by the hunting
-behaviour of Humpback whales. The algorithm has shown better results than many state of art algorithms
-such as Particle-swarm Optimization. Grey-wolf Optimizer, Differential Evolution, Gravitational Search
-Algorithm, Fast Evolutionary Programming.
-Though Whale Optimization Algorithm has proved to give better results than other state of the art meta-
-heuristic nature inspired algorithms, but it has risk to get into local optima \cite{a16}. Whale Optimization
-Algorithm discard the (called as whales) with bad fitness values, and there is a chance that the whale having
-bad fitness value might be near global-optima \cite{a16}. To overcome this shortcoming, the authors have
-proposed a method that uses the concept of Tournament Selection along with WOA, called as Tournament
-Selection Empowered Whale Optimization Algorithm optimized K-Means (TSWOAK). To handle
-extremely large dataset, the authors have further proposed a MapReduce variant of TSWOAK called
-MapReduce-based Tournament Selection Empowered Whale Optimization Algorithm optimized K-Means
-(MR-TSWOAK). The proposed method TSWOAK has been tested on seven UCI datasets and the results
-have been compared with respect to intra-cluster distance with state of art algorithm namely. K-Means, Bat
-Algorithm, Gravitation Search Algorithm, Particle Swarm Optimization, and Grey-wolf Optimizer. The
-UCI datasets used are Iris, Seeds, Glass, Cancer, Balance, Haberman, and Wine. The MapReduce based
-method MR-TSWOAK was tested on large datasets namely, Replicated Iris, Replicated CMC, Replicated
-Wine, Replicated Vowel, and the results were compared with respect to intra-cluster distance with popular
-MapReduce based meta-heuristic algorithms namely, Parallel K-Means Algorithm, Parallel K-PSO
-Algorithm, Dynamic Frequency based parallel K-Bat (DFBPKB) Algorithm. Further the authors, tested the
-proposed method for Recommendation System application. For this test, MovieLens dataset was used. The
-result of the test was compared with respect to Mean Absolute Error with state of art collaborative filtering
-algorithms namely, PCA-GAKM, PCA-SOM, SOM, UPCC, K-Means, PCA-K-Means, GAKM, ABC-KM.The research paper has been organized as: Section \ref{sec:bg} discusses the basics of data-clustering and Whale
-Optimization Algorithm (WOA). Section \ref{sec:pm} discusses the clustering method of the proposed method
-TSWOAK, and further discusses the MapReduce-based proposed method MR-TSWOAK. Section \ref{sec:ep}
-presents the experimental arrangements and results. And Section \ref{sec:con} gives the conclusion of the paper.
+ Recommendation Systems are one of the most important information retrieval tools used by online businesses to make the environment for customers more  personal. Most promiment technique for Recommendation System is the Collaborative Filtering \cite{a1}. K-Means algorithm is one of the most used algorithms in Collaborative Filtering \cite{a4}. K-Means being a greedy approach suffers from trapping in local- optima \cite{a5}. To prevent K-Means  from getting trapped into local-optima, many nature-inspired algorithms have been developed and are hybridized with the clustering algorithm. Maulik et  al. \cite{a7} were first to propose methodology of using nature-inspired algorithm to optimise the positioning of centroids, in a way that the  intra-cluster distance is optimized. Hatamlou et al. \cite{a6} have optimized K-Means algorithm using Gravitational Search Algorithm (GSA). The GSA  as used to optimize the repositioning of cluster- centroids. Sharma et al. \cite{a8} have proposed to use bat-algorithm to optimize the positioning of  cluster’s centroids and have further extend their method on MapReduce. Pandey et al. \cite{a9} have proposed an algorithmthat uses Hybrid Cuckoo  search Algorithm to optimize clustering of twitter data being used in sentiment analysis of tweets. Cura et al. \cite{a10} have proposed a method to  optimize the clustering of sensor’s data using Particle Swarm Optimization. Though the above-mentioned methods perform good on small datasets, but  fail on large datasets, as the nature-inspired algorithm-based clustering algorithms have high time complexity \cite{a5}. Most of the Recommendation  systems suffer from reduced scalability \cite{a2}. To solve these problems, Apache-Hadoop needs to be braught into application, as it is an efficient  tool for parallel- computing. The tool uses MapReduce programming model \cite{a11} which helps to parallelize the tasks on  DataNodes \cite{a12} Apache-Hadoop is a state-of-art open-source tool for handling large datasets, and support parallel- computing. Hadoop uses its own file-system called  as Hadoop Distributed File System (HDFS) \cite{a12}. The HDFS is a master-slave architecture, in which there exist one master node called as NameNode,   which keeps the meta-data of all the slave nodes called as DataNodes. MapReduce programming model \cite{a11} is used by Hadoop for  parallel-processing. The MapReduce model has a Map function and Reduce function.  The Map function takes <key, value> pair as an input and outputs intermediate <key, value> pairs. The  Reduce function takes all the intermediate <key, value> pairs and combine all values related to each unique key.  As Hadoop simplifies parallel-computing, many meta-heuristic algorithms have been developed over Hadoop. MapReduce-based Artificial Bee Colony  Algorithm \cite{a13} optimised the clustering of large datasets. Dynamic Frequency based K-Bat algorithm (DFBPKBA) \cite{a14} showed that the dynamic   change to frequency of bats optimised the clustering process and the MapReduce version of the proposed method was able to handle large datasets.  Tripathi et al. \cite{a5} have proposed an algorithm that uses a hybrid of Grey-wolf Optimizer with Levy Flights and Crossover on MapReduce programming  model. Whale Optimization Algorithm \cite{a15} is a meta-heuristic nature inspired algorithm inspired by the hunting  behaviour of  Humpback whales. The algorithm has shown better results than many state of art algorithms such as Particle-swarm Optimization. Grey-wolf Optimizer, Differential Evolution, Gravitational Search Algorithm, Fast Evolutionary Programming. Though Whale Optimization Algorithm has proved to give better results than other state of the art meta-heuristic nature inspired algorithms, but it has risk to get into local optima \cite{a16}. Whale Optimization Algorithm discard the (called as whales) with bad fitness values, and there is a chance that the whale having bad fitness value might be near  global-optima \cite{a16}. To overcome this shortcoming, the authors have proposed a method that uses the concept of Tournament Selection along with  WOA, called as Tournament Selection Empowered Whale Optimization Algorithm optimized K-Means (TSWOAK). To handle extremely large dataset, the authors  have further proposed a MapReduce variant of TSWOAK called MapReduce-based Tournament Selection Empowered Whale Optimization Algorithm optimized K-Means (MR-TSWOAK). The proposed method TSWOAK has been tested on seven UCI datasets and the results  have been compared with respect to  intra-cluster distance with state of art algorithm namely. K-Means, Bat Algorithm, Gravitation Search Algorithm, Particle Swarm Optimization, and  grey-wolf Optimizer. The  UCI datasets used are Iris, Seeds, Glass, Cancer, Balance, Haberman, and Wine. The MapReduce based method MR-TSWOAK was  tested on large datasets namely, Replicated Iris, Replicated CMC, Replicated Wine, Replicated Vowel, and the results were compared with respect to  intra-cluster distance with popular MapReduce based meta-heuristic algorithms namely, Parallel K-Means Algorithm, Parallel K-PSO Algorithm, Dynamic  frequency based parallel K-Bat (DFBPKB) Algorithm. Further the authors, tested the  proposed method for Recommendation System application. For this  test, MovieLens dataset was used. The result of the test was compared with respect to Mean Absolute Error with state of art collaborative filtering algorithms namely, PCA-GAKM, PCA-SOM, SOM, UPCC, K-Means, PCA-K-Means, GAKM, ABC-KM.The research paper has been organized as: Section \ref{sec:bg} discusses the basics of data-clustering and Whale Optimization Algorithm (WOA). Section \ref{sec:pm} discusses the clustering method of the proposed  method TSWOAK, and further discusses the MapReduce-based proposed method MR-TSWOAK. Section \ref{sec:ep} presents the experimental arrangements and results. And Section \ref{sec:con} gives the conclusion of the paper.
 
 
 \section{Background}\label{sec:bg}
@@ -159,10 +83,10 @@ mathematically defined by Eq. (\ref{eq:3}).
 
     
  \begin{equation}\label{eq:3}                               
-   \overrightarrow X(i+1)=\overrightarrow{X^*}(i)+\overrightarrow A.\overrightarrow D
+   \overrightarrow X(t+1)=\overrightarrow{X^*}(t)+\overrightarrow A.\overrightarrow D
 \end{equation}
 \begin{equation}\label{eq:4}
-    \overrightarrow D=|\overrightarrow C.\overrightarrow{X^*}(i)-\overrightarrow X(i)|                           
+    \overrightarrow D=|\overrightarrow C.\overrightarrow{X^*}(t)-\overrightarrow X(t)|                           
 \end{equation}
 \begin{equation}\label{eq:5}                                             	
        \overrightarrow A=2 \overrightarrow a. \overrightarrow {r}-a.                                                     	
@@ -176,223 +100,250 @@ the current iteration. The mathematical Shrinking encircling behaviour is achiev
 the value of |$\overrightarrow{a}$| in Eq. (\ref{eq:4}) from 2 to 0 over the course of iterations and |\overrightarrow{r}| is a random number uniformly distributed in the range of [0,1]. In Spiral update mechanism, the distance between best whale position  ($\overrightarrow{x^*}(t))$ and the position of whale ($\overrightarrow{X}$(t)). Helix-movement of the whale is then mathematically mimicked by the Eq. (\ref{eq:7}).
 
      \begin{equation}\label{eq:7}
-    \overrightarrow D_{\alpha}=|\overrightarrow C_1.\overrightarrow X_{\alpha}-\overrightarrow X|                           
-\end{equation} 
+    \overrightarrow X (t+1)=\overrightarrow{D\rq}.e^b^l.cos(2\pi l)+\overrightarrow{X^*}(t)                           
+\end{equation}
+
+Where $\overrightarrow{D\rq}=|\overrightarrow{X^*}(t)-\overrightarrow X(t)|$ is the distance between the whale and the best whale. b is a constant for
+Where $D\rq$
+defining the shape of logarithmic spiral, l is random number between [-1,1]. Both the strategies have 50\%
+probability of being used. The mathematical model that is used by the humpback whale is given it Eq. (\ref{eq:8})
+
  \begin{equation}\label{eq:8}
-    \overrightarrow D_{\beta}=|\overrightarrow C_2.\overrightarrow X_{\beta}-\overrightarrow X|                          
+\overrightarrow{X}(t+1)=
+  \begin{cases}
+    \overrightarrow{X^*}(t)+\overrightarrow A.\overrightarrow D & \text{if p less 0.5} \\
+    \overrightarrow{D\rq}.e^b^l.cos(2\pi l)+\overrightarrow{X^*}(t) & \text{otherwise}
+  \end{cases}
 \end{equation} 
+
+Where, p is a random number between [0,1].
+
+In exploration phase, the whale chooses a random position $\overrightarrow{X_{rand}}$ and move towards it. The phase is triggered when the value of $|\overrightarrow A| > 1 $ in Eq. (\ref{eq:5}) of Shrinking encircling mechanism. It is shown in
+Eq. (\ref{eq:9}) and (\ref{eq:10})
+
  \begin{equation}\label{eq:9}
-       \overrightarrow D_{\delta}=|\overrightarrow C_3.\overrightarrow X_{\delta}-\overrightarrow X|                          
+       \overrightarrow D=|\overrightarrow C.\overrightarrow{X_{rand}}(t)-\overrightarrow X(t)|                          
 \end{equation} 
-
- Further, Eqs. (\ref{eq:7}), (\ref{eq:8}) and (\ref{eq:9}) define the estimated span around the current position and $alpha$, $beta$ and $delta$, respectively.
-After estimating of distances, the final position of the $\omega$ wolves is determined by Eq. (\ref{eq:10}). Where, $\overrightarrow A_1$, $\overrightarrow A_2$, $\overrightarrow A_3$ represents the random vectors and $i$ shows the current iteration number. 
 \begin{equation}\label{eq:10}
-        \overrightarrow X(i+1)=\left\cite{a \frac{\overrightarrow X_1+\overrightarrow X_2+\overrightarrow X_3} {3}\right}     
-\end{equation} 
-where, $\overrightarrow X_1$, $\overrightarrow X_2$, $\overrightarrow X3$, are defined by Eq. (\ref{eq:11}), (\ref{eq:12}), and (\ref{eq:13}) respectively.
- \begin{equation}\label{eq:11}
-    \overrightarrow X_1=\overrightarrow X_{\alpha}-A_1.D_{\alpha}      \end{equation}                     
- \begin{equation}\label{eq:12}
-    \overrightarrow X_2=\overrightarrow X_{\beta}-\overrightarrow A_2.\overrightarrow D_{\beta}      \end{equation}                     
- \begin{equation}\label{eq:13}
-       \overrightarrow X_3=\overrightarrow X_{\delta}-\overrightarrow A_3.\overrightarrow D_{\delta}        \end{equation}              
-
+        \overrightarrow X(t+1)=\overrightarrow{X_{rand}}(t)+\overrightarrow A.\overrightarrow D     
+\end{equation}
+      
 
       \section{Proposed Method}\label{sec:pm}
-     To deal the problems of large dataset clustering, a novel method, Map-reduce based enhanced grey wolf optimizer (MR-EGWO), is proposed. MR-EGWO leverages the strengths of a novel variant of grey wolf optimizer, enhanced grey wolf optimizer (EGWO), for efficient data clustering. In this section, first a detailed description of the enchanced grey wolf optimizer (EGWO) is presented followed by its parallel version, Map-reduce echanced grey wolf optimizer (MR-EGWO) is discussed.
+     Whale Optimization Algorithm discards the solution (called whale in WOA) with bad fitness value. But
+there could be a case that global-optima would be near that solution. This could lead WOA to get into the
+trap of local-optima. The authors have therefore proposed a method called as Tournament Selection
+empowered Whale Optimization Algorithm optimized K-Means. Nature-inspired meta-heuristic algorithms
+are iterative and thus have high time complexity. Therefore, the nature-inspired algorithms cannot be
+applied on extremely large datasets. Therefore, the authors have further proposed the method over
+MapReduce programming model called as MapReduce-based Tournament Selection empowered Whale
+Optimized Algorithm optimized K-Means (MR-TSWOAK).
 
-     \subsection{Enhanced Grey Wolf Optimizer (EGWO) }  \label{sec:EGWO} 
+     \subsection{Tournament Selection empowered WOA optimized K-Means (TSWOAK)}  \label{sec:TSWOAK} 
     
-    The success of a meta-heuristic algorithm depends upon the equilibrium between exploration and exploitation \cite{feoktistov2007differential}. The GWO algorithm has limitations of slow convergence rate and risk of trapping into local optima due to the lack of diversity in the wolves for certain cases \cite{zhang2015grey}. These limitations can be overcome by the increase of diversification and intensification of the search space.
-Therefore, in this paper a novel variant of GWO named enhanced grey wolf optimizer (EGWO) is proposed. The proposed method is empowered with the advantages of l\'{e}vy \cite{yang2010eagle} flights and binomial crossover \cite{feoktistov2007differential} to improve the exploration and exploitation capabilities. 
-   The EGWO introduces two new phases to relieve the above mentioned problem.
-      \subsubsection{Inflated Attack to pray using Binomial Crossover} \label{sec:binomial}
-      
-    As the intensification of the population around the current best solution inflates the generation of optimal solutions. The exploitation in the proposed variant is enhanced by including one of the popular and widely used binomial crossover operator present in the literature. As $alpha$ wolf defines the current best position, its position can be used to define the better position of other wolfs. Hence, binomial crossover operator is performed between between the $alpha$ and the $X(i)$ to inflate the attack to the pray. The updated position (UP) of grey wolves is defined in Eq. (\ref{eq:18}). 
-                                 \begin{equation}\label{eq:18}
-                     UP_i^j=\begin{cases}\overrightarrow X_{\alpha}^j &  (K\leq C)\\{\overrightarrow X_i^j} &  (K>C)\end{cases}
-               \end{equation}
-   Where $UP_i^j$ is the position of the $i_{th}$ grey wolf in $j^{th}$ dimension, $K$ is the random number between \cite{a0,1}. $C \in \cite{a0,1}$ is crossover constant.      
-               \subsubsection{Magnified search for pray using on l\'{e}vy flight} \label{sec:levy}
-  
-In GWO, the problem of stagnation still prevails in some cases sine the position updation of a wolf is determined solely by the positions of leader wolves namely, alpha, beta, and delta. Correspondingly, GWO results in immature convergence. To enhance the exploration capability, the proposed EGWO uses the concept of l\'{e}vy flight to update the position of each wolf. As l\'{e}vy flight defines steps of random lengths drawn from the l\'{e}vy distribution \cite{shlesinger1995levy}, the chance of exploring the search space increases. This paper uses the Mantegna algorithm \cite{yang2010eagle} to generate steps of random length. The Eq. (\ref{eq:35}) depicts the formulation of step length $z$ defined by Mantega's algorithm.
-             
-         \begin{equation}\label{eq:35}
-               z= \left\cite{a  \frac{r}{\mid s \mid ^{1/ \beta}} \right}
-\end{equation}    
-             where, $\beta \in (0,2}$ is l\'{e}vy index and $r$ and $s$ are variables following normal distribution of  $N(0, \sigma_{r}^2)$ and $N(0, \sigma_{s}^2)$, respectively. The  $\sigma_r$ is calculated by Eq. (\ref{eq:17}) while  $\sigma_s$ is  always $1$. 
- \begin{equation}\label{eq:17}
-               \sigma_r=	\left\cite{a \frac{ \Gamma(1+\beta)\sin(\pi\beta/2)  }   { \beta\Gamma\cite{a(1+\beta)/2}2^{(\beta-1)/2} } \right} ^{1/\beta}
-        \end{equation} 
+    There is a chance for WOA to get into local-optima as it just discards the solution with lower fitness value.
+Therefore, the authors have used the concept of Tournament Selection \cite{a17} while choosing a random
+solution for Eq. (\ref{eq:9}) and (\ref{eq:10}). Due to the concept of Tournament Selection, each and every solution get
+equal chance to compete with other solution to get selected.
 
-where, $\Gamma$(.) is called Gamma function and defined by Eq. (\ref{eq:16}).
-
-        \begin{equation}\label{eq:16}
-                  \Gamma(1+\beta)= \int_{0}^{\infty} t^\beta e^{-t} dt                     
-        \end{equation} 
-
-        In the proposed phase, each grey wolf takes l\'{e}vy flight for the search of the prey and updates its position using Eq. (\ref{eq:28}).   
-     
-                                                  \begin{equation}\label{eq:28}
-                                                   \overrightarrow X_{t+1}=\overrightarrow X_t+estep_t
-                                                \end{equation}
-
-where, $\overrightarrow X_t$ is the position of the grey wolf at $t^{th}$ iteration, $\overrightarrow X_{\alpha}$ represents the position of $alpha$ wolf and $estep_t$ at a particular iteration $t$ defines the l\'{e}vy flight step size and calculated by Eq. (\ref{eq:27}).
-\begin{equation}\label{eq:27}
-                                                   estep_t=0.01\times(\overrightarrow X_t-\overrightarrow X_{\alpha});
-                                                \end{equation}
-\subsection{EGWO based clustering}
-Furthermore, the proposed enhanced grey wolf optimizer (EGWO) is elucidated for  the clustering problem. In EGWO based clustering, the position $X$ of each grey wolf represents a set of cluster centroids ${(C_1,C_2,C_3, \cdots, C_K)}$ for $K$ clusters.  The minimization of intra-cluster distance is considered as the cost function and formulated in Eq. (\ref{eq:ob}).
-\begin{equation}\label{eq:ob}
-      f(Z,C)=\sum_{l=1}^k\sum_{Z_i\epsilon C_l}d(Z_i,C_l)^2
-\end{equation}
-The optimal clusters corresponds to the position of the $Alpha$ wolf. The pseudo-code of the EGWO based clustering method is described in Algorithm \ref{algo:EGWO}. 
+\subsection{TSWOAK based clustering}
+ The problem of getting trapped in local-optima of clustering algorithm can be solved by using Tournament
+Selection empowered Whale Optimization Algorithm optimized K-Means (TSWOAK). In the proposed
+method TSWOAK, the position vector $\overrightarrow X$ of each whale is the position of centroid represented by the whale. $\overrightarrow X=\{\{c_1_1,c_1_2,...,c_1_t\},\{c_2_1,c_2_2,...,c_2_t\},...,\{c_k_1,c_k_2,...,c_k_t\}\}$ where $c_i_j$ represents the centroid position for $j^t^h$
+feature of $i^t^h$ cluster. Clustering performance is evaluated in terms of intra-cluster distance. The intra-cluster
+distance is calculated using formula given in equation 1. The whale with least intra-cluster distance is taken
+as best-whale. The algorithm for proposed method is given in Algorithm 1. The running time-complexity
+of the proposed method is O(P*N*K*t), where t is the number of iterations for which the algorithm will
+run. K is the number of clusters for which the clustering is done. N is the number of data-points. P is the
+number of whales used in algorithm
 
  \begin{algorithm}
 %\scriptsize
 \caption{:Enhanced Grey Wolf Optimizer based clustering}
 \label{algo:EGWO}
 \begin{algorithmic}
-\STATE\textbf{Input:} Data file having $Z$ data objects with $t$ dimensions and $K$ Number of clusters .
-\STATE\textbf{Ouput:} Final centroids position.           /* The location of $\alpha$ after termination of algorithm represents centroids position*/
-\STATE Generate initial population of $N$ grey wolves.
-\STATE Initialize parameters $a$, $i$, $A$, $C$, maximum number of iteration $MaxItr$.
-\STATE  Evaluate the fitness of each grey wolf using Eq. (\ref{eq:25}).
-\STATE Set top three grey wolves according to the fitness as $\overrightarrow X_{\alpha}$, $\overrightarrow X_{\beta}$ and $\overrightarrow X_{\delta}$.
-\WHILE{$(MaxItr) \ or \ (centroid \ movement \ becomes \ zero)$}
-  \FOR {each grey wolf}
-  \STATE Update the position of each grey wolf defined by Eq. (\ref{eq:10})
-   \STATE Perform binomial cross over determined by Eq. (\ref{eq:18}).
-  \STATE Determine the new position of each grey wolf using l\'{e}vy flight defined by Eq. (\ref{eq:28}).
-  \STATE Upgrade the values of $a$, $A$, $C$.
-  \STATE Calculate the fitness of each grey wolf.
-  \STATE Update $\overrightarrow X_{\alpha}$, $\overrightarrow X_{\beta}$, and $\overrightarrow X_{\delta}$.
-    \ENDFOR
-\STATE  $i=i+1$; 
+\STATE\textbf{Input:} $N$ data-points, number of clusters to be used $K$, number of whales to be used $P$.
+\STATE\textbf{Ouput:} Best positions of centroids.
+\STATE whale population $X_i(i = \{1, 2, ..., P\})$ initialization
+\STATE $\overrightarrow {X^*}$ = the best whale of $0^t^h$ iteration
+\WHILE{($t$ < maximum iteration possible)}
+  \FOR {each whale}
+    \STATE Update a, A, C, l, and p
+      \IF{$p$<0.5}
+        \IF{$|\overrightarrow A|$<1}
+          \STATE Position of the current whale is updated by the Eq. (\ref{eq:3})
+        \ELSE
+          \STATE Select a random whale ($\overrightarrow{X_{rand}}$) by Tournament Selection
+          \STATE Position of the current whale is updated by the Eq. (\ref{eq:10})
+        \ENDIF
+      \ELSE
+        \STATE Position of the current whale is updated by the Eq. (\ref{eq:7})
+      \ENDIF
+  \ENDFOR
+  \STATE if available better solution Updata $\overrightarrow {X^*}$
+  \STATE  $t=t+1$; 
 \ENDWHILE
 \STATE Return $\overrightarrow X{\alpha}$  //the position of alpha is the final centroid position
 \end{algorithmic}
 \end{algorithm}
 
   \subsection{Parallelization of the EGWO using MapReduce Architecture}\label{sec:mpr}
-To demonstrate the applicability of EGWO on large dataset, a parallel version of EGWO algorithm using Hadoop MapReduce framework, MapReduce based EGWO (MR-EGWO), is presented. MR-EGWO works in two phases; EGWO-Map and EGWO-Reduce. 
-Initially, MapReduce framework divides the large datasets into smaller chunks of key/value pairs and distribute them uniformly among the hadoop nodes. The MR-EGWO map phase, then, processes the input key/value pairs with cluster centroids in  parallel and the corresponding fitness computation. The pseudo-code of the MR-EGWO Map phase is presented in Algorithm \ref{algo:Map}. The output of this phase is the another set of key/value pair where key consists of  $\{gwoID,centroidID\}$ while the intra-cluster distance with the respective centroid-ID defines the value component. Further, the reduce function of the MR-EGWO reduce phase merges all the computed values with identical key's and computes the corresponding fitness value for each grey-wolf. Algorithm \ref{algo:Reduce} presents the pseudo-code of the EGWO-reduce function. The $alpha$, $beta$, and $delta$ wolves are updated along with the position of each grey wolf according to the EGWO  \ref{algo:EGWO}.
-This marks one iteration of the MR-GWO and is continued until the stopping criterion is reached. The complete architecture of the MR-EGWO for data clustering is shown in Fig. \ref{fig:EGWO}.   
+The running time-complexity of the algorithm TSWOAK is O(P*N*K*t). The time-complexity shows that
+it is directly proportional to number of data-points involved. For large number of data-points, the time-
+complexity will be become very high. For performing clustering on large datasets, parallel-computing is
+required. For parallel-computing, the authors have developed TSWOAK over MapReduce-programming
+model. The parallel-computing version is called as MapReduce-based TSWOAK (MR-TSWOAK). MR-
+TSWOAK works in two phases, MR-TSWOAK-Map and MR-TSWOAK-Reduce. The data-points are
+distributed uniformly among Hadoop Distributed File System (HDFS) \cite{a12} DataNodes. MR-TSWOA-Map
+processes data-point and finds cluster in each whale, which would have the least Euclidean distance
+between the data-point and found centroid. The output of the Map phase is {key:(whaleId, cenId),
+value:minDistance}, where ‘whaleId’ is the identification of whale of whose clusters are being matched
+with the data-point.,‘cenId’ is the identification of cluster-centroid whose Euclidean distance is minimumwith the data-point. ‘minDistance’ is the Euclidean distance between data-point and the centroid with
+identification ‘cenId’. The pseudo-code of Map phase is given in Algorithm \ref{algo:Map}. MR-TSWOAK-Reduce
+phase processes the distance given by Map phase, and calculate intra-cluster distance for each centroid of
+each whale. The output of this phase is of the form {key:(whaleId, cenId), value:intra_cluster_distance}.
+The psudo-code of Reduce phase is given in Algorithm \ref{algo:Reduce}. The architecture of MR-TSWOAK is given in Fig. \ref{fig:TSWOAK}.   
 
       \begin{figure}
     \centering
-     \includegraphics\cite{awidth=1.0\textwidth}{algo}
-      \caption{MapReduce architecture MR-EGWO for data clustering}
-\label{fig:EGWO}
+     \includegraphics\cite{awidth=1.0\textwidth}{Figure1}
+      \caption{Architecture of MR-TSWOAK}
+\label{fig:TSWOAK}
 \end{figure}
 
 \begin{algorithm}
-\caption{ :MR-EGWO Map}
+\caption{ MR-TSWOAK-Map}
 \small
 \label{algo:Map}
 \begin{algorithmic}
-\STATE Map (Key: recordId, Value: Record)
-\STATE \textbf{Initialization:}
-\STATE  key=record-ID
-\STATE  value=record
-\STATE  read(gwoPopulation);
-\STATE    \textbf{for each} wolf \textbf{in} gwo-population;
-\STATE       gwoID   =retrieve-gwoID(gwoPopulation)
-\STATE       centroidArray =retrieve-centroids(gwoPopulation)  / wolf position represents centroids 
-\STATE   	minDistance= getMinD(record, centroidArray);     / getMinD returns minimum distance  
-\STATE       centroid-ID =   i    / i represents index of the centroidArray having minimum distance
-\STATE         updated-key= gwoID+centroidID;
-\STATE      \textbf{end for}
-  \STATE         write (updated-key, minDistance);
+  \FOR{each whale in population}
+    \STATE whaleId=ID_of_whale
+    \STATE centroidArray=retrieve_centroid_array_of_given_whale(whaleID)
+    \STATE minDistance=INT_MAX
+    \FOR{each centroid in centroidArray}
+      \STATE distance=Euclidian_distance(data-point,centroid)
+      \IF{distance < minDistance}
+        \STATE centId=ID_of_centroid
+        \STATE minDistance=distance
+      \ENDIF
+    \ENDFOR
+    \STATE key=(whaleID,centID)
+  \ENDFOR
+  \STATE return \{key:(whaleID,centroidID),value:minDistance\} 
 \end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}
-\caption{ :MR-EGWO Reduce}
+\caption{ MR-TSWOAK-Reduce}
 \small
 \label{algo:Reduce}
 \begin{algorithmic}  
-\STATE \textbf{Reduce (Key:(gwoID, centroidID), value-list: minDistance)} 
-\STATE  \textbf{Initialization} 
-\STATE   fitness=0;
-\STATE	\textbf{for each} value \textbf{in} minDistance list
-\STATE	 minDistance=retrieve-minDistance(value-list)       
-\STATE   fitness=+minDistance
-\STATE   \textbf{end for}
-\STATE    write(key, fitness)
+\STATE\textbf{Input:} \{key:(whaleID,centroidID),value-list:distances\}
+\STATE intra-cluster-distance=0
+\FOR{each distance in distances}
+  \STATE intra-cluster-distance+=distance
+\ENDFOR
+\STATE return \{key:(whaleID,centID),value:intra-cluster-distance\}
 \end{algorithmic}
 \end{algorithm}
 
-\section{Experimental results }\label{sec:ep}
-The proposed work is evaluated in two folds. First, EGWO is validated for clustering in terms of intra-cluster distance and convergence behavior. The comparison is made with k-means and four meta-heuristic algorithms for clustering namely; GSA, PSO, BA, and GWO. Second, the effectiveness of the MapReduce based MR-EGWO is vindicated in terms of F-measure against the four state-of-the-art MapReduce based clustering methods namely parallel K-means (PKmeans) \cite{zhao2009parallel}, parallel K-PSO based on MapReduce (parallel K-PSO) \cite{wang2012parallel}, MapReduce based artificial bee colony optimization for large scale data clustering (MR-ABC) \cite{banharnsakun2016mapreduce} and Dynamic frequency based parallel K-Bat algorithm (DFBPKBA) \cite{tripathidynamic}. The speedup behavior of MR-EGWO is also studied by incrementing number of nodes in each run.  
+\subsection{Application of MR-TSWOAK on Product Recommendation System}\label{sec:recomSys}
+The recommendation matrix is stored on the Hadoop Distributed File System (HDFS). The
+recommendation matrix has dimension of (users, product). The number of rows of matrix is equal to number
+of users. The number of columns is equal to number of products. Each row of matrix is a datapoint to MR-
+TSWOAK. The MR-TSWOAK is implemented over the recommendation matrix, and it output the desired
+solution of centroid position vector. Further this position vector is fine-tuned by running K-Means over it.
+The system is tested by calculating the Mean Absolute Error
 
-\subsection{Performance analysis of EGWO based clustering}\label{sec:expr1}
-The proposed EGWO algorithm is tested on seven benchmark datasets taken from UCI repository \cite{blake1998uci} and results are compared with K-means, PSO, GSA, BA and GWO. Table \ref{tab:dataset} detailed the seven considered benchmark datasets. The simulation is carried out for 30 runs on a system with Matlab 2015a, intel core i3 processor, $2.80 GH_z$ frequency, 4 GB of RAM and 500 GB hard-disk. Table \ref{tab:Param} details the parameter setting of the experimentation.  
+
+\section{Experimental results }\label{sec:ep}
+Evaluation of proposed method is done in three phases. In the first phase, TSWOAK is tested on seven UCI
+datasets and the results are compared on the basis of intra-cluster distance with five state of the art meta-
+heuristic algorithms namely PSO, K-Means, GSA, BA, GWO. The seven UCI datasets are Iris, Seeds,
+Glass, Cancer, Balance, Haberman, and Wine. In the second phase, the MapReduce based method MR-
+TSWOAK is tested on four extremely large datasets namely Replicated CMC, Replicated Vowel,Replicated Iris, Replicated Wine, and the results are compared to Parallel K-PSO, DFBKBA, Parallel K-
+Means, MR-ABC on the basis of F-measure and computation time. In the third phase, the proposed method
+MR-TSWOAK is tested for the applicability in recommender systems. For this it is tested on MovieLens
+dataset, and its results will be compared on the basis of Mean Absolute Error (MAE) with the results of
+already present algorithms namely, K-Means, PCA-K-Means, ABC-KM, GAKM, PCA-GAKM, SOM,
+PCA-SOM, UPCC.
+
+\subsection{Experimental setup}  
+The experiments related to TSWOAK were done on a single machine, with specification as 2.5 GHz Intel
+i5 processor, 8GB RAM, and 1 TB hard-disk.
+For experiments related to the MR-TSWOAK, Hadoop cluster of capacity of five nodes was made. Each
+node had specification as 2.5 GHz Intel i5 processor, 8 GB RAM, 1 TB hard-disk. Java version used was
+openjdk “1.8.0_191”. The version of Hadoop was 2.6.0.
+
+\subsection{Performance analysis of TSWOAK based clustering}\label{sec:expr1}
+The proposed method TSWOA was tested on seven UCI datasets namely, Iris, Seeds, Glass, Cancer,
+Balance, Haberman, and Wine, and the results were compared on the basis of intra-cluster distance with
+five popular meta-heuristic algorithms namely, PSO, K-Means, GSA, BA, and GWO. Description of seven
+datasets used is given in Table 1. The setting parameters of each meta-heuristic algorithm used for
+experimentation are described in Table 2. The intra-cluster distance found by each meta-heuristic algorithm
+on each dataset is given in Table 3.
+
+Table 3 shows that the proposed algorithm TSWOAK gives the minimum intra-cluster distance with respect
+to other algorithms used in experimentation.
+The convergence speed of the proposed algorithm TSWOAK is more than the convergence speed of other
+algorithms with which the comparison has been done. Figure 2 and figure 3 shows the convergence graph
+of the algorithms on Wine and Glass datasets respectively. In both the diagram, the Y-axis depicts the bestintra-cluster distance for an algorithm, the X-axis depicts the number of iterations for which the algorithm
+has been run.
 
 \begin{table}
-\caption{Parameter values}
+\caption{Dataset Description}
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{.75}
   \begin{tabular}{l l l l}
    
     \hline
-\textbf{Dataset} & \textbf{NOC} & \textbf{NOF} &\textbf{NOI}    \\
+\textbf{Dataset} & \textbf{Number of Datapoints} & \textbf{Number of Attributes} &\textbf{Number of Clusters}    \\
 
 \hline
-Iris	      &	3	&	 4   &	150	\\
-Wine	&	3	&	13	&	178	\\
-Seeds	&	3	&	7	&	210	\\
-Glass	&	6	&	9	&	214	\\
-Cancer	&	2	&	9	&	638	\\
-Balance	&	3	&	4	&	625	\\
-Haberman	&	2	&	3	&	306	\\
-
-
-    \hline
-\multicolumn{4}{l}{NOC:Number of Clusters}\\
-\multicolumn{4}{l}{NOF:Number of Features}\\
-\multicolumn{4}{l}{NOI:Number of Instances}\\
+Balance	      &	625	&	 4   &	3	\\
+Cancer	&	638	&	9	&	2	\\
+Iris	&	150	&	4	&	3	\\
+Haberman	&	306	&	9	&	214	\\
+Wine	&	178	&	13	&	3	\\
+Glass	&	214	&	9	&	6	\\
+Seeds	&	210	&	7	&	3	\\
+ 
   \end{tabular}
 \end{center}
 \label{tab:dataset}
 \end{table}
 
-
-  Table \ref{tab:result} defines the best and average fitness values attained by considered algorithms over 30 runs. It can be observed from the Table \ref{tab:result} that EGWO outperformed all five methods on all the datasets in terms of best fitness value. For average fitness value, EGWO has surpassed results for wine, seeds, glass and cancer. However, GWO has competitive results on Iris and Balance datasets while PSO performed well on Haberman dataset.
 \begin{table}
-\caption{Parameter values}
+\caption{Setting parameters of each meta-heuristic algorithm for experimentation}
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{0.7}
   \begin{tabular}{l l l l l l l}
     \hline
     \hline
-\textbf{Parameter Name} & \textbf{K-Means} &\textbf{PSO} &\textbf{GSA} &\textbf{BAT}& \textbf{GWO} &\textbf{EGWO}\\
+\textbf{Parameter Name} & \textbf{K-Means} &\textbf{BA} &\textbf{PSO} &\textbf{GWO}& \textbf{GSA} &\textbf{TSWOAK}\\
 \hline
 Population size (pop)	&	--& 40	&	40 &	40	&	40	&40\\
-Number of Iterations (itr) &	500	&	500 &	500	&	500 & 500 & 500\\
-Inertial Constant (w)	&	--& 0.5& --&	--	&	--&--	\\
-Congnitive Constant (c1)	&	--& 1 & --&	--	&	--&--	\\
-Social Constant (c2)	&--& 1 & --&	--	&	--&--\\
-Gconstant (G0)&--& --& 20 & --&	--&--\\
-Alpha ($\alpha$) --& 20& --&	.9 & 2&2 &--\\
-fmin	&	--& --& --& 0	&	--&--\\
-fmax	&	--& --& --&	2	&	--&--	\\
-gamma ($\gamma$)& --& --& --&	.9	&	--&--	\\
-r0	& --& --& --&	.9	&	--&--\\
-crossover constant (C)  --& --& --& --&	--&--& 2 \\
+Congnitive Constant (c1)  & --& -- & 1& --  & --&-- \\
+r0  & --& 0.9& --& --  & --&--\\
+gamma ($\gamma$)& --& 0.9& --& --& --&-- \\
+Alpha ($\alpha$) & 20& 2&  -- & 2& 0.9 &--\\
+fmin  & --& 0& --& -- & --&--\\
+fmax  & --& 2& --&  & --&-- \\
+Inertial Constant (w)	&	--& --& 0.5&	--	&	--&--	\\
+Social Constant (c2)	&--& --& 1&	--	&	--&--\\
+G-constant (G0)&--& --& --& --&	20&--\\
+Number of Iterations (itr) &  500 & 500 & 500 & 500 & 500 & 500\\
     \hline
   \end{tabular}
 \end{center}
 \label{tab:Param}
 \end{table}
-   Moreover, to validate the significance of results, a non parametric statistical test, Wilcoxon rank sum test, is conducted at $5\%$ level of significance. Table \ref{tab:wt} contains the $p-value$ and SGFT($significance$) of each method. The null hypothesis is rejected if $p-value<0.05$ and symbolized by $'+'$ or $'-'$, else, it is accepted and represented by $'='$ symbol. The $'+'$ indicates that an algorithm is different and significantly good while $'-'$ shows that it is different and significantly poor. It can be observed from Table \ref{tab:wt} that $p-value<0.5$ on all datasets. Correspondingly, it is assured that the EGWO  is significantly different from the considered methods except GSA for balance dataset. \\
-    To  demonstrate the improvement  in exploration and exploitation trade-off, convergence behavior of the EGWO and considered methods are illustrated  on two datasets, namely wine and seeds, in Fig. \ref{fig:ConvergenceGraph1}. Horizontal axis represents the iteration numbers while corresponding fitness values are aligned along the  vertical axis. It can be visualized from Fig. \ref{fig:ConvergenceGraph1} that EGWO prefers exploration at early stage of iterations and then lessen its exploration rate to perform the exploitation. In the later stage, this decline exploits the search space well for finding the optimal solution. Hence, it is pertinent from the convergence graphs that EGWO improves the exploration and exploitation abilities contrary to GWO. Further, box-plots in Fig. \ref{fig:Boxplot1} represent the consistency of the clustering results reported by the EGWO and other considered methods. Vertical lines of the boxes indicate variability of the best-so-far fitness value over 30 runs. Fig. \ref{fig:Boxplot1}a, \ref{fig:Boxplot1}b clearly illustrates that the degree of dispersion in EGWO is minimum, compared to PSO, GSA, BA, and GWO. It can be concluded from experimental analysis that EGWO is an efficient alternative for performing clustering tasks.
+   
 
 \begin{table}
-\caption{Best and average fitness value over 30 runs}
+\caption{Mean intra-cluster distance for 30 iteration of each algorithm on each dataset}
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{1}
@@ -423,67 +374,44 @@ Wine	&	Best	&	2370689.68700	&	16298.98906	&	17038.59226	&	16371.05448	&	16307.09
 \end{table}
 
 
+ \begin{figure}
+    \centering
+     \includegraphics\cite{awidth=1.0\textwidth}{Wine}
+      \caption{Convergence graph of Wine}
+\label{fig:Wine}
+\end{figure}
 
-\begin{table}
-\tiny
-\caption{Results of Wilcoxon test for statistically significance level at $\alpha=0.05$}
-
-\renewcommand{\arraystretch}{1}
-
-\begin{tabular}{p{0.45in} | p{0.45in} p{0.25in} | p{0.40in} p{0.25in} | p{0.45in} p{0.30in}| p{0.45in} p{0.25in} | p{0.45in} p{0.25in}}
-    \hline
-  \textbf{Dataset} & \multicolumn{2}{c}{\textbf{EGWO-K-Means}} 	&	 \multicolumn{2}{c}{\textbf{EGWO-PSO}}  &	 \multicolumn{2}{c}{\textbf{EHGWO-GSA}}   &	\multicolumn{2}{c}{\textbf{EGWO-BAT}}   &\multicolumn{2}{c}{\textbf{EGWO-GWO}}  \\
-\hline
-
-    &		\textbf{P-Value} &		\textbf{SGFT} &	\textbf{P-Value} &\textbf{SGFT} &	 \textbf{P-Value} &\textbf{SGFT} 	& \textbf{P-Value} & \textbf{SGFT} & \textbf{P-Value} &	\textbf{SGFT} \\
-
-\hline
-$Iris$ &		 4.45E-08	&	+	&6.76E-05	&	+	&2.40E-09	&	+	&	4.11E-06	&	+    &1.42E-05	&	+	\\
-$Seeds$&	2.78E-09	&	+	&3.11E-11	&	+	&2.55E-11	&	+	&	3.01E-09	&	+	&3.11E-10    &	+	\\
-$Glass$&	4.41E-08	&	+	&6.28E-06	&	+	&3.02E-11	&	+	&	1.36E-07	&	+	&4.50E-11	&	+	\\
-$Cancer$&	9.60E-10	&	+	&3.01E-11	&	+	&3.02E-11	&	+	&	3.02E-11	&	+	&3.02E-11	&	+	\\
-$Balance$&	5.02E-11	&	+	&0.01E-0	&	+	&0.10E-0	&	-	&	8.09E-10	&	+	& 0.00E-0     &	+	\\
-$Haberman$&2.01E-11	&	+	&1.07E-07	&	+	&5.18E-07	&	+	&	1.11E-06	&	+	&6.52E-07	&	+	\\
-$Wine$&	5.16E-08	&	+	&3.01E-11	&	+	&3.02E-11	&	+	&	3.12E-11     &     +	&3.12E-10	&	+	\\
-
-  \hline
-  \end{tabular}
-\label{tab:wt}
-\end{table}
-
-\begin{figure*}
-
-     \subfigure\cite{a}{\includegraphics\cite{awidth=2.8in,height=4.0cm}{CSheet2}}
-     \subfigure\cite{a}{\includegraphics\cite{awidth=2.8in,height=4.0cm}{CSheet4}}
-
-
-     \caption{\small{The convergence graphs of (a) Wine and  (b) Glass }}
- \label{fig:ConvergenceGraph1}
-\end{figure*}
-
-\begin{figure*} 
-   
-    \subfigure\cite{a}{\includegraphics\cite{awidth=2.8in,height=4.0cm}{Sheet2}}
-     \subfigure\cite{a}{\includegraphics\cite{awidth=2.8in,height=4.0cm}{Sheet3}}
-
-    
-      \caption{\small {The box-plot graphs for (a) Wine and  (b) Glass}}
-\label{fig:Boxplot1}
-\end{figure*}
+ \begin{figure}
+    \centering
+     \includegraphics\cite{awidth=1.0\textwidth}{Glass}
+      \caption{Convergence graph of Glass}
+\label{fig:Glass}
+\end{figure}
 
 \subsection{Performance analysis of MapReduce Based EGWO (MR-EGWO)}\label{sec:expr2}
-In section \ref{sec:expr1}, EGWO has shown to be an efficient alternative for clustering task. Thus, the performance analysis of the parallelized EGWO, (MR-EGWO), is analyzed. Four large-scale synthetic datasets are used by duplicating each record of the original dataset $10^7$ times. Table \ref{tab:dataset} briefs these datasets in terms of three parameters, namely, number of actual clusters ($\#C$), number of dimensions ($\#D$) and number of data-points ($\#N$). The required parameter setting of all the method is same as given in Table \ref{tab:Param}.
-For simulation, a Hadoop cluster of five nodes is designed where each node consists of an Intel Corei3-4570 processor with 3.20GHz, 4GB memory and 500 GB hard disk. Apache Hadoop version 2.6.2, java version 1.8.0 is used for the implementation of all methods and operating system is Ubuntu (operating system) version 14.04. 
-Table \label{tab:FM} shows the values of F-measure obtained by each algorithm on four large scale synthetic datasets. The F-measure comparison of four MapRedcue based algorithms as given in Table \ref{tab:FM} confirms that the proposed MR-EGWO outperformed all the algorithms under comparison. Thus, it can be concluded that the proposed method can be used for efficient clustering of large datasets.
-
-Furthermore, the speedup performance of the MR-EGWO is analyzed on iris and CMC datasets. The speedup measure of a method is determined by Eq. (\ref{eq:20}).
-  \begin{equation}\label{eq:20}                                                            			
+Section 4.2 have shown that the proposed algorithm TSWOAK has given better result in comparison to
+other algorithms. Hence, the authors have proposed a MapReduce-based version of TSWOAK called as
+MR-TSWOAK to handle extremely large datasets. The performance of MR-TSWOAK is compared with
+other state of art MapReduce-based meta-heuristic algorithms on the basis of F-Measure and computation
+time. Table 4 describes the large datasets to be used. Table 5 gives the results of different algorithms on
+different dataset on the basis of F-measure and computation time.
+Table 5 shows that the performance of MR-TSWOAK is better than other algorithms, but the parallel K-
+Means is computationally fast.Speedup-performance is also a major criteria to evaluate a parallel-computing algorithm. The calculation
+of speedup-performance is done according to Eq. (\ref{eq:11}).
+  \begin{equation}\label{eq:11}                                                            			
        S_p=T_{base}/T_N                                                     		
    \end{equation}
-where, $T_{base}$ is the running time when $p$ method runs on one machine and $T_N$ is the running time of the same method on a cluster with $N$ machines. To measure the speedup performance of MR-EGWO, one machine is increased in the cluster on each run. The speedup performance of MR-EGWO is in illustrated in Fig. \ref{fig:Speedup}. It can be concluded from the Fig. \ref{fig:Speedup} that the running time of MR-EGWO decreases gradually with the increase of machines in the Hadoop cluster. Therefore, it is affirmed that the proposed MR-EGWO is advantageous for large-scale data.
+Where $T_{base}$ is time taken by algorithm to run on one machine. $T_N$ is time taken by the algorithm to run on
+N machines. Speedup performance of MR-TSWOAK is studied on Replicated CMC and Replicated Iris
+datasets. Figure 4 and 5 are the speedup graph of MR-TSWOAK running on Replicated CMC and
+Replicated Iris datasets. The speedup graph has Y-axis for computation time, and X-axis for the number of
+nodes in the cluster. The speedup performance of MR-TSWOAK running on CMC dataset is 4.7548, when
+there are five nodes in the cluster. The speedup performance of MR-TSWOAK running on Replicated Iris
+dataset is 4.4561, when there are five nodes in the cluster. This shows that MR-TSWOAK can be used on
+large datasets.
 
 \begin{table}
-\caption{Large Datasets}
+\caption{Description of Large Datasets}
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{0.7}
@@ -505,7 +433,7 @@ Replicated Vovel &	10	& 10	&	1025010	\\
 
 
 \begin{table}
-\caption{F-Measure results obtained by the MapReduce based algorithms}
+\caption{F-measure and computation time for each algorithm on each dataset on 30 iterations}
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{0.7}
@@ -530,14 +458,33 @@ Replicated Vovel &	10	& 10	&	1025010	\\
 
 \begin{figure}
     \centering
+     \includegraphics\cite{awidth=1.0\textwidth}{Glass}
+      \caption{Speedup graph of Replicated-CMC dataset}
+\label{fig:CMC}
+\end{figure}
 
-     \subfigure\cite{a}{\includegraphics\cite{awidth=2.0in,height=3.5cm}{iris}}
-     \subfigure\cite{a}{\includegraphics\cite{awidth=2.0in,height=3.5cm}{cmc}}
-    
-     \caption{\small{The speedup graph of  (a) Iris (b) CMC}}
- \label{fig:Speedup}
+\begin{figure}
+    \centering
+     \includegraphics\cite{awidth=1.0\textwidth}{Glass}
+      \caption{Speedup graph of Replicated-Iris dataset}
+\label{fig:Iris}
 \end{figure}
  
+\subsection{Performance analysis of MapReduce Based EGWO (MR-EGWO)}
+The recommendation system developed over MR-TSWOA is tested on MovieLens dataset, which contains
+100,000 datapoints and has ratings given by users to different movies. There are 1000 users in the dataset
+and 1700 movies in the dataset. Each user has given rating to at least 20 movies. The results of the test are
+compared with the results of PCA-GAKM, PCA-SOM, SOM, UPCC, K-Means, PCA-K-Means, GAKM,
+ABC-KM on the basis of Mean Absolute Error (MAE). The results are given in Table 6.
+Table 6 shows that MR-TSWOAK perform better than the already present collaborative-filtering clustering
+algorithm. Figure 6 shows the comparison of MAE with different methods.
+
+\begin{figure}
+    \centering
+     \includegraphics\cite{awidth=1.0\textwidth}{Glass}
+      \caption{Comparison of MAE with different methods}
+\label{fig:MAE}
+\end{figure}
 
 \section{Conclusion}\label{sec:con}
 
