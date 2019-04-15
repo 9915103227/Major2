@@ -50,20 +50,20 @@ X=SimpleImputer(strategy="constant",fill_value=0).fit_transform(X)
         
 import time
 numberOfwhale=3
-iterations=1
+iterations=2
 
 dataPoints = X.shape[0]
 features=X.shape[1];
-learningRate=0.001
+learningRate=0.00001
 startTimeAlgo=time.time()
 bestWhale=0
 #initialize features
-WFC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,features,100))
-WC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,5,3,3))
-WC2=np.random.uniform(low=0,high=1,size=(numberOfwhale,5,3,3))
-WFC2=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,36,84))
-WFC3=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,84,10))
-WOP=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,10,5))
+WFC1=np.random.uniform(low=-1,high=1,size=(numberOfwhale,features,100))*np.sqrt(1.00/features)
+WC1=np.random.uniform(low=-1,high=1,size=(numberOfwhale,5,3,3))*np.sqrt(1.00/9)
+WC2=np.random.uniform(low=-1,high=1,size=(numberOfwhale,5,3,3))*np.sqrt(1.00/45)
+WFC2=np.random.uniform(low=-1,high=1,size=(numberOfwhale,36,84))*np.sqrt(1.00/36)
+WFC3=np.random.uniform(low=-1,high=1,size=(numberOfwhale,84,10))*np.sqrt(1.00/84)
+WOP=np.random.uniform(low=-1,high=1,size=(numberOfwhale,10,5))*np.sqrt(1.00/10)
 
 #ADAMS parameters
 beta1=0.9
@@ -71,12 +71,19 @@ beta2=0.999
 import math
 epsilon=math.pow(10,-8)
 VdelWFC1=np.zeros((numberOfwhale,features,100))
-VdelWFC2=np.zeros((numberOfwhale,5,3,3))
+VdelWFC2=np.zeros((numberOfwhale,36,84))
 VdelWFC3=np.zeros((numberOfwhale,84,10))
 VdelWC1=np.zeros((numberOfwhale,5,3,3))
 VdelWC2=np.zeros((numberOfwhale,5,3,3))
 VdelWOP=np.zeros((numberOfwhale,10,5))
 
+SdelWFC1=np.zeros((numberOfwhale,features,100))
+SdelWFC2=np.zeros((numberOfwhale,36,84))
+SdelWFC3=np.zeros((numberOfwhale,84,10))
+SdelWC1=np.zeros((numberOfwhale,5,3,3))
+SdelWC2=np.zeros((numberOfwhale,5,3,3))
+SdelWOP=np.zeros((numberOfwhale,10,5))
+currIter=0
 
 
 #Application of WOA
@@ -124,7 +131,7 @@ for iteration in range(iterations):
     print("iteration "+str(iteration))
     fitness=np.zeros((numberOfwhale))
     bestWhale=0
-    bestAccuracy=-100
+    bestAccuracy=math.pow(10,20)
     startTime=time.time();
     for whale in range(numberOfwhale):
         accuracy=0.00
@@ -240,7 +247,7 @@ for iteration in range(iterations):
          
         accuracy=math.sqrt(accuracy)
         fitness[whale]=accuracy
-        if accuracy>bestAccuracy:
+        if accuracy<bestAccuracy:
             bestAccuracy=accuracy
             bestWhale=whale
         
@@ -326,7 +333,8 @@ for iteration in range(1):
     print("iteration "+str(iteration))
     for whale1 in range(1):
         error=0.00
-        for dataPoint in range(1000):
+        for dataPoint in range(100000):
+            currIter+=1
             #initializations
             print(iteration)
             print(dataPoint)
@@ -555,30 +563,60 @@ for iteration in range(1):
             #gradient descent:
             for nodeI1 in range(features):
                 for nodeF1 in range(100):
-                    WFC1[whale][nodeI1][nodeF1]-=learningRate*delWFC1[nodeI1][nodeF1]
+                    #WFC1[whale][nodeI1][nodeF1]-=learningRate*delWFC1[nodeI1][nodeF1]
+                    VdelWFC1[whale][nodeI1][nodeF1]=beta1*VdelWFC1[whale][nodeI1][nodeF1]+(1-beta1)*delWFC1[nodeI1][nodeF1]
+                    SdelWFC1[whale][nodeI1][nodeF1]=beta2*SdelWFC1[whale][nodeI1][nodeF1]+(1-beta2)*math.pow(delWFC1[nodeI1][nodeF1],2)
+                    Vcorr=VdelWFC1[whale][nodeI1][nodeF1]/(1-math.pow(beta1,currIter))
+                    Scorr=SdelWFC1[whale][nodeI1][nodeF1]/(1-math.pow(beta2,currIter))
+                    WFC1[whale][nodeI1][nodeF1]-=learningRate*Vcorr/(math.sqrt(Scorr)+epsilon)
             
             for kernel in range(5):
                 for rowKernel in range(3):
                     for colKernel in range(3):
-                        WC1[whale][kernel][rowKernel][colKernel]-=learningRate*delWC1[kernel][rowKernel][colKernel]
+                        #WC1[whale][kernel][rowKernel][colKernel]-=learningRate*delWC1[kernel][rowKernel][colKernel]
+                        VdelWC1[whale][kernel][rowKernel][colKernel]=beta1*VdelWC1[whale][kernel][rowKernel][colKernel]+(1-beta1)*delWC1[kernel][rowKernel][colKernel]
+                        SdelWC1[whale][kernel][rowKernel][colKernel]=beta2*SdelWC1[whale][kernel][rowKernel][colKernel]+(1-beta2)*math.pow(delWC1[kernel][rowKernel][colKernel],2)
+                        Vcorr=VdelWC1[whale][kernel][rowKernel][colKernel]/(1-math.pow(beta1,currIter))
+                        Scorr=SdelWC1[whale][kernel][rowKernel][colKernel]/(1-math.pow(beta2,currIter))
+                        WC1[whale][kernel][rowKernel][colKernel]-=learningRate*Vcorr/(math.sqrt(Scorr)+epsilon)
                         
             for depthKernel in range(5):
                 for rowKernel in range(3):
                     for colKernel in range(3):
-                        WC2[whale][depthKernel][rowKernel][colKernel]-=0.00001*delWC2[depthKernel][rowKernel][colKernel]
+                        #WC2[whale][depthKernel][rowKernel][colKernel]-=0.00001*delWC2[depthKernel][rowKernel][colKernel]
+                        VdelWC2[whale][depthKernel][rowKernel][colKernel]=beta1*VdelWC2[whale][depthKernel][rowKernel][colKernel]+(1-beta1)*delWC2[depthKernel][rowKernel][colKernel]
+                        SdelWC2[whale][depthKernel][rowKernel][colKernel]=beta2*SdelWC2[whale][depthKernel][rowKernel][colKernel]+(1-beta2)*math.pow(delWC2[depthKernel][rowKernel][colKernel],2)
+                        Vcorr=VdelWC2[whale][depthKernel][rowKernel][colKernel]/(1-math.pow(beta1,currIter))
+                        Scorr=SdelWC2[whale][depthKernel][rowKernel][colKernel]/(1-math.pow(beta2,currIter))
+                        WC2[whale][depthKernel][rowKernel][colKernel]-=learningRate*Vcorr/(math.sqrt(Scorr)+epsilon)
             
             for nodeC2 in range(36):
                 for nodeF2 in range(84):
-                    WFC2[whale][nodeC2][nodeF2]-=0.00001*delWFC2[nodeC2][nodeF2]
+                    #WFC2[whale][nodeC2][nodeF2]-=0.00001*delWFC2[nodeC2][nodeF2]
+                    VdelWFC2[whale][nodeC2][nodeF2]=beta1*VdelWFC2[whale][nodeC2][nodeF2]+(1-beta1)*delWFC2[nodeC2][nodeF2]
+                    SdelWFC2[whale][nodeC2][nodeF2]=beta2*SdelWFC2[whale][nodeC2][nodeF2]+(1-beta2)*math.pow(delWFC2[nodeC2][nodeF2],2)
+                    Vcorr=VdelWFC2[whale][nodeC2][nodeF2]/(1-math.pow(beta1,currIter))
+                    Scorr=SdelWFC2[whale][nodeC2][nodeF2]/(1-math.pow(beta2,currIter))
+                    WFC2[whale][nodeC2][nodeF2]-=learningRate*Vcorr/(math.sqrt(Scorr)+epsilon)
             
             for nodeF2 in range(84):
                 for nodeF3 in range(10):
-                   WFC3[whale][nodeF2][nodeF3]-=0.00001*delWFC3[nodeF2][nodeF3]
+                   #WFC3[whale][nodeF2][nodeF3]-=0.00001*delWFC3[nodeF2][nodeF3]
+                   VdelWFC3[whale][nodeF2][nodeF3]=beta1*VdelWFC3[whale][nodeF2][nodeF3]+(1-beta1)*delWFC3[nodeF2][nodeF3]
+                   SdelWFC3[whale][nodeF2][nodeF3]=beta2*SdelWFC3[whale][nodeF2][nodeF3]+(1-beta2)*math.pow(delWFC3[nodeF2][nodeF3],2)
+                   Vcorr=VdelWFC3[whale][nodeF2][nodeF3]/(1-math.pow(beta1,currIter))
+                   Scorr=SdelWFC3[whale][nodeF2][nodeF3]/(1-math.pow(beta2,currIter))
+                   WFC3[whale][nodeF2][nodeF3]-=learningRate*Vcorr/(math.sqrt(Scorr)+epsilon)
             
             for node in range(10):
                 for node1 in range(5):
-                    WOP[whale][node][node1]-=0.0000000001*delWOP[node][node1]
-                    
+                    #WOP[whale][node][node1]-=0.0000000001*delWOP[node][node1]
+                    VdelWOP[whale][node][node1]=beta1*VdelWOP[whale][node][node1]+(1-beta1)*delWOP[node][node1]
+                    SdelWOP[whale][node][node1]=beta2*SdelWOP[whale][node][node1]+(1-beta2)*math.pow(delWOP[node][node1],2)
+                    Vcorr=VdelWOP[whale][node][node1]/(1-math.pow(beta1,currIter))
+                    Scorr=SdelWOP[whale][node][node1]/(1-math.pow(beta2,currIter))
+                    WOP[whale][node][node1]-=learningRate*Vcorr/(math.sqrt(Scorr)+epsilon)
+                  
                     
 #RESULT
 checkZ=np.zeros((1000,5))
