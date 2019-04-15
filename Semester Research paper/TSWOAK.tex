@@ -287,7 +287,8 @@ Table 3 shows that the proposed algorithm TSWOAK gives the minimum intra-cluster
 to other algorithms used in experimentation.
 The convergence speed of the proposed algorithm TSWOAK is more than the convergence speed of other
 algorithms with which the comparison has been done. Figure 2 and figure 3 shows the convergence graph
-of the algorithms on Wine and Glass datasets respectively. In both the diagram, the Y-axis depicts the bestintra-cluster distance for an algorithm, the X-axis depicts the number of iterations for which the algorithm
+of the algorithms on Wine and Glass datasets re
+spectively. In both the diagram, the Y-axis depicts the bestintra-cluster distance for an algorithm, the X-axis depicts the number of iterations for which the algorithm
 has been run.
 
 \begin{table}
@@ -347,28 +348,17 @@ Number of Iterations (itr) &  500 & 500 & 500 & 500 & 500 & 500\\
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{1}
-  \begin{tabular}{l l l l l l l r}
-    
-    \hline
-\textbf{Dataset} & \textbf{Criteria} 		&		\textbf{K-Means}     &	 \textbf{PSO}  &\textbf{GSA} &\textbf{BA}&\textbf{GWO}&\textbf{EGWO} \\
+  \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
-Iris	&	Best	&	97.34084	&	96.78998	&	96.65548	&	96.65552	&	96.65826	&	\textbf{96.65548}	\\	
-&	Mean	&	106.33437	&	97.13691	&	96.67516	&	99.53097	&	\textbf{99.12574}	&	99.55645	\\
-Seeds	&	Best	&	587.31957	&	312.68370	&	311.79804&	311.79816	&	311.88200	&	\textbf{311.79804}	\\	
-&	Mean	&	588.10457&	313.85971	&	311.79804	&	315.41951	&	312.09220	&	\textbf{311.79804}	\\
-Glass	&	Best	&	292.75724	&	238.51144	&	286.11855	&	243.70331&	265.81420	&	\textbf{214.44399}	\\	
-&	Mean	&	325.54765	&	257.06514	&	316.71044	&	264.10417	&	302.04114	&	\textbf{242.68894}	\\
-Cancer	&	Best	&	19323.17382	&	2969.23958&	2970.17834	&	2964.38718	&	2964.390179	&	\textbf{2964.38697}	\\	
-&	Mean	&	19323.17693	&	2976.15128&	2994.77937	&	3032.42259	&	2964.39495	&	\textbf{2964.38697}	\\
-Balance	&	Best	&	3472.32142	&	1423.96787	&	1423.82042&	1424.04307	&	1423.82106&	\textbf{1423.82040}	\\	
-&	Mean	&	3493.80000	&	1424.62818	&	1424.51503	&	1426.28547	&	\textbf{1423.82963}	&	1424.20479	\\
-Haberman	&	Best	&	30507.02076	&	2566.99548&	2566.98989	&	2566.98889	&	2567.02562	&	\textbf{2566.98889}	\\
-	&	Mean	&	32271.96242	&	\textbf{2567.12294}	&	2582.08625	&	2648.88585	&	2590.77309	&	2637.34900	\\
-Wine	&	Best	&	2370689.68700	&	16298.98906	&	17038.59226	&	16371.05448	&	16307.09242	&	\textbf{16292.18465}	\\	
-&	Mean	&	2484626.08700	&	16305.11720	&	17709.43544	&	16865.72325	&	16318.41351	&	\textbf{16292.35069}	\\
-
-    \hline
-  \end{tabular}
+\textbf{Dataset}  & \textbf{K-Means} & \textbf{BA} & \textbf{GWO} & \textbf{PSO} & \textbf{GSA} & \textbf{TSWOAK}      \\ \hline
+\textbf{Iris}     & 97.34084         & 96.65552    & 96.65826     & 96.78998     & 96.65548     & \textbf{96.65548}    \\ \hline
+\textbf{Seeds}    & 587.31957        & 311.79816   & 311.88200    & 312.68370    & 311.79804    & \textbf{311.79804}   \\ \hline
+\textbf{Haberman} & 30507.0207       & 2566.98889  & 2567.02562   & 2566.99548   & 2566.98989   & \textbf{2566.98889}  \\ \hline
+\textbf{Glass}    & 292.75724        & 243.70331   & 265.81420    & 238.51144    & 286.11855    & \textbf{214.44399}   \\ \hline
+\textbf{Wine}     & 2370689.687      & 16371.05448 & 16307.0924   & 16298.9890   & 17038.5922   & \textbf{16292.18465} \\ \hline
+\textbf{Cancer}   & 19323.1738       & 2964.38718  & 2964.39017   & 2969.23958   & 2970.17834   & \textbf{2964.38697}  \\ \hline
+\textbf{Balance}  & 3472.32142       & 1424.04307  & 1423.82106   & 1423.96787   & 1423.82042   & \textbf{1423.82040}  \\ \hline
+\end{tabular}
 \end{center}
 \label{tab:result}
 \end{table}
@@ -415,18 +405,14 @@ large datasets.
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{0.7}
-  \begin{tabular}{l l l l }
-
-    \hline
-\textbf{Dataset} & \textbf{\#C} & \textbf{\#D} 		&		\textbf{\#N}    \\
+ \begin{tabular}{|l|l|l|l|}
 \hline
- Replicated Iris	&	3	&	7	&	10,000,050	\\
-Replicated CMC	&	3	&	9	&	10,000,197	\\
-Replicated Wine	&	2	&	18	&	5000000	\\
-Replicated Vovel &	10	& 10	&	1025010	\\
-
-    \hline
-  \end{tabular}
+\textbf{Dataset} & \textbf{\#Datapoints} & \textbf{\#Attributes} & \textbf{#Clusters} \\ \hline
+\textbf{Reproduced Vowel} & 1,025,010                                               & 10                                                      & 10                                                    \\ \hline
+\textbf{Reproduced CMC}   & 10,000,197                                              & 9                                                       & 3                                                     \\ \hline
+\textbf{Reproduced Iris}  & 10,000,050                                              & 7                                                       & 3                                                     \\ \hline
+\textbf{Reproduced Wine}  & 5,000,000                                               & 18                                                      & 2                                  \\ \hline                  
+\end{tabular}
 \end{center}
 \label{tab:large dataset}
 \end{table}
@@ -437,19 +423,18 @@ Replicated Vovel &	10	& 10	&	1025010	\\
 \scriptsize
 \begin{center}
 \renewcommand{\arraystretch}{0.7}
-  \begin{tabular}{l l l l l l l}
-    \hline
-    \hline
-\textbf{Data set} & \textbf{PK-Means} &\textbf{parallel KPSO} &\textbf{MR-ABC} &\textbf{DFBPKBA} &\textbf{MR-EGWO}\\
+  \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
-
-1	&	0.667	&	0.785	&	0.842	&	0.790  &  0.846	\\
-2	&	0.298	&	0.324	&	0.387	&	0.378  &  0.391	\\
-3	&	0.482	&	0.517	&	0.718	&	0.719  &  0.733	\\
-4	&	0.586	&	0.627	&	0.634	&	0.622  &  0.635	\\
-
-    \hline
-  \end{tabular}
+\textbf{Dataset}                           & \textbf{Criteria}         & \textbf{Parallel-KPSO} & \textbf{Parallel-KMeans} & \textbf{DFBPKBA} & \textbf{MR-ABC} & \textbf{MR-TSWOAK}   \\ \hline
+\multirow{}{}{\textbf{Reproduced CMC}}   & \textbf{Computation Time} & 10.33E + 04            & 8.24E + 04               & 10.34E + 04      & 10.33E + 04     & \textbf{10.32E + 04} \\ \cline{2-7} 
+                                           & \textbf{F-Measure}        & 0.324                  & 0.298                    & 0.378            & 0.387           & \textbf{0.391}       \\ \hline
+\multirow{}{}{\textbf{Reproduced Vowel}} & \textbf{Computation Time} & 13.22E + 04            & 10.50E + 04              & 13.23E + 04      & 12.21E + 04     & \textbf{13.21E + 04} \\ \cline{2-7} 
+                                           & \textbf{F-Measure}        & 0.627                  & 0.586                    & 0.622            & 0.634           & \textbf{0.635}       \\ \hline
+\multirow{}{}{\textbf{Reproduced Iris}}  & \textbf{Computation Time} & 9.23E + 04             & 8.05E + 04               & 9.24E + 04       & 9.26E + 04      & \textbf{9.22E + 02}  \\ \cline{2-7} 
+                                           & \textbf{F-Measure}        & 0.785                  & 0.667                    & 0.790            & 0.842           & \textbf{0.846}       \\ \hline
+\multirow{}{}{\textbf{Reproduced Wine}}  & \textbf{Computation Time} & 13.22E + 04            & 11.20E + 04              & 13.23E + 04      & 12.21E + 04     & \textbf{13.21E + 04} \\ \cline{2-7} 
+                                           & \textbf{F-Measure}        & 0.627                  & 0.586                    & 0.622            & 0.634           & \textbf{0.635}       \\ \hline
+\end{tabular}
 \end{center}
 \label{tab:FM}
 \end{table}
@@ -458,14 +443,14 @@ Replicated Vovel &	10	& 10	&	1025010	\\
 
 \begin{figure}
     \centering
-     \includegraphics\cite{awidth=1.0\textwidth}{Glass}
+     \includegraphics\cite{awidth=1.0\textwidth}{CMC}
       \caption{Speedup graph of Replicated-CMC dataset}
 \label{fig:CMC}
 \end{figure}
 
 \begin{figure}
     \centering
-     \includegraphics\cite{awidth=1.0\textwidth}{Glass}
+     \includegraphics\cite{awidth=1.0\textwidth}{Iris}
       \caption{Speedup graph of Replicated-Iris dataset}
 \label{fig:Iris}
 \end{figure}
@@ -479,9 +464,31 @@ ABC-KM on the basis of Mean Absolute Error (MAE). The results are given in Table
 Table 6 shows that MR-TSWOAK perform better than the already present collaborative-filtering clustering
 algorithm. Figure 6 shows the comparison of MAE with different methods.
 
+\begin{table}
+\caption{MAE for different approaches for different number of clusters}
+\scriptsize
+\begin{center}
+\renewcommand{\arraystretch}{1}
+  \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+\textbf{Cluster}         & \textbf{5}       & \textbf{10}   & \textbf{15}      & \textbf{20}      & \textbf{25}      & \textbf{30}      & \textbf{35}      & \textbf{40}      \\ \hline
+\textbf{TSWOAK}          & \textbf{0.74169} & \textbf{0.69} & \textbf{0.68813} & \textbf{0.69628} & \textbf{0.68675} & \textbf{0.68037} & \textbf{0.68635} & \textbf{0.68704} \\ \hline
+\textbf{PCA-GAKM}        & 0.79             & 0.77          & 0.77             & 0.77             & 0.781            & 0.785            & 0.786            & 0.788            \\ \hline
+\textbf{PCA-SOM}         & 0.82             & 0.79          & 0.79             & 0.79             & 0.80             & 0.805            & 0.806            & 0.827            \\ \hline
+\textbf{SOM-CLUSTER}     & 0.819            & 0.81          & 0.81             & 0.81             & 0.81             & 0.805            & 0.81             & 0.81             \\ \hline
+\textbf{UPCC}            & 0.825            & 0.825         & 0.824            & 0.828            & 0.824            & 0.824            & 0.825            & 0.825            \\ \hline
+\textbf{K-Means Cluster} & 0.825            & 0.82          & 0.818            & 0.815            & 0.815            & 0.814            & 0.813            & 0.812            \\ \hline
+\textbf{PCA-K-Means}     & 0.850            & 0.845         & 0.841            & 0.840            & 0.840            & 0.840            & 0.840            & 0.840            \\ \hline
+\textbf{GAKM-Cluster}    & 0.815            & 0.805         & 0.804            & 0.804            & 0.804            & 0.804            & 0.803            & 0.803            \\ \hline
+\textbf{ABC-KM}          & 0.773            & 0.764         & 0.764            & 0.771            & 0.780            & 0.784            & 0.782            & 0.787            \\ \hline
+\end{tabular}
+\end{center}
+\label{tab:MAE}
+\end{table}
+
 \begin{figure}
     \centering
-     \includegraphics\cite{awidth=1.0\textwidth}{Glass}
+     \includegraphics\cite{awidth=1.0\textwidth}{MAE}
       \caption{Comparison of MAE with different methods}
 \label{fig:MAE}
 \end{figure}

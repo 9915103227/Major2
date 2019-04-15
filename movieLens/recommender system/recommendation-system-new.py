@@ -14,52 +14,70 @@ from sklearn.impute import SimpleImputer
 datasetData=pd.read_csv('data.csv')
 datasetItem=pd.read_csv('item.csv')
 datasetUser=pd.read_csv('user.csv')
-X=datasetData.iloc[:,:]
-X=np.array(X)
-recommendMatrix=np.zeros((943,1682))
-for dataPoint in range(100000):
-    recommendMatrix[X[dataPoint][0]-1][X[dataPoint][1]-1]=X[dataPoint][2]
+
+lenDatasetData=datasetData.shape[0]
+lenDatasetUser=datasetUser.shape[1]
+lenDatasetItem=datasetItem.shape[1]
+X=np.zeros((lenDatasetData,(datasetUser.shape[1]+1)))
+y=np.zeros((lenDatasetData))
+for i in range(lenDatasetData):
+    print i
+    tmp1=datasetData.iloc[i,:].values
+    user=tmp1[0]
+    item=tmp1[1];
+    rate=tmp1[2];
+    tmp1=datasetUser.iloc[user-1,:].values
+    for j in range(lenDatasetUser):
+        #X[i][j]=datasetUser.iloc[user-1,:].values[j]
+        tmp=tmp1[j]
+        if isinstance(tmp,basestring):
+            X[i][j]=0
+        else:
+            X[i][j]=tmp
+    tmp1=datasetItem.iloc[item-1,:].values
+    for j in range(lenDatasetItem):
+        #X[i][lenDatasetUser+j]=datasetItem.iloc[item-1,:].values[j]
+        tmp=tmp1[j]
+        if(tmp==1):
+            X[i][3]=2*(j+1)
     
-X=[[] for data in range(100000)]
-y=[[] for data in range(100000)]
+    y[i]=rate
 
-y=datasetData.iloc[:,2]
-XData=np.array(datasetData.iloc[:,:-1])
-XUser=np.array(datasetUser.iloc[:])
-XItem=np.array(datasetItem.iloc[:])
-XUser[:,3]=preprocessing.OrdinalEncoder().fit_transform(XUser[:,3].reshape(-1,1)).reshape(943)
-XItem=SimpleImputer(strategy='constant').fit_transform(XItem)
 
-X=np.zeros((100000,23))
-for i in range(100000):
-        dataPoint=[]
-        #user info:
-        user=XData[i][0]-1;
-        for userInfo in range(4):
-            #dataPoint.append(int(XUser[user][userInfo]))
-            X[i][userInfo]=int(XUser[user][userInfo])
-        #movie info
-        movie=XData[i][1]-1
-        for movieInfo in range(19):
-            #dataPoint.append(int(XItem[movie][movieInfo]))
-            X[i][4+movieInfo]=int(XItem[movie][movieInfo])
+X=SimpleImputer(strategy="constant",fill_value=0).fit_transform(X)
+
+
         
 import time
 numberOfwhale=3
-iterations=3
+iterations=1
 
 dataPoints = X.shape[0]
 features=X.shape[1];
-learningRate=0.0001
+learningRate=0.001
 startTimeAlgo=time.time()
 bestWhale=0
 #initialize features
 WFC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,features,100))
 WC1=np.random.uniform(low=0,high=1,size=(numberOfwhale,5,3,3))
 WC2=np.random.uniform(low=0,high=1,size=(numberOfwhale,5,3,3))
-WFC2=np.random.uniform(low=0,high=0.001,size=(numberOfwhale,36,84))
+WFC2=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,36,84))
 WFC3=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,84,10))
-WOP=np.random.uniform(low=0,high=1,size=(numberOfwhale,10))
+WOP=np.random.uniform(low=0,high=0.01,size=(numberOfwhale,10,5))
+
+#ADAMS parameters
+beta1=0.9
+beta2=0.999
+import math
+epsilon=math.pow(10,-8)
+VdelWFC1=np.zeros((numberOfwhale,features,100))
+VdelWFC2=np.zeros((numberOfwhale,5,3,3))
+VdelWFC3=np.zeros((numberOfwhale,84,10))
+VdelWC1=np.zeros((numberOfwhale,5,3,3))
+VdelWC2=np.zeros((numberOfwhale,5,3,3))
+VdelWOP=np.zeros((numberOfwhale,10,5))
+
+
 
 #Application of WOA
 
@@ -89,7 +107,8 @@ for whale in range(numberOfwhale):
             centresOfwhale[whale].append(WFC3[whale][nodeF2][nodeF3])
     
     for node in range(10):
-        centresOfwhale[whale].append(WOP[whale][node])
+        for node1 in range(5):
+            centresOfwhale[whale].append(WOP[whale][node][node1])
 
 centresOfwhale=np.array(centresOfwhale)
 features1=centresOfwhale.shape[1]
@@ -111,7 +130,7 @@ for iteration in range(iterations):
         accuracy=0.00
         print("whale: "+str(whale))
         #apply cnn
-        for dataPoint in range(10000):
+        for dataPoint in range(1000):
             #initializations
             print("iteration "+str(iteration))
             print("whale: "+str(whale))
@@ -123,6 +142,8 @@ for iteration in range(iterations):
             sigmaC2=np.zeros((6,6))
             sigmaF2=np.zeros((84))
             sigmaF3=np.zeros((10))
+            sigmaSoftmax=np.zeros((5))
+        
             
             I1=X[dataPoint]
             
@@ -197,11 +218,25 @@ for iteration in range(iterations):
             
             #Forward pass at F3
             sum=0.00
-            for node in range(10):
-                sum+=F3[node]*WOP[whale][node]
+            for nodeF3 in range(10):
+                #sum+=F3[node]*WOP[whale][node]
+                for nodeSoftmax in range(5):
+                    sigmaSoftmax[nodeSoftmax]+=WOP[whale][nodeF3][nodeSoftmax]*F3[nodeF3]
+            
+            exps=np.array([np.exp(sigmaSoftmax[i]) for i in range(5)])
+            sum_exps=np.sum(exps)
+            
+            softmax=np.array([exps[i]/sum_exps for i in range(5)])
+            
+            for i in range(5):
+                if(y[dataPoint]==(i+1)):
+                    sum+=-1*math.log(softmax[i])
+                else:
+                    sum+=-1*math.log(1-softmax[i])
+                
             
             op=sum
-            accuracy+=(math.pow(op-y[dataPoint],2))
+            accuracy+=(math.pow(op,2))
          
         accuracy=math.sqrt(accuracy)
         fitness[whale]=accuracy
@@ -276,20 +311,22 @@ for iteration in range(iterations):
                 cnt+=1
         
         for node in range(10):
-            WOP[whale][node]=centresOfwhale[whale][cnt]
-            cnt+=1
+            for node1 in range(5):
+                WOP[whale][node][node1]=centresOfwhale[whale][cnt]
+                cnt+=1
 
 
 
 
 #CNN
+error=0.00
 whale=bestWhale
 yPred=np.zeros((dataPoints))
 for iteration in range(1):
     print("iteration "+str(iteration))
     for whale1 in range(1):
         error=0.00
-        for dataPoint in range(dataPoints):
+        for dataPoint in range(1000):
             #initializations
             print(iteration)
             print(dataPoint)
@@ -300,6 +337,7 @@ for iteration in range(1):
             sigmaC2=np.zeros((6,6))
             sigmaF2=np.zeros((84))
             sigmaF3=np.zeros((10))
+            sigmaSoftmax=np.zeros((5))
             
             I1=X[dataPoint]
             
@@ -374,20 +412,60 @@ for iteration in range(1):
             
             #Forward pass at F3
             sum=0.00
-            for node in range(10):
-                sum+=F3[node]*WOP[whale][node]
+            for nodeF3 in range(10):
+                #sum+=F3[node]*WOP[whale][node]
+                for nodeSoftmax in range(5):
+                    sigmaSoftmax[nodeSoftmax]+=WOP[whale][nodeF3][nodeSoftmax]*F3[nodeF3]
             
-            op=sum
-            yPred[dataPoint]=op
+            exps=np.array([np.exp(sigmaSoftmax[i]) for i in range(5)])
+            sum_exps=np.sum(exps)
+            
+            softmax=np.array([exps[i]/sum_exps for i in range(5)])
+            for i in range(5):
+                if(softmax[i]==1):
+                    softmax[i]=0.999
+                if(softmax[i]==0):
+                    softmax[i]=0.000001
+            
+            for i in range(5):
+                if(y[dataPoint]==(i+1)):
+                    sum+=-1*math.log(softmax[i])
+                else:
+                    sum+=-1*math.log(1-softmax[i])
+                    
+            #yPred[dataPoint]=op
+            print(y[dataPoint])
+            print(softmax)
             
             #backpropogation at output
-            delOp=op-y[dataPoint]
-            delSigmaOp=delOp
+            
+            delsoftmax=np.zeros(5)
+            for i in range(5):
+                if(y[dataPoint]==(i+1)):
+                    delsoftmax[i]=-1/softmax[i];
+                else:
+                    delsoftmax[i]=-1/(1-softmax[i])
+            
+            print(delsoftmax)
+            delSigmaOp=np.zeros(5)
+            
+            for i in range(5):
+                delSigmaOp[i]=((exps[i]*(sum_exps-exps[i]))/(sum_exps*sum_exps))*delsoftmax[i]  
+            
+            
             #backpropogation at output done
             
             #backpropogation at F3
-            delWOP=delSigmaOp*F3
-            delF3=delSigmaOp*WOP[whale]
+            delWOP=np.zeros((10,5))
+            delF3=np.zeros(10)
+            
+            for i in range(10):
+                for j in range(5):
+                    delWOP[i][j]=delSigmaOp[j]*F3[i];
+                    delF3[i]+=delSigmaOp[j]*WOP[whale][i][j]
+            
+            
+            
             delSigmaF3=delF3
             for node in range(10):
                 if F3[node]<0:
@@ -487,15 +565,153 @@ for iteration in range(1):
             for depthKernel in range(5):
                 for rowKernel in range(3):
                     for colKernel in range(3):
-                        WC2[whale][depthKernel][rowKernel][colKernel]-=learningRate*delWC2[depthKernel][rowKernel][colKernel]
+                        WC2[whale][depthKernel][rowKernel][colKernel]-=0.00001*delWC2[depthKernel][rowKernel][colKernel]
             
             for nodeC2 in range(36):
                 for nodeF2 in range(84):
-                    WFC2[whale][nodeC2][nodeF2]-=learningRate*delWFC2[nodeC2][nodeF2]
+                    WFC2[whale][nodeC2][nodeF2]-=0.00001*delWFC2[nodeC2][nodeF2]
             
             for nodeF2 in range(84):
                 for nodeF3 in range(10):
-                   WFC3[whale][nodeF2][nodeF3]-=learningRate*delWFC3[nodeF2][nodeF3]
+                   WFC3[whale][nodeF2][nodeF3]-=0.00001*delWFC3[nodeF2][nodeF3]
             
             for node in range(10):
-                WOP[whale][node]-=learningRate*delWOP[node]
+                for node1 in range(5):
+                    WOP[whale][node][node1]-=0.0000000001*delWOP[node][node1]
+                    
+                    
+#RESULT
+checkZ=np.zeros((1000,5))
+checkSigmaF1=np.zeros((1000,100))
+checkSigmaF3=np.zeros((1000,10))
+checkSoftmax=np.zeros((1000,5))
+whale=bestWhale
+yPred=np.zeros((dataPoints))
+for iteration in range(1):
+    print("iteration "+str(iteration))
+    for whale1 in range(1):
+        error=0.00
+        for dataPoint in range(1000):
+            #initializations
+            print(iteration)
+            print(dataPoint)
+            #startTime=time.time()
+            I1=np.zeros((features))
+            sigmaF1=np.zeros((100))
+            sigmaC1=np.zeros((5,8,8))
+            sigmaC2=np.zeros((6,6))
+            sigmaF2=np.zeros((84))
+            sigmaF3=np.zeros((10))
+            sigmaSoftmax=np.zeros((5))
+            I1=X[dataPoint]
+            
+            #Forward passs at I1
+            for nodeI1 in range(features):
+                for nodeF1 in range(100):
+                    sigmaF1[nodeF1]+=WFC1[whale][nodeI1][nodeF1]*I1[nodeI1]
+            
+            for i in range(100):
+                checkSigmaF1[dataPoint][i]=sigmaF1[i]
+            
+            F1=sigmaF1
+            for nodeF1 in range(100):
+                if sigmaF1[nodeF1]<0:
+                    F1[nodeF1]*=0.05
+            sigmaF1=sigmaF1.reshape((10,10))
+            F1=F1.reshape((10,10))
+            #Forward Pass at I1 done
+            
+            #Forward pass at F1
+            for kernel in range(5):
+                for rowC1 in range(8):
+                    for colC1 in range(8):
+                        for rowKernel in range(3):
+                            for colKernel in range(3):
+                                sigmaC1[kernel][rowC1][colC1]+=WC1[whale][kernel][rowKernel][colKernel]*F1[rowC1+rowKernel][colC1+colKernel]
+            
+            C1=sigmaC1
+            for kernel in range(5):
+                for rowC1 in range(8):
+                    for colC1 in range(8):
+                        if C1[kernel][rowC1][colC1]<0:
+                            C1[kernel][rowC1][colC1]*=0.05
+            #Forward pass at F1 done
+            
+            #Forward pass at C1
+            for rowC2 in range(6):
+                for colC2 in range(6):
+                    for depthKernel in range(5):
+                        for rowKernel in range(3):
+                            for colKernel in range(3):
+                                sigmaC2[rowC2][colC2]+=WC2[whale][depthKernel][rowKernel][colKernel]*C1[depthKernel][rowKernel+rowC2][colKernel+colC2]
+            
+            C2=sigmaC2
+            for rowC2 in range(6):
+                for colC2 in range(6):
+                    if sigmaC2[rowC2][colC2]<0:
+                        C2[rowC2][colC2]*=0.05
+            
+            sigmaC2=sigmaC2.reshape((36,1))
+            C2=C2.reshape((36,1))
+            #Forward pass at C1 done
+            
+            #Forward pass at C2
+            for nodeC2 in range(36):
+                for nodeF2 in range(84):
+                    sigmaF2[nodeF2]+=WFC2[whale][nodeC2][nodeF2]*C2[nodeC2]
+            
+            F2=sigmaF2
+            for nodeF2 in range(84):
+                if F2[nodeF2]<0:
+                    F2[nodeF2]*=0.05
+            #Forward pass at C2 done
+            
+            #Forward pass at F2
+            for nodeF2 in range(84):
+                for nodeF3 in range(10):
+                    sigmaF3[nodeF3]+=WFC3[whale][nodeF2][nodeF3]*F2[nodeF3]
+            
+            for i in range(10):
+                checkSigmaF3[dataPoint][i]=sigmaF3[i]
+                    
+            F3=sigmaF3
+            for nodeF3 in range(10):
+                if F3[nodeF3]<0:
+                    F3[nodeF3]*=0.05
+            #Forward pass at F2 done
+            
+            #Forward pass at F3
+            sum=0.00
+            for nodeF3 in range(10):
+                #sum+=F3[node]*WOP[whale][node]
+                for nodeSoftmax in range(5):
+                    sigmaSoftmax[nodeSoftmax]+=WOP[whale][nodeF3][nodeSoftmax]*F3[nodeF3]
+            
+            for i in range(5):
+                checkZ[dataPoint][i]=sigmaSoftmax[i]
+            
+            exps=np.array([np.exp(sigmaSoftmax[i]) for i in range(5)])
+            sum_exps=np.sum(exps)
+            
+            softmax=np.array([exps[i]/sum_exps for i in range(5)])
+            
+            checkSoftmax[dataPoint]=softmax
+            '''for i in range(5):
+                if(softmax[i]==1):
+                    softmax[i]=0.999
+                if(softmax[i]==0):
+                    softmax[i]=0.000001
+            
+            for i in range(5):
+                if(y[dataPoint]==(i+1)):
+                    sum+=-1*math.log(softmax[i])
+                else:
+                    sum+=-1*math.log(1-softmax[i])'''
+            maxN=softmax[0]
+            maxPos=1
+            for i in range(5):
+                if softmax[i]>maxN:
+                    maxN=softmax[i];
+                    maxPos=i+1
+            yPred[dataPoint]=maxPos
+            error+=abs(y[dataPoint]-maxPos)
