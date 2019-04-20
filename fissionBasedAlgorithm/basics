@@ -1,0 +1,20 @@
+Let S be set of atoms in space;
+Let n be the totol number of atoms in search-space
+Initially,
+	S={X1,X2,...,Xn}, Xi is an atom with weight W
+
+for-each iteration iter:
+	Let n' = |S|
+	check fitness-value for each atom in S
+	Choose best_atom.
+	for-each atom in S:
+		if atom != best_atom:
+			if atom.weight>1:
+				break atom into atom1 and atom2, whose weight is atom.weight/2
+				atom1 will move towards best_atom
+				atom2 will move in opposite direction, and move for distance that was moved by atom1.
+				Mathematically: delta(atom1)=delta(atom2)
+			else
+				atom will move towards best_atom
+		else:
+			best_atom will move according to gravitational-force from all the other atoms.
